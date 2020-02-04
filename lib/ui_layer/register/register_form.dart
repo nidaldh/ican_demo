@@ -1,4 +1,5 @@
 import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
+import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,6 +54,11 @@ class _RegisterFormState extends State<RegisterForm> {
         if (state.isSuccess) {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
           Navigator.of(context).pop();
+//            Navigator.of(context).push(
+//              MaterialPageRoute(builder: (context) {
+//                return AddUser(email: _userRepository.getUser);
+//              }),
+//            );
         }
         if (state.isFailure) {
           Scaffold.of(context)

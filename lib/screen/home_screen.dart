@@ -10,26 +10,58 @@ class HomeScreen extends StatelessWidget {
 
   HomeScreen({Key key, @required this.name}) : super(key: key);
   Firestore firestore = Firestore.instance;
-//  void check() async{
-//    final snapShot = await Firestore.instance
-//        .collection('info')
-//        .document("NnrSxvBpmR8enb0XhM4F")
-//        .get();
-//
-//    print(name);
-////    if (snapShot == null || !snapShot.exists) {
-////      // Document with id == docId doesn't exist.
-////    }
-//    print(snapShot == null || !snapShot.exists);
-//  }
 
   @override
   Widget build(BuildContext context) {
-//    check();
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
+        drawer: Drawer(
+          child: Container(
+            color: Colors.deepPurpleAccent,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ListView(
+                children: <Widget>[
+                  ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return AddUser(
+                              email: name,
+                            );
+                          }),
+                        );
+                      },
+                      title: Text(
+                        "Add Info",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      leading: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      )),
+                  ListTile(
+                      onTap: () {
+                        if (data.savedLocale.toString().compareTo("ar_DZ") == 0)
+                          data.changeLocale(Locale('en', 'US'));
+                        else
+                          data.changeLocale(Locale('ar', 'DZ'));
+                      },
+                      title: Text(
+                        AppLocalizations.of(context).tr("clickMe"),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      leading: Icon(
+                        Icons.language,
+                        color: Colors.white,
+                      )),
+                ],
+              ),
+            ),
+          ),
+        ),
         appBar: AppBar(
           title:
               Text(AppLocalizations.of(context).tr("title", args: ['title'])),
@@ -47,30 +79,9 @@ class HomeScreen extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-//            Center(child: Text('Welcome $name!')),
             Center(
                 child: Text(AppLocalizations.of(context)
                     .tr("msg", args: [name, 'flutter']))),
-            Center(
-                child: Text(AppLocalizations.of(context)
-                    .plural("clicked","zero"))),
-            OutlineButton(
-              onPressed: () {
-                data.changeLocale(Locale('ar', 'DZ'));
-              },
-              child: Text(AppLocalizations.of(context).tr("clickMe")),
-            ),
-            OutlineButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) {
-                    return AddUser(email: name,);
-                  }),
-                );
-              },
-              child: Text("add Info"),
-            )
-
           ],
         ),
       ),

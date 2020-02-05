@@ -4,11 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
 import 'package:demo_ican/data_layer/user.dart';
 import 'package:demo_ican/screen/user_profile.dart';
+import 'package:demo_ican/screen/video_screen.dart';
 import 'package:demo_ican/temp_chart.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'demo_video.dart';
 
 class HomeScreen extends StatelessWidget {
   final String email;
@@ -105,6 +108,22 @@ class HomeScreen extends StatelessWidget {
                       ),
                       leading: Icon(
                         Icons.add,
+                        color: Colors.white,
+                      )),ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+//                            return YoutubePlayerDemoApp();
+                            return VideoList();
+                          }),
+                        );
+                      },
+                      title: Text(
+                        "Videos",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      leading: Icon(
+                        Icons.video_label,
                         color: Colors.white,
                       )),
                   ListTile(

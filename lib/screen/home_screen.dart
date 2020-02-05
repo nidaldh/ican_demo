@@ -1,20 +1,50 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
+import 'package:demo_ican/data_layer/user.dart';
+import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/temp_chart.dart';
-import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
-  final String name;
-
-  HomeScreen({Key key, @required this.name}) : super(key: key);
+  final String email;
+  String name2 = '';
+  String phone = "";
+  int age;
+  String location;
+  double height;
+  double weight;
+  User user;
+  HomeScreen({Key key, @required this.email}) : super(key: key);
   Firestore firestore = Firestore.instance;
+
+  initUser()async{
+    await firestore
+        .collection("info")
+        .document(email)
+        .get()
+        .then((DocumentSnapshot ds) {
+      // use ds as a snapshot
+//     ds.data[''];
+//      print(ds.data['height']);
+      name2 = ds.data['name'];
+      age = ds.data['age'];
+      location = ds.data['location'];
+      height = ds.data['height'];
+      phone = ds.data['phone_number'];
+      weight = ds.data['weight'];
+    });
+  user = new User(name2, age, phone, weight, height, location,email: email);
+  print(user.name);
+  }
 
   @override
   Widget build(BuildContext context) {
+    initUser();
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
       data: data,
@@ -30,9 +60,10 @@ class HomeScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-                            return AddUser(
-                              email: name,
-                            );
+//                            return AddUser(
+//                              email: name,
+//                            );
+                          return UserProfile(user);
                           }),
                         );
                       },
@@ -48,7 +79,7 @@ class HomeScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-                            return ShowIBM(email: name,
+                            return ShowIBM(user: user,
                             );
                           }),
                         );
@@ -115,7 +146,7 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             Center(
                 child: Text(AppLocalizations.of(context)
-                    .tr("msg", args: [name, 'flutter']))),
+                    .tr("msg", args: [email, 'flutter']))),
           ],
         ),
       ),

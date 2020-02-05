@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_ican/data_layer/user.dart';
 import 'package:flutter/material.dart';
 
 class AddUser extends StatefulWidget {
-  final String email;
+  final User user;
 
-  AddUser({Key key, @required this.email}) : super(key: key);
+  AddUser({Key key, @required this.user}) : super(key: key);
   @override
   _AddUserState createState() => _AddUserState();
 }
@@ -206,8 +207,8 @@ class _AddUserState extends State<AddUser> {
   }
 
   add()async {
-    print(widget.email);
-    firestore.collection("info").document(widget.email).setData({
+    print(widget.user.email);
+    firestore.collection("info").document(widget.user.email).setData({
       'name': name,
       'phone_number':phone,
       'age':age,
@@ -217,26 +218,13 @@ class _AddUserState extends State<AddUser> {
     });
 
 
-    await firestore.collection("info").document("nidal98@gmail.com")
-        .collection("IBM")
-        .document("date")
-        .setData({
-      "manna": "nidal",
-    });
-//    firestore.collection("info").document("nidal@gmail.com").collection("ibm").document("test").get();
-//    await firestore.collection("info").document("nidal@gmail.com")
-//        .collection("IBM")
+//    await firestore.collection("info").document("nidal@gmail.com").collection("IBM")
 //        .getDocuments()
 //        .then((QuerySnapshot snapshot) {
-//          print("nidal");
+//      print("nidal");
+//      print(snapshot.documents.length);
 //      snapshot.documents.forEach((f) => print('${f.data}'));
-    await firestore.collection("info").document("nidal@gmail.com").collection("IBM")
-        .getDocuments()
-        .then((QuerySnapshot snapshot) {
-      print("nidal");
-      print(snapshot.documents.length);
-      snapshot.documents.forEach((f) => print('${f.data}'));
-    }
-    );
+//    }
+//    );
   }
 }

@@ -1,16 +1,16 @@
 class User {
-  String firstName;
+  String name;
   String lastName;
   String password;
   int age;
-  int phoneNumber;
+  String phoneNumber;
   String email;
   double weight;
   double height;
   String location;
 
-  User(this.firstName, this.lastName, this.password, this.age, this.phoneNumber,
-      this.email, this.weight, this.height, this.location);
+  User(this.name, this.age, this.phoneNumber,
+       this.weight, this.height, this.location,{this.lastName,this.password,this.email});
 
 }
 

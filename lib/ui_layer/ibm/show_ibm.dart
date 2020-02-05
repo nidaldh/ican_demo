@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demo_ican/main.dart';
+import 'package:demo_ican/data_layer/user.dart';
 import 'package:flutter/material.dart';
 
 class ShowIBM extends StatefulWidget {
-  String email;
+  User user;
 
-  ShowIBM({this.email});
+  ShowIBM({this.user});
 
   @override
   _ShowIBMState createState() => _ShowIBMState();
@@ -116,48 +116,42 @@ class _ShowIBMState extends State<ShowIBM> {
 
   void calculateBMi() async {
     print("calculate");
-    print(widget.email);
-    await firestore
-        .collection("info")
-        .document(widget.email)
-        .get()
-        .then((DocumentSnapshot ds) {
-      // use ds as a snapshot
-//     ds.data[''];
-      print(ds.data['height']);
-      height = ds.data['height'];
-    });
+    print(widget.user.email);
+//    await firestore
+//        .collection("info")
+//        .document(widget.user.email)
+//        .get()
+//        .then((DocumentSnapshot ds) {
+//      // use ds as a snapshot
+////     ds.data[''];
+//      print(ds.data['height']);
+//      height = ds.data['height'];
+//    });
+    weight=widget.user.weight;
 
     bmi = weight / ((height * height) / 10000);
 //    print();
   }
 
   add() async {
-    print(widget.email);
+    print(widget.user.email);
     await calculateBMi();
 
     await firestore
         .collection("info")
-        .document(widget.email)
+        .document(widget.user.email)
         .collection("IBM")
         .document(date)
         .setData({"weight": weight, "BMI": bmi});
-//    firestore.collection("info").document("nidal@gmail.com").collection("ibm").document("test").get();
-//    await firestore.collection("info").document("nidal@gmail.com")
+//    await firestore
+//        .collection("info")
+//        .document("nidal@gmail.com")
 //        .collection("IBM")
 //        .getDocuments()
 //        .then((QuerySnapshot snapshot) {
-//          print("nidal");
+//      print("nidal");
+//      print(snapshot.documents.length);
 //      snapshot.documents.forEach((f) => print('${f.data}'));
-    await firestore
-        .collection("info")
-        .document("nidal@gmail.com")
-        .collection("IBM")
-        .getDocuments()
-        .then((QuerySnapshot snapshot) {
-      print("nidal");
-      print(snapshot.documents.length);
-      snapshot.documents.forEach((f) => print('${f.data}'));
-    });
+//    });
   }
 }

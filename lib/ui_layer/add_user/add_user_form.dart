@@ -11,7 +11,7 @@ class AddUser extends StatefulWidget {
 
 class _AddUserState extends State<AddUser> {
   String name = '';
-  int phone = 0;
+  String phone = "";
   int age;
   String location;
   double height;
@@ -63,13 +63,15 @@ class _AddUserState extends State<AddUser> {
                 color: Colors.white,
                 child: TextFormField(
                   validator: (value) {
-                    if (value.isEmpty || value.trim().length == 9) {
+                    if (value.isEmpty || value
+                        .trim()
+                        .length == 9) {
                       return 'the number must be 10 digit';
                     }
                     return null;
                   },
                   onSaved: (val) {
-                    phone = int.parse(val.trim());
+                    phone = val;
                     print(phone);
                   },
                   keyboardType: TextInputType.numberWithOptions(),
@@ -87,7 +89,9 @@ class _AddUserState extends State<AddUser> {
                 color: Colors.white,
                 child: TextFormField(
                   validator: (value) {
-                    if (value.trim().isEmpty || int.parse(value)<10) {
+                    if (value
+                        .trim()
+                        .isEmpty || int.parse(value) < 10) {
                       return 'the age must be 10 and above ';
                     }
                     return null;
@@ -112,13 +116,15 @@ class _AddUserState extends State<AddUser> {
                 child: TextFormField(
 
                   validator: (value) {
-                    if (value.trim().isEmpty) {
+                    if (value
+                        .trim()
+                        .isEmpty) {
                       return 'please enter your location';
                     }
                     return null;
                   },
-                  onSaved: (val){
-                    location=val.trim();
+                  onSaved: (val) {
+                    location = val.trim();
                     print(location);
                   },
 
@@ -136,13 +142,13 @@ class _AddUserState extends State<AddUser> {
                 color: Colors.white,
                 child: TextFormField(
                   validator: (value) {
-                    if (value.isEmpty || double.parse(value)<=20) {
+                    if (value.isEmpty || double.parse(value) <= 20) {
                       return 'please enter your weight';
                     }
                     return null;
                   },
-                  onSaved: (val){
-                    weight=double.parse(val.trim());
+                  onSaved: (val) {
+                    weight = double.parse(val.trim());
                     print(weight);
                   },
                   keyboardType: TextInputType.numberWithOptions(),
@@ -160,13 +166,13 @@ class _AddUserState extends State<AddUser> {
                 color: Colors.white,
                 child: TextFormField(
                   validator: (value) {
-                    if (value.isEmpty || double.parse(value)<=150) {
+                    if (value.isEmpty || double.parse(value) <= 150) {
                       return 'please enter your height';
                     }
                     return null;
                   },
-                  onSaved: (val){
-                    height=double.parse(val.trim());
+                  onSaved: (val) {
+                    height = double.parse(val.trim());
                     print(height);
                   },
                   keyboardType: TextInputType.numberWithOptions(),
@@ -186,10 +192,10 @@ class _AddUserState extends State<AddUser> {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
-                    add();
-                    Navigator.of(context).pop();
 
+                    Navigator.of(context).pop();
                   }
+                  add();
                 },
               )
             ],
@@ -199,7 +205,7 @@ class _AddUserState extends State<AddUser> {
     );
   }
 
-  add() {
+  add()async {
     print(widget.email);
     firestore.collection("info").document(widget.email).setData({
       'name': name,
@@ -209,5 +215,28 @@ class _AddUserState extends State<AddUser> {
       'height':height,
       'weight':weight,
     });
+
+
+    await firestore.collection("info").document("nidal98@gmail.com")
+        .collection("IBM")
+        .document("date")
+        .setData({
+      "manna": "nidal",
+    });
+//    firestore.collection("info").document("nidal@gmail.com").collection("ibm").document("test").get();
+//    await firestore.collection("info").document("nidal@gmail.com")
+//        .collection("IBM")
+//        .getDocuments()
+//        .then((QuerySnapshot snapshot) {
+//          print("nidal");
+//      snapshot.documents.forEach((f) => print('${f.data}'));
+    await firestore.collection("info").document("nidal@gmail.com").collection("IBM")
+        .getDocuments()
+        .then((QuerySnapshot snapshot) {
+      print("nidal");
+      print(snapshot.documents.length);
+      snapshot.documents.forEach((f) => print('${f.data}'));
+    }
+    );
   }
 }

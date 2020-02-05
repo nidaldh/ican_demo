@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
+import 'package:demo_ican/temp_chart.dart';
 import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
+import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,6 +38,38 @@ class HomeScreen extends StatelessWidget {
                       },
                       title: Text(
                         "Add Info",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      leading: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      )),
+                  ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return ShowIBM(email: name,
+                            );
+                          }),
+                        );
+                      },
+                      title: Text(
+                        "Add IBM",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      leading: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      )),ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return LineChartSample7();
+                          }),
+                        );
+                      },
+                      title: Text(
+                        "chart of IBM",
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(

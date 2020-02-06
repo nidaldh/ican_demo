@@ -45,7 +45,6 @@ class _ShowIBMState extends State<ShowIBM> {
                   print(date);
                 },
                 decoration: InputDecoration(
-//                    icon: Icon(Icons.person),
                   labelText: 'date',
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.teal)),
@@ -87,26 +86,28 @@ class _ShowIBMState extends State<ShowIBM> {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
 
+                  setState(() {
+                    bmi = calculateBMi();
+                  });
 //                  Navigator.of(context).pop();
                 }
-                add();
-//                calculateBMi();
+//                add();
               },
             ),
             SizedBox(
               height: 10,
             ),
             Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Card(
-                    borderOnForeground: true,
-                    margin:  EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text(
-              bmi.toString(),
-            ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Card(
+                  borderOnForeground: true,
+                  margin: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    bmi.toString(),
                   ),
                 ),
+              ),
             ),
           ],
         ),
@@ -114,28 +115,17 @@ class _ShowIBMState extends State<ShowIBM> {
     );
   }
 
-  void calculateBMi() async {
+  double calculateBMi() {
     print("calculate");
-    print(widget.user.email);
-//    await firestore
-//        .collection("info")
-//        .document(widget.user.email)
-//        .get()
-//        .then((DocumentSnapshot ds) {
-//      // use ds as a snapshot
-////     ds.data[''];
-//      print(ds.data['height']);
-//      height = ds.data['height'];
-//    });
-    weight=widget.user.weight;
-
-    bmi = weight / ((height * height) / 10000);
-//    print();
+//    print(widget.user.email);
+    bmi = weight / ((widget.user.height * widget.user.height) / 10000);
+    add();
+    return bmi;
   }
 
   add() async {
     print(widget.user.email);
-    await calculateBMi();
+//    await calculateBMi();
 
     await firestore
         .collection("info")
@@ -143,15 +133,6 @@ class _ShowIBMState extends State<ShowIBM> {
         .collection("IBM")
         .document(date)
         .setData({"weight": weight, "BMI": bmi});
-//    await firestore
-//        .collection("info")
-//        .document("nidal@gmail.com")
-//        .collection("IBM")
-//        .getDocuments()
-//        .then((QuerySnapshot snapshot) {
-//      print("nidal");
-//      print(snapshot.documents.length);
-//      snapshot.documents.forEach((f) => print('${f.data}'));
-//    });
+
   }
 }

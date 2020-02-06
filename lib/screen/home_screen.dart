@@ -11,37 +11,34 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'demo_video.dart';
 
 class HomeScreen extends StatelessWidget {
   final String email;
   String name2 = '';
   String phone = "";
-  int age;
-  String location;
-  double height;
-  double weight;
+  int age= 0;
+  String location = "";
+  double height = 0;
+  double weight=0;
   User user;
   HomeScreen({Key key, @required this.email}) : super(key: key);
   Firestore firestore = Firestore.instance;
 
   initUser() async{
     print("start");
-    await firestore
-        .collection("info")
-        .document(email)
-        .get()
-        .then((DocumentSnapshot ds) {
-      // use ds as a snapshot
-//     ds.data[''];
-//      print(ds.data['height']);
-      name2 = ds.data['name'];
-      age = ds.data['age'];
-      location = ds.data['location'];
-      height = ds.data['height'];
-      phone = ds.data['phone_number'];
-      weight = ds.data['weight'];
-    });
+      print("call firestore");
+      await firestore
+          .collection("info")
+          .document(email)
+          .get()
+          .then((DocumentSnapshot ds) {
+        name2 = ds.data['name'];
+        age = ds.data['age'];
+        location = ds.data['location'];
+        height = ds.data['height'];
+        phone = ds.data['phone_number'];
+        weight = ds.data['weight'];
+      }).catchError((err) => print(err.toString()));
 
   user = new User(name2, age, phone, weight, height, location,email: email);
 //  print(user.name);
@@ -84,6 +81,7 @@ class HomeScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
+                            print(user);
                             return ShowIBM(user: user,
                             );
                           }),

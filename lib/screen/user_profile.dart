@@ -19,22 +19,23 @@ class _UserProfileState extends State<UserProfile> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.update),
-            onPressed: () async{
-             dynamic date = await Navigator.of(context).push(
+            onPressed: () async {
+              dynamic date = await Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) {
                   return AddUser(
-                    user: this.widget.user,
-                  )?? "nothing";
+                        user: this.widget.user,
+                      ) ??
+                      "nothing";
                 }),
               );
-             print(date);
-            setState(() {
+              print(date);
+              setState(() {
 //              print(date['nidal']);
-              print(date['user']);
+                print(date['user']);
 
 //              this.widget.user=date['user'];
-            });
-             print("weight "+widget.user.height.toString());
+              });
+              print("weight " + widget.user.height.toString());
             },
           )
         ],
@@ -44,13 +45,41 @@ class _UserProfileState extends State<UserProfile> {
         child: Center(
           child: ListView(
             children: <Widget>[
-                Center(child: Text(widget.user.name)),Divider(thickness: 3,color: Colors.deepPurple,),
-                Text(widget.user.phoneNumber),Divider(thickness: 3,color: Colors.deepPurple,),
-                Text(widget.user.email),Divider(thickness: 3,color: Colors.deepPurple,),
-                Text(widget.user.location),Divider(thickness: 3,color: Colors.deepPurple,),
-                Text(widget.user.weight.toString()),Divider(thickness: 3,color: Colors.deepPurple,),
-                Text(widget.user.height.toString()),Divider(thickness: 3,color: Colors.deepPurple,),
-                Text(widget.user.age.toString()),Divider(thickness: 3,color: Colors.deepPurple,),
+              Center(child: Text(widget.user.name)),
+              Divider(
+                thickness: 3,
+                color: Colors.deepPurple,
+              ),
+              Text(widget.user.phoneNumber),
+              Divider(
+                thickness: 3,
+                color: Colors.deepPurple,
+              ),
+              Text(widget.user.email),
+              Divider(
+                thickness: 3,
+                color: Colors.deepPurple,
+              ),
+              Text(widget.user.location),
+              Divider(
+                thickness: 3,
+                color: Colors.deepPurple,
+              ),
+              Text(widget.user.weight.toString()),
+              Divider(
+                thickness: 3,
+                color: Colors.deepPurple,
+              ),
+              Text(widget.user.height.toString()),
+              Divider(
+                thickness: 3,
+                color: Colors.deepPurple,
+              ),
+              Text(widget.user.age.toString()),
+              Divider(
+                thickness: 3,
+                color: Colors.deepPurple,
+              ),
             ],
           ),
         ),

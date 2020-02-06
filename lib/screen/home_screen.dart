@@ -25,7 +25,8 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key key, @required this.email}) : super(key: key);
   Firestore firestore = Firestore.instance;
 
-  initUser()async{
+  initUser() async{
+    print("start");
     await firestore
         .collection("info")
         .document(email)
@@ -41,8 +42,9 @@ class HomeScreen extends StatelessWidget {
       phone = ds.data['phone_number'];
       weight = ds.data['weight'];
     });
+
   user = new User(name2, age, phone, weight, height, location,email: email);
-  print(user.name);
+//  print(user.name);
   }
 
   @override

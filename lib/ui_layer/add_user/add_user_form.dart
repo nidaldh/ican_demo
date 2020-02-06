@@ -39,6 +39,7 @@ class _AddUserState extends State<AddUser> {
               Card(
                 color: Colors.white,
                 child: TextFormField(
+                  initialValue: widget.user.name??null,
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Please enter some text';
@@ -63,6 +64,7 @@ class _AddUserState extends State<AddUser> {
               Card(
                 color: Colors.white,
                 child: TextFormField(
+                  initialValue: widget.user.phoneNumber??null,
                   validator: (value) {
                     if (value.isEmpty || value
                         .trim()
@@ -89,6 +91,7 @@ class _AddUserState extends State<AddUser> {
               Card(
                 color: Colors.white,
                 child: TextFormField(
+                  initialValue: widget.user.age.toString()??null,
                   validator: (value) {
                     if (value
                         .trim()
@@ -115,7 +118,7 @@ class _AddUserState extends State<AddUser> {
               Card(
                 color: Colors.white,
                 child: TextFormField(
-
+                  initialValue: widget.user.location ??null,
                   validator: (value) {
                     if (value
                         .trim()
@@ -142,6 +145,7 @@ class _AddUserState extends State<AddUser> {
               Card(
                 color: Colors.white,
                 child: TextFormField(
+                  initialValue: widget.user.weight.toString()??null,
                   validator: (value) {
                     if (value.isEmpty || double.parse(value) <= 20) {
                       return 'please enter your weight';
@@ -166,6 +170,7 @@ class _AddUserState extends State<AddUser> {
               Card(
                 color: Colors.white,
                 child: TextFormField(
+                  initialValue: widget.user.height.toString()??null,
                   validator: (value) {
                     if (value.isEmpty || double.parse(value) <= 150) {
                       return 'please enter your height';
@@ -190,14 +195,13 @@ class _AddUserState extends State<AddUser> {
               FloatingActionButton(
                 child: Text("save"),
                 backgroundColor: Colors.deepPurpleAccent,
-                onPressed: () {
+                onPressed: () async{
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
-
-                    Navigator.of(context).pop();
+                   await add();
                   }
-                  add();
                 },
+
               )
             ],
           ),
@@ -208,7 +212,7 @@ class _AddUserState extends State<AddUser> {
 
   add()async {
     print(widget.user.email);
-    firestore.collection("info").document(widget.user.email).setData({
+    await firestore.collection("info").document(widget.user.email).setData({
       'name': name,
       'phone_number':phone,
       'age':age,
@@ -216,15 +220,23 @@ class _AddUserState extends State<AddUser> {
       'height':height,
       'weight':weight,
     });
+//    User newuser = await new User(name, age, phone, weight, height, location);
+//  print("before="+widget.user.height.toString());
+//    widget.user.height=height;
+//    print("after="+widget.user.height.toString());
+//  print(newuser.name);
 
+    widget.user.name=name;
+    widget.user.phoneNumber=phone;
+    widget.user.age=age;
+    widget.user.location=location;
+    widget.user.height=height;
+    widget.user.weight=weight;
 
-//    await firestore.collection("info").document("nidal@gmail.com").collection("IBM")
-//        .getDocuments()
-//        .then((QuerySnapshot snapshot) {
-//      print("nidal");
-//      print(snapshot.documents.length);
-//      snapshot.documents.forEach((f) => print('${f.data}'));
-//    }
-//    );
+    Navigator.pop(context,{
+//      'nidal':"7abibi",
+      'user':widget.user
+    });
+
   }
 }

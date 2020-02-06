@@ -72,6 +72,7 @@ class _AppState extends State<App> {
               return SplashScreen();
             }
             if (state is Authenticated) {
+//              print("email in main ="+state.displayName);
                 return HomeScreen(email: state.displayName);
             }
             return LoginScreen(userRepository: widget._userRepository);

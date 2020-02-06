@@ -5,6 +5,7 @@ import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
 import 'package:demo_ican/data_layer/user.dart';
 import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
+import 'package:demo_ican/screen/web_view.dart';
 import 'package:demo_ican/temp_chart.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -125,6 +126,22 @@ class HomeScreen extends StatelessWidget {
                       leading: Icon(
                         Icons.video_label,
                         color: Colors.white,
+                      )),ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+//                            return YoutubePlayerDemoApp();
+                            return WebViewList();
+                          }),
+                        );
+                      },
+                      title: Text(
+                        "web",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      leading: Icon(
+                        Icons.web,
+                        color: Colors.white,
                       )),
                   ListTile(
                       onTap: () {
@@ -147,6 +164,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
+          backgroundColor: Colors.deepPurple,
           title:
               Text(AppLocalizations.of(context).tr("title", args: ['title'])),
           actions: <Widget>[

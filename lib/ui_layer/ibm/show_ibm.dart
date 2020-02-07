@@ -125,8 +125,6 @@ class _ShowIBMState extends State<ShowIBM> {
 
   add() async {
     print(widget.user.email);
-//    await calculateBMi();
-
     await firestore
         .collection("info")
         .document(widget.user.email)

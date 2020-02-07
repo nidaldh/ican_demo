@@ -14,6 +14,13 @@
     "one": "You clicked {} time!",
     "other": "You clicked {} times!"
   },
-  "change_language": "العربية"
+  "change_language": "العربية",
+
+  "user_profile":"user profile",
+  "add_BMI": "add BMI",
+  "BMI_chart": "chart of BMI",
+  "videos": "Videos",
+  "lecture":"Nutrition lectures"
+
 
 }

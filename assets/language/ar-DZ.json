@@ -15,5 +15,12 @@
     "other": "{} نقرة!"
   },
   "login": "تسجيل دخول",
-  "change_language": "english"
+  "change_language": "english",
+
+  "user_profile":"معلوماتي",
+  "add_BMI": "اضافة BMI",
+  "BMI_chart": "رسم بياني ل BMI",
+  "videos": "فيديوهات",
+  "lecture":"محاضرات التغذية"
+
 }

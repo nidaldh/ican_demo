@@ -12,36 +12,35 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class HomeScreen extends StatelessWidget {
   final String email;
   String name2 = '';
   String phone = "";
-  int age= 0;
+  int age = 0;
   String location = "";
   double height = 0;
-  double weight=0;
+  double weight = 0;
   User user;
   HomeScreen({Key key, @required this.email}) : super(key: key);
   Firestore firestore = Firestore.instance;
 
-  initUser() async{
+  initUser() async {
     print("start");
-      print("call firestore");
-      await firestore
-          .collection("info")
-          .document(email)
-          .get()
-          .then((DocumentSnapshot ds) {
-        name2 = ds.data['name'];
-        age = ds.data['age'];
-        location = ds.data['location'];
-        height = ds.data['height'];
-        phone = ds.data['phone_number'];
-        weight = ds.data['weight'];
-      }).catchError((err) => print(err.toString()));
+    print("call firestore");
+    await firestore
+        .collection("info")
+        .document(email)
+        .get()
+        .then((DocumentSnapshot ds) {
+      name2 = ds.data['name'];
+      age = ds.data['age'];
+      location = ds.data['location'];
+      height = ds.data['height'];
+      phone = ds.data['phone_number'];
+      weight = ds.data['weight'];
+    }).catchError((err) => print(err.toString()));
 
-  user = new User(name2, age, phone, weight, height, location,email: email);
+    user = new User(name2, age, phone, weight, height, location, email: email);
 //  print(user.name);
   }
 
@@ -66,36 +65,48 @@ class HomeScreen extends StatelessWidget {
 //                            return AddUser(
 //                              email: name,
 //                            );
-                          return UserProfile(user);
+                            return UserProfile(user);
                           }),
                         );
                       },
                       title: Text(
-                        "Add Info",
+                        AppLocalizations.of(context)
+                            .tr("user_profile"),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      leading: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      )),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
+                  ),
+                  ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            print(user);
+                            return ShowIBM(
+                              user: user,
+                            );
+                          }),
+                        );
+                      },
+                      title: Text(
+                        AppLocalizations.of(context)
+                            .tr("add_BMI"),
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(
                         Icons.add,
                         color: Colors.white,
                       )),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
+                  ),
                   ListTile(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) {
-                            print(user);
-                            return ShowIBM(user: user,
-                            );
-                          }),
-                        );
-                      },
-                      title: Text(
-                        "Add IBM",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      leading: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      )),ListTile(
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
@@ -104,45 +115,60 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                       title: Text(
-                        "chart of IBM",
+                        AppLocalizations.of(context)
+                            .tr("BMI_chart"),
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(
-                        Icons.add,
+                        Icons.insert_chart,
                         color: Colors.white,
-                      )),ListTile(
+                      )),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
+                  ),
+                  ListTile(
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-//                            return YoutubePlayerDemoApp();
                             return VideoList();
                           }),
                         );
                       },
                       title: Text(
-                        "Videos",
+                        AppLocalizations.of(context)
+                            .tr("videos"),
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(
                         Icons.video_label,
                         color: Colors.white,
-                      )),ListTile(
+                      )),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
+                  ),
+                  ListTile(
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-//                            return YoutubePlayerDemoApp();
                             return WebViewList();
                           }),
                         );
                       },
                       title: Text(
-                        "web",
+                        AppLocalizations.of(context)
+                            .tr("lecture"),
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(
                         Icons.web,
                         color: Colors.white,
                       )),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
+                  ),
                   ListTile(
                       onTap: () {
                         if (data.savedLocale.toString().compareTo("ar_DZ") == 0)

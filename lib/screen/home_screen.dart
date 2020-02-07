@@ -6,7 +6,7 @@ import 'package:demo_ican/data_layer/user.dart';
 import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
 import 'package:demo_ican/screen/web_view.dart';
-import 'package:demo_ican/temp_chart.dart';
+import 'package:demo_ican/ui_layer/chart/temp_chart.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-                            return LineChartSample7();
+                            return ChartTemp();
                           }),
                         );
                       },

@@ -1,5 +1,5 @@
 {
-  "title": "السلام",
+  "title": "استطيع",
   "msg":"السلام عليكم يا {} في عالم {}",
   "clickMe":"إضغط هنا",
   "profile": {
@@ -18,7 +18,7 @@
   "change_language": "english",
 
   "user_profile":"معلوماتي",
-  "add_BMI": "اضافة BMI",
+  "add_BMI": "BMI",
   "BMI_chart": "رسم بياني ل BMI",
   "videos": "فيديوهات",
   "lecture":"محاضرات التغذية"

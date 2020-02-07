@@ -253,83 +253,63 @@ import 'package:intl/intl.dart';
 //  }
 //}
 
-
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartTemp extends StatelessWidget {
+  List<BMI> _bmi;
+
+  ChartTemp(this._bmi);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("Diagram"),),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-              child: Container(
-                  child: SfCartesianChart(
-                      primaryXAxis: DateTimeAxis(
-                        edgeLabelPlacement: EdgeLabelPlacement.shift,
-                        dateFormat: DateFormat.MMM (),
-                        intervalType: DateTimeIntervalType.months,
-                        interval: 1,
-                      ),
-                      primaryYAxis: NumericAxis(
-                          labelFormat: '{value}',
-                          minimum: 5,
-                          maximum: 65,
-                          interval: 5,
-                          majorGridLines: MajorGridLines(color: Colors.transparent)),
-//                    Chart title
-//                      title: ChartTitle(text: 'Half yearly sales analysis'),
-//                    Enable legend
-                      legend: Legend(isVisible: true),
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Center(
+          child: Container(
+              child: SfCartesianChart(
+                plotAreaBorderWidth: 1,
+                  plotAreaBorderColor: Colors.red,
+                  enableSideBySideSeriesPlacement: true,
+                  primaryXAxis: DateTimeAxis(
+                    edgeLabelPlacement: EdgeLabelPlacement.shift,
+                    dateFormat: DateFormat.MMMd(),
+                    intervalType: DateTimeIntervalType.days,
+                    interval: 7,
+                  ),
+                  primaryYAxis: NumericAxis(
+                      labelFormat: '{value}',
+                      minimum: 5,
+                      maximum: 65,
+                      interval: 5,
+                      majorGridLines: MajorGridLines(color: Colors.black12)),
 //                    Enable tooltip
-                      tooltipBehavior: TooltipBehavior(enable: true,format: DateTime(2018, 7,21).toString()),
-                      enableMultiSelection: true,
-                      series: <LineSeries<SalesData, DateTime>>[
-                        LineSeries<SalesData, DateTime>(
-                            dataSource:  <SalesData>[
-                              SalesData(DateTime(2018, 7,21), 35),
-                              SalesData(DateTime(2018, 7,31), 25),
-                              SalesData(DateTime(2018, 9,31), 45),
-                            ],
-                            xValueMapper: (SalesData sales, _) => sales.year,
-                            yValueMapper: (SalesData sales, _) => sales.sales,
-                            dataLabelSettings: DataLabelSettings(isVisible: true)
-                        )
-                      ]
-                  )
-              )
-          ),
-        )
+                  tooltipBehavior: TooltipBehavior(
+//                    color: Colors.red,
+                      enable: true,
+//                      header: "",
+//                      format: DateTime(2018, 7, 21).toString().substring(0, 10)
+                  ),
+                  enableMultiSelection: true,
+                  series: <LineSeries<BMI, DateTime>>[
+            LineSeries<BMI, DateTime>(
+//            pointColorMapper: (BMI bmi, _) => getcolor(bmi.bmi),
+                markerSettings: MarkerSettings(isVisible: true),
+                dataSource: this._bmi,
+                xValueMapper: (BMI bmi, _) => bmi.date,
+                yValueMapper: (BMI bmi, _) => bmi.bmi,
+                dataLabelSettings: DataLabelSettings(isVisible: false))
+          ]))),
     );
   }
-
-
-  SfCartesianChart getCustomizedLineChart(bool isTileView) {
-    return SfCartesianChart(
-      title: ChartTitle(
-          text: isTileView ? '' : 'Capital investment as a share of exports'),
-      primaryXAxis: DateTimeAxis(
-        edgeLabelPlacement: EdgeLabelPlacement.shift,
-        dateFormat: DateFormat.yMMM(),
-        intervalType: DateTimeIntervalType.months,
-        interval: 3,
-      ),
-      primaryYAxis: NumericAxis(
-          labelFormat: '{value}%',
-          minimum: 1,
-          maximum: 3.5,
-          interval: 0.5,
-          majorGridLines: MajorGridLines(color: Colors.transparent)),
-//      series: getCustomizedLineSeries(isTileView),
-      tooltipBehavior:
-      TooltipBehavior(enable: true, header: '', canShowMarker: false),
-    );
-  }
-
 }
-class SalesData {
-  SalesData(this.year, this.sales);
-  final DateTime year;
-  final double sales;
+
+Color getcolor(double b){
+  if (b>30)
+    return Colors.red;
+  return Colors.black;
+}
+class BMI {
+  BMI(this.date, this.bmi);
+  final DateTime date;
+  final double bmi;
 }

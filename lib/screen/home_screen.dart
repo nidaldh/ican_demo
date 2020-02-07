@@ -7,7 +7,9 @@ import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
 import 'package:demo_ican/screen/web_view.dart';
 import 'package:demo_ican/ui_layer/chart/temp_chart.dart';
+import 'package:demo_ican/ui_layer/date.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
+import 'package:demo_ican/ui_layer/temoDate.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,27 +101,6 @@ class HomeScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      )),
-                  Divider(
-                    thickness: 1,
-                    color: Colors.white,
-                  ),
-                  ListTile(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) {
-                            return ChartTemp();
-                          }),
-                        );
-                      },
-                      title: Text(
-                        AppLocalizations.of(context)
-                            .tr("BMI_chart"),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      leading: Icon(
                         Icons.insert_chart,
                         color: Colors.white,
                       )),
@@ -127,6 +108,7 @@ class HomeScreen extends StatelessWidget {
                     thickness: 1,
                     color: Colors.white,
                   ),
+
                   ListTile(
                       onTap: () {
                         Navigator.of(context).push(
@@ -207,9 +189,9 @@ class HomeScreen extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Center(
-                child: Text(AppLocalizations.of(context)
-                    .tr("msg", args: [email, 'flutter']))),
+//            Center(
+//                child: Text(AppLocalizations.of(context)
+//                    .tr("msg", args: [email, 'flutter']))),
           ],
         ),
       ),

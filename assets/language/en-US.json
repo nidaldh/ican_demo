@@ -1,5 +1,5 @@
 {
-  "title": "Hello Localization",
+  "title": "I Can",
   "msg": "Hello {} in the {} world ",
   "clickMe": "Click me",
   "profile": {
@@ -17,7 +17,7 @@
   "change_language": "العربية",
 
   "user_profile":"user profile",
-  "add_BMI": "add BMI",
+  "add_BMI": "BMI",
   "BMI_chart": "chart of BMI",
   "videos": "Videos",
   "lecture":"Nutrition lectures"

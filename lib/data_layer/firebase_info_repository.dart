@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/data_layer/InfoEntity.dart';
-import 'package:demo_ican/data_layer/info.dart';
+import 'package:demo_ican/data_layer/model/info.dart';
 import 'package:demo_ican/data_layer/info_repository.dart';
 
 class FirebaseInfoRepository implements InfoRepository{

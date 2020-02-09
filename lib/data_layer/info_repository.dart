@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:demo_ican/data_layer/info.dart';
+import 'package:demo_ican/data_layer/model/info.dart';
 
 abstract class InfoRepository{
   Future<void> addInfo(Info info);

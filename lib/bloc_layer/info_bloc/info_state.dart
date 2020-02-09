@@ -1,4 +1,4 @@
-import 'package:demo_ican/data_layer/info.dart';
+import 'package:demo_ican/data_layer/model/info.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class InfoState extends Equatable {

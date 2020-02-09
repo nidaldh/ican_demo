@@ -3,8 +3,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewContainer extends StatefulWidget {
   final url;
-
-  WebViewContainer(this.url);
+  String title;
+  WebViewContainer(this.url,{this.title});
 
   @override
   createState() => _WebViewContainerState(this.url);
@@ -19,7 +19,10 @@ class _WebViewContainerState extends State<WebViewContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text(widget.title),
+          backgroundColor: Colors.deepPurple,
+        ),
         body: Column(
           children: [
             Expanded(

@@ -1,4 +1,4 @@
-import 'package:demo_ican/data_layer/user.dart';
+import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
 import 'package:flutter/material.dart';
 

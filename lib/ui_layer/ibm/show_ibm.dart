@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:demo_ican/data_layer/user.dart';
+import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:demo_ican/ui_layer/chart/temp_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -131,7 +131,6 @@ class _ShowIBMState extends State<ShowIBM> {
               SizedBox(
                 height: 10,
               ),
-
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Card(
@@ -176,6 +175,9 @@ class _ShowIBMState extends State<ShowIBM> {
       print(f.documentID.toString());
       print(f.data);
     });
+
+
+    _bmi.sort((a, b) => a.date.compareTo(b.date));
   }
 
   add() async {

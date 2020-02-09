@@ -2,14 +2,12 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
-import 'package:demo_ican/data_layer/user.dart';
+import 'package:demo_ican/data_layer/model/user.dart';
+import 'package:demo_ican/screen/recipes_List_screen.dart';
 import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
-import 'package:demo_ican/screen/web_view.dart';
-import 'package:demo_ican/ui_layer/chart/temp_chart.dart';
-import 'package:demo_ican/ui_layer/date.dart';
+import 'package:demo_ican/screen/leacture_view.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
-import 'package:demo_ican/ui_layer/temoDate.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,8 +70,7 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                       title: Text(
-                        AppLocalizations.of(context)
-                            .tr("user_profile"),
+                        AppLocalizations.of(context).tr("user_profile"),
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(
@@ -96,8 +93,7 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                       title: Text(
-                        AppLocalizations.of(context)
-                            .tr("add_BMI"),
+                        AppLocalizations.of(context).tr("add_BMI"),
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(
@@ -108,7 +104,6 @@ class HomeScreen extends StatelessWidget {
                     thickness: 1,
                     color: Colors.white,
                   ),
-
                   ListTile(
                       onTap: () {
                         Navigator.of(context).push(
@@ -118,8 +113,7 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                       title: Text(
-                        AppLocalizations.of(context)
-                            .tr("videos"),
+                        AppLocalizations.of(context).tr("videos"),
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(
@@ -134,13 +128,32 @@ class HomeScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-                            return WebViewList();
+                            return LectureList();
                           }),
                         );
                       },
                       title: Text(
-                        AppLocalizations.of(context)
-                            .tr("lecture"),
+                        AppLocalizations.of(context).tr("lecture"),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      leading: Icon(
+                        Icons.web,
+                        color: Colors.white,
+                      )),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
+                  ),
+                  ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return RecipesList();
+                          }),
+                        );
+                      },
+                      title: Text(
+                        AppLocalizations.of(context).tr("Healthy_recipes"),
                         style: TextStyle(color: Colors.white),
                       ),
                       leading: Icon(

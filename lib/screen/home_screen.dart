@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
@@ -45,7 +46,7 @@ class HomeScreen extends StatelessWidget {
 //  print(user.name);
   }
 
-  Drawer sideBar(BuildContext context,var data){
+  Drawer sideBar(BuildContext context, var data) {
     return Drawer(
       child: Container(
         color: Colors.deepPurpleAccent,
@@ -180,8 +181,7 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
     print("1");
@@ -189,7 +189,8 @@ class HomeScreen extends StatelessWidget {
     initUser();
     print("2");
 
-    getDate();print("3");
+    getDate();
+    print("3");
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
       data: data,
@@ -215,90 +216,88 @@ class HomeScreen extends StatelessWidget {
             FutureBuilder(
               future: getNotify(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState ==
-                    ConnectionState.waiting)
+                if (snapshot.connectionState == ConnectionState.waiting)
                   return Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Container(
-                      child: Card(child: Center(child: CircularProgressIndicator()),),
+                      child: Card(
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
                     ),
                   );
 
-                if (snapshot.connectionState ==
-                    ConnectionState.done)
+                if (snapshot.connectionState == ConnectionState.done)
                   return ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-
-                    itemCount: snapshot.data.length,
-                      itemBuilder: (_,index){
+                      physics: ClampingScrollPhysics(),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (_, index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
                               color: Colors.amber,
                               child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Center(child: Text(snapshot.data[index].data['note'])),
-                          )),
+                                padding: const EdgeInsets.all(20.0),
+                                child: Center(
+                                    child: Text(
+                                        snapshot.data[index].data['note'])),
+                              )),
                         );
-                  });
+                      });
                 return Container();
               },
             ),
             FutureBuilder(
               future: getImage(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState ==
-                    ConnectionState.waiting)
+                if (snapshot.connectionState == ConnectionState.waiting)
                   return Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Container(
-                      child: Card(child: Center(child: CircularProgressIndicator()),),
+                      child: Card(
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
                     ),
                   );
 
-                if (snapshot.connectionState ==
-                    ConnectionState.done)
-                  return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (_,index){
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(child:Image.network(snapshot.data[index].data['url'])),
-                        );
-                      });
+                if (snapshot.connectionState == ConnectionState.done)
+                  return CarouselSlider.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int itemIndex) =>
+                        Container(
+                          child:
+                          Image.network(
+                                  snapshot.data[itemIndex].data['url'])),
+
+                  );
+
                 return Container();
               },
-            )          ],
+            ),
+          ],
         ),
-
       ),
     );
   }
 
-
   getDate() async {
     print("in");
-    QuerySnapshot querySnapshot = await firestore
-        .collection("notify")
-        .getDocuments();
+    QuerySnapshot querySnapshot =
+        await firestore.collection("notify").getDocuments();
     querySnapshot.documents.forEach((f) {
       print("add");
       print(f.documentID);
     });
   }
 
-  Future getNotify() async{
-    QuerySnapshot qn=  await firestore.collection("notify").getDocuments();
+  Future getNotify() async {
+    QuerySnapshot qn = await firestore.collection("notify").getDocuments();
     return qn.documents;
   }
 
-  Future getImage() async{
-    QuerySnapshot qn=  await firestore.collection("image").getDocuments();
+  Future getImage() async {
+    QuerySnapshot qn = await firestore.collection("image").getDocuments();
     return qn.documents;
   }
 }

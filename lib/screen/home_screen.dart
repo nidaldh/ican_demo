@@ -9,8 +9,11 @@ import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
 import 'package:demo_ican/screen/leacture_view.dart';
 import 'package:demo_ican/ui_layer/chat/chat.dart';
+import 'package:demo_ican/ui_layer/chat/chat_screen.dart';
 import 'package:demo_ican/ui_layer/dashbord.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
+import 'package:demo_ican/ui_layer/image.dart';
+import 'package:demo_ican/ui_layer/send_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -83,12 +86,15 @@ class HomeScreen extends StatelessWidget {
 //                            return AddUser(
 //                              email: name,
 //                            );
-                        return Chat(email: user.email,);
+//                        return Chat(email: user.email,);
+//                        return Pik();
+                        return ChatScreen2();
+//                        return UpImage();
                       }),
                     );
                   },
                   title: Text(
-                    AppLocalizations.of(context).tr("user_profile"),
+                    AppLocalizations.of(context).tr("chat"),
                     style: TextStyle(color: Colors.white),
                   ),
                   leading: Icon(

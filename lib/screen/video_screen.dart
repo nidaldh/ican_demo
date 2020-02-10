@@ -16,14 +16,6 @@ class _VideoListState extends State<VideoList> {
 
   //  List _list= widget.videos;
    List<YoutubePlayerController> _controllers =
-//  [
-//    'UXervHKFjLk',
-//    'okaFmDsM5bc',
-//    'fm2ZDmb5K-M',
-//    '87ImUlk5C4o',
-//    '6WeGn51_7PE',
-//  ]
-//  videos
   Video.videos
       .map<YoutubePlayerController>(
         (videoId) => YoutubePlayerController(

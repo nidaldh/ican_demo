@@ -8,11 +8,14 @@ import 'package:demo_ican/screen/recipes_List_screen.dart';
 import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
 import 'package:demo_ican/screen/leacture_view.dart';
+import 'package:demo_ican/ui_layer/chat/chat.dart';
+import 'package:demo_ican/ui_layer/dashbord.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomeScreen extends StatelessWidget {
   final String email;
@@ -23,6 +26,7 @@ class HomeScreen extends StatelessWidget {
   double height = 0;
   double weight = 0;
   User user;
+  BuildContext context2;
   HomeScreen({Key key, @required this.email}) : super(key: key);
   Firestore firestore = Firestore.instance;
   final StorageReference storageReference = FirebaseStorage().ref().child("");
@@ -72,90 +76,108 @@ class HomeScreen extends StatelessWidget {
                   leading: Icon(
                     Icons.person,
                     color: Colors.white,
-                  )),
-              Divider(
-                thickness: 1,
-                color: Colors.white,
-              ),
-              ListTile(
+                  )),ListTile(
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
-                        print(user);
-                        return ShowIBM(
-                          user: user,
-                        );
+//                            return AddUser(
+//                              email: name,
+//                            );
+                        return Chat(email: user.email,);
                       }),
                     );
                   },
                   title: Text(
-                    AppLocalizations.of(context).tr("add_BMI"),
+                    AppLocalizations.of(context).tr("user_profile"),
                     style: TextStyle(color: Colors.white),
                   ),
                   leading: Icon(
-                    Icons.insert_chart,
+                    Icons.person,
                     color: Colors.white,
                   )),
-              Divider(
-                thickness: 1,
-                color: Colors.white,
-              ),
-              ListTile(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return VideoList();
-                      }),
-                    );
-                  },
-                  title: Text(
-                    AppLocalizations.of(context).tr("videos"),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  leading: Icon(
-                    Icons.video_label,
-                    color: Colors.white,
-                  )),
-              Divider(
-                thickness: 1,
-                color: Colors.white,
-              ),
-              ListTile(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return LectureList();
-                      }),
-                    );
-                  },
-                  title: Text(
-                    AppLocalizations.of(context).tr("lecture"),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  leading: Icon(
-                    Icons.web,
-                    color: Colors.white,
-                  )),
-              Divider(
-                thickness: 1,
-                color: Colors.white,
-              ),
-              ListTile(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return RecipesList();
-                      }),
-                    );
-                  },
-                  title: Text(
-                    AppLocalizations.of(context).tr("Healthy_recipes"),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  leading: Icon(
-                    Icons.web,
-                    color: Colors.white,
-                  )),
+//              Divider(
+//                thickness: 1,
+//                color: Colors.white,
+//              ),
+//              ListTile(
+//                  onTap: () {
+//                    Navigator.of(context).push(
+//                      MaterialPageRoute(builder: (context) {
+//                        print(user);
+//                        return ShowIBM(
+//                          user: user,
+//                        );
+//                      }),
+//                    );
+//                  },
+//                  title: Text(
+//                    AppLocalizations.of(context).tr("add_BMI"),
+//                    style: TextStyle(color: Colors.white),
+//                  ),
+//                  leading: Icon(
+//                    Icons.insert_chart,
+//                    color: Colors.white,
+//                  )),
+//              Divider(
+//                thickness: 1,
+//                color: Colors.white,
+//              ),
+//              ListTile(
+//                  onTap: () {
+//                    Navigator.of(context).push(
+//                      MaterialPageRoute(builder: (context) {
+//                        return VideoList();
+//                      }),
+//                    );
+//                  },
+//                  title: Text(
+//                    AppLocalizations.of(context).tr("videos"),
+//                    style: TextStyle(color: Colors.white),
+//                  ),
+//                  leading: Icon(
+//                    Icons.video_label,
+//                    color: Colors.white,
+//                  )),
+//              Divider(
+//                thickness: 1,
+//                color: Colors.white,
+//              ),
+//              ListTile(
+//                  onTap: () {
+//                    Navigator.of(context).push(
+//                      MaterialPageRoute(builder: (context) {
+//                        return LectureList();
+//                      }),
+//                    );
+//                  },
+//                  title: Text(
+//                    AppLocalizations.of(context).tr("lecture"),
+//                    style: TextStyle(color: Colors.white),
+//                  ),
+//                  leading: Icon(
+//                    Icons.web,
+//                    color: Colors.white,
+//                  )),
+//              Divider(
+//                thickness: 1,
+//                color: Colors.white,
+//              ),
+//              ListTile(
+//                  onTap: () {
+//                    Navigator.of(context).push(
+//                      MaterialPageRoute(builder: (context) {
+//                        return RecipesList();
+//                      }),
+//                    );
+//                  },
+//                  title: Text(
+//                    AppLocalizations.of(context).tr("Healthy_recipes"),
+//                    style: TextStyle(color: Colors.white),
+//                  ),
+//                  leading: Icon(
+//                    Icons.web,
+//                    color: Colors.white,
+//                  )),
               Divider(
                 thickness: 1,
                 color: Colors.white,
@@ -184,13 +206,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("1");
-
+    context2=context;
     initUser();
-    print("2");
-
-    getDate();
-    print("3");
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
       data: data,
@@ -266,14 +283,34 @@ class HomeScreen extends StatelessWidget {
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int itemIndex) =>
                         Container(
-                          child:
-                          Image.network(
-                                  snapshot.data[itemIndex].data['url'])),
-
+                            child: Image.network(
+                                snapshot.data[itemIndex].data['url'])),
                   );
 
                 return Container();
               },
+            ),
+            Expanded(
+                child:
+            StaggeredGridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              children: <Widget>[
+                MyItem(Icons.insert_chart, AppLocalizations.of(context).tr("add_BMI"), 1),
+                MyItem(Icons.web, AppLocalizations.of(context).tr("lecture"), 2),
+                MyItem(Icons.web, AppLocalizations.of(context).tr("Healthy_recipes"), 3),
+                MyItem(Icons.video_library, AppLocalizations.of(context).tr("videos"), 4),
+              ],
+              staggeredTiles: [
+                StaggeredTile.extent(2, 60),
+                StaggeredTile.extent(1, 60),
+                StaggeredTile.extent(1, 60),
+                StaggeredTile.extent(2, 60),
+              ],
+            )
+//            DashBord()
             ),
           ],
         ),
@@ -281,23 +318,71 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  getDate() async {
-    print("in");
-    QuerySnapshot querySnapshot =
-        await firestore.collection("notify").getDocuments();
-    querySnapshot.documents.forEach((f) {
-      print("add");
-      print(f.documentID);
-    });
-  }
+
 
   Future getNotify() async {
+    print("in Notify");
     QuerySnapshot qn = await firestore.collection("notify").getDocuments();
     return qn.documents;
   }
 
   Future getImage() async {
+    print("in Image");
     QuerySnapshot qn = await firestore.collection("image").getDocuments();
     return qn.documents;
+  }
+
+
+  Material MyItem(IconData icon, String string, int index) {
+    return Material(
+        child: InkWell(
+            child: Card(
+                color: Colors.amber,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(icon,color: Colors.purple,),
+                    SizedBox(width: 10,),
+                    Text(string),
+                  ],
+                )),
+            onTap: () {
+              _onPressed(index);
+            }));
+  }
+
+  void _onPressed(int position) {
+    if (position == 1) {
+      Navigator.of(context2).push(
+        MaterialPageRoute(builder: (context) {
+          return ShowIBM(
+            user: user,
+          );
+        }),
+      );
+    }
+    else  if (position == 2) {
+      Navigator.of(context2).push(
+        MaterialPageRoute(builder: (context) {
+          return LectureList();
+        }),
+      );
+    }
+    else  if (position == 3) {
+      Navigator.of(context2).push(
+        MaterialPageRoute(builder: (context) {
+          return RecipesList();
+        }),
+      );
+    }
+    else  if (position == 4) {
+      Navigator.of(context2).push(
+        MaterialPageRoute(builder: (context) {
+          return VideoList();
+        }),
+      );
+    }
+
+
   }
 }

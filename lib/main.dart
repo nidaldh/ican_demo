@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/screen/home_screen.dart';
 import 'package:demo_ican/screen/splash_screen.dart';
 import 'package:demo_ican/screen/login_screen.dart';
+import 'package:demo_ican/temp_switch.dart';
 import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ import 'data_layer/user_repository.dart';
 
 void main() {
   //is required in Flutter v1.9.4+ before using any plugins if the code is executed before runApp.
-
   WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
@@ -58,6 +58,7 @@ class _AppState extends State<App> {
     return EasyLocalizationProvider(
       data: data,
       child: MaterialApp(
+//        theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
@@ -74,6 +75,7 @@ class _AppState extends State<App> {
             if (state is Authenticated) {
 //              print("email in main ="+state.displayName);
                 return HomeScreen(email: state.displayName);
+//                return HomePage();
             }
             return LoginScreen(userRepository: widget._userRepository);
           },

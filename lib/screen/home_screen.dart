@@ -15,6 +15,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
   final String email;
@@ -218,7 +219,10 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
           title:
-              Text(AppLocalizations.of(context).tr("title", args: ['title'])),
+              Text(AppLocalizations.of(context).tr("title", args: ['title']),style: GoogleFonts.cairo(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20),),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.exit_to_app),
@@ -244,7 +248,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   );
-
                 if (snapshot.connectionState == ConnectionState.done)
                   return ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -260,7 +263,10 @@ class HomeScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(20.0),
                                 child: Center(
                                     child: Text(
-                                        snapshot.data[index].data['note'])),
+                                        snapshot.data[index].data['note'],style: GoogleFonts.cairo(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 20),)),
                               )),
                         );
                       });
@@ -320,8 +326,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-
-
   Future getNotify() async {
     print("in Notify");
     QuerySnapshot qn = await firestore.collection("notify").getDocuments();
@@ -345,7 +349,10 @@ class HomeScreen extends StatelessWidget {
                   children: <Widget>[
                     Icon(icon,color: Colors.purple,),
                     SizedBox(width: 10,),
-                    Text(string),
+                    Text(string,style: GoogleFonts.cairo(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),),
                   ],
                 )),
             onTap: () {

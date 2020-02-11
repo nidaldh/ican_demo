@@ -26,6 +26,8 @@ dependencies:
   bubble: ^1.1.9+1
   intl: ^0.16.0
   progress_dialog: ^1.2.0
+  google_fonts: ^0.3.8
+
   #bloc
   flutter_bloc: ^3.2.0
   equatable: ^1.0.0

@@ -1,6 +1,7 @@
 import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 @override
 class ChatMessage extends StatelessWidget {
@@ -49,7 +50,10 @@ class ChatMessage extends StatelessWidget {
                                   width: 250.0,
                                 ),
                               )
-                            : new Text(snapshot.data['text']),
+                            : new Text(snapshot.data['text'],style:GoogleFonts.cairo(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16)),
                       ),
                     ],
                   ),

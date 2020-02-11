@@ -62,9 +62,6 @@ class HomeScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
-//                            return AddUser(
-//                              email: name,
-//                            );
                         return UserProfile(user);
                       }),
                     );
@@ -76,17 +73,14 @@ class HomeScreen extends StatelessWidget {
                   leading: Icon(
                     Icons.person,
                     color: Colors.white,
-                  )),ListTile(
+                  )),
+              ListTile(
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
-//                            return AddUser(
-//                              email: name,
-//                            );
-//                        return Chat(email: user.email,);
-//                        return Pik();
-                        return ChatScreen2(user: user,);
-//                        return UpImage();
+                        return ChatScreen2(
+                          user: user,
+                        );
                       }),
                     );
                   },
@@ -98,89 +92,6 @@ class HomeScreen extends StatelessWidget {
                     Icons.person,
                     color: Colors.white,
                   )),
-//              Divider(
-//                thickness: 1,
-//                color: Colors.white,
-//              ),
-//              ListTile(
-//                  onTap: () {
-//                    Navigator.of(context).push(
-//                      MaterialPageRoute(builder: (context) {
-//                        print(user);
-//                        return ShowIBM(
-//                          user: user,
-//                        );
-//                      }),
-//                    );
-//                  },
-//                  title: Text(
-//                    AppLocalizations.of(context).tr("add_BMI"),
-//                    style: TextStyle(color: Colors.white),
-//                  ),
-//                  leading: Icon(
-//                    Icons.insert_chart,
-//                    color: Colors.white,
-//                  )),
-//              Divider(
-//                thickness: 1,
-//                color: Colors.white,
-//              ),
-//              ListTile(
-//                  onTap: () {
-//                    Navigator.of(context).push(
-//                      MaterialPageRoute(builder: (context) {
-//                        return VideoList();
-//                      }),
-//                    );
-//                  },
-//                  title: Text(
-//                    AppLocalizations.of(context).tr("videos"),
-//                    style: TextStyle(color: Colors.white),
-//                  ),
-//                  leading: Icon(
-//                    Icons.video_label,
-//                    color: Colors.white,
-//                  )),
-//              Divider(
-//                thickness: 1,
-//                color: Colors.white,
-//              ),
-//              ListTile(
-//                  onTap: () {
-//                    Navigator.of(context).push(
-//                      MaterialPageRoute(builder: (context) {
-//                        return LectureList();
-//                      }),
-//                    );
-//                  },
-//                  title: Text(
-//                    AppLocalizations.of(context).tr("lecture"),
-//                    style: TextStyle(color: Colors.white),
-//                  ),
-//                  leading: Icon(
-//                    Icons.web,
-//                    color: Colors.white,
-//                  )),
-//              Divider(
-//                thickness: 1,
-//                color: Colors.white,
-//              ),
-//              ListTile(
-//                  onTap: () {
-//                    Navigator.of(context).push(
-//                      MaterialPageRoute(builder: (context) {
-//                        return RecipesList();
-//                      }),
-//                    );
-//                  },
-//                  title: Text(
-//                    AppLocalizations.of(context).tr("Healthy_recipes"),
-//                    style: TextStyle(color: Colors.white),
-//                  ),
-//                  leading: Icon(
-//                    Icons.web,
-//                    color: Colors.white,
-//                  )),
               Divider(
                 thickness: 1,
                 color: Colors.white,
@@ -209,7 +120,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context2=context;
+    context2 = context;
     initUser();
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
@@ -218,11 +129,11 @@ class HomeScreen extends StatelessWidget {
         drawer: sideBar(context, data),
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
-          title:
-              Text(AppLocalizations.of(context).tr("title", args: ['title']),style: GoogleFonts.cairo(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20),),
+          title: Text(
+            AppLocalizations.of(context).tr("title", args: ['title']),
+            style: GoogleFonts.cairo(
+                color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20),
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.exit_to_app),
@@ -263,10 +174,12 @@ class HomeScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(20.0),
                                 child: Center(
                                     child: Text(
-                                        snapshot.data[index].data['note'],style: GoogleFonts.cairo(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 20),)),
+                                  snapshot.data[index].data['note'],
+                                  style: GoogleFonts.cairo(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20),
+                                )),
                               )),
                         );
                       });
@@ -286,30 +199,34 @@ class HomeScreen extends StatelessWidget {
                     ),
                   );
 
-                if (snapshot.connectionState == ConnectionState.done)
-                  return CarouselSlider.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int itemIndex) =>
-                        Container(
-                            child: Image.network(
-                                snapshot.data[itemIndex].data['url'])),
-                  );
-
+                if (snapshot.connectionState == ConnectionState.done){
+    print(snapshot.data.length);
+    return CarouselSlider.builder(
+    itemCount: snapshot.data.length,
+    itemBuilder: (BuildContext context, int itemIndex) =>
+    Container(
+    child: Image.network(
+    snapshot.data[itemIndex].data['url'])),
+    );
+    }
                 return Container();
               },
             ),
             Expanded(
-                child:
-            StaggeredGridView.count(
+                child: StaggeredGridView.count(
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               children: <Widget>[
-                MyItem(Icons.insert_chart, AppLocalizations.of(context).tr("add_BMI"), 1),
-                MyItem(Icons.web, AppLocalizations.of(context).tr("lecture"), 2),
-                MyItem(Icons.web, AppLocalizations.of(context).tr("Healthy_recipes"), 3),
-                MyItem(Icons.video_library, AppLocalizations.of(context).tr("videos"), 4),
+                MyItem(Icons.insert_chart,
+                    AppLocalizations.of(context).tr("add_BMI"), 1),
+                MyItem(
+                    Icons.web, AppLocalizations.of(context).tr("lecture"), 2),
+                MyItem(Icons.web,
+                    AppLocalizations.of(context).tr("Healthy_recipes"), 3),
+                MyItem(Icons.video_library,
+                    AppLocalizations.of(context).tr("videos"), 4),
               ],
               staggeredTiles: [
                 StaggeredTile.extent(2, 60),
@@ -319,7 +236,7 @@ class HomeScreen extends StatelessWidget {
               ],
             )
 //            DashBord()
-            ),
+                ),
           ],
         ),
       ),
@@ -335,9 +252,9 @@ class HomeScreen extends StatelessWidget {
   Future getImage() async {
     print("in Image");
     QuerySnapshot qn = await firestore.collection("image").getDocuments();
+
     return qn.documents;
   }
-
 
   Material MyItem(IconData icon, String string, int index) {
     return Material(
@@ -347,12 +264,20 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(icon,color: Colors.purple,),
-                    SizedBox(width: 10,),
-                    Text(string,style: GoogleFonts.cairo(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16),),
+                    Icon(
+                      icon,
+                      color: Colors.purple,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      string,
+                      style: GoogleFonts.cairo(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16),
+                    ),
                   ],
                 )),
             onTap: () {
@@ -369,29 +294,24 @@ class HomeScreen extends StatelessWidget {
           );
         }),
       );
-    }
-    else  if (position == 2) {
+    } else if (position == 2) {
       Navigator.of(context2).push(
         MaterialPageRoute(builder: (context) {
           return LectureList();
         }),
       );
-    }
-    else  if (position == 3) {
+    } else if (position == 3) {
       Navigator.of(context2).push(
         MaterialPageRoute(builder: (context) {
           return RecipesList();
         }),
       );
-    }
-    else  if (position == 4) {
+    } else if (position == 4) {
       Navigator.of(context2).push(
         MaterialPageRoute(builder: (context) {
           return VideoList();
         }),
       );
     }
-
-
   }
 }

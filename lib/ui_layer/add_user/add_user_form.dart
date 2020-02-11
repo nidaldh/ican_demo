@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AddUser extends StatefulWidget {
@@ -22,11 +23,10 @@ class _AddUserState extends State<AddUser> {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-
     return Scaffold(
 //      backgroundColor: Colors.deepPurple,
       appBar: AppBar(
-        title: Text("Add user info"),
+        title: Text(AppLocalizations.of(context).tr("add_info")),
         elevation: 0,
         backgroundColor: Colors.purple,
       ),
@@ -49,8 +49,7 @@ class _AddUserState extends State<AddUser> {
                   print(name);
                 },
                 decoration: InputDecoration(
-//                    icon: Icon(Icons.person),
-                  labelText: 'name',
+                  labelText: AppLocalizations.of(context).tr("name"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.teal)),
                 ),
@@ -74,7 +73,7 @@ class _AddUserState extends State<AddUser> {
                 },
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
-                  labelText: 'Phone number',
+                  labelText: AppLocalizations.of(context).tr("phone_number"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
                 ),
@@ -98,7 +97,7 @@ class _AddUserState extends State<AddUser> {
                 },
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
-                  labelText: 'age',
+                  labelText: AppLocalizations.of(context).tr("age"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
                 ),
@@ -122,7 +121,7 @@ class _AddUserState extends State<AddUser> {
                 },
 
                 decoration: InputDecoration(
-                  labelText: 'Location',
+                  labelText: AppLocalizations.of(context).tr("location"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
                 ),
@@ -145,7 +144,7 @@ class _AddUserState extends State<AddUser> {
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
                   helperText: "Kg",
-                  labelText: 'weight',
+                  labelText: AppLocalizations.of(context).tr("weight"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
                 ),
@@ -169,7 +168,7 @@ class _AddUserState extends State<AddUser> {
                 decoration: InputDecoration(
                   helperText: "cm",
                   alignLabelWithHint: true,
-                  labelText: 'Height',
+                  labelText: AppLocalizations.of(context).tr("height"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
                 ),

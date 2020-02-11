@@ -189,5 +189,11 @@ class _ShowIBMState extends State<ShowIBM> {
         .collection("IBM")
         .document(date)
         .setData({"weight": weight, "BMI": bmi});
+    if(DateTime.parse(date).compareTo(DateTime.now())>=1){
+      print("change weight");
+    await firestore
+        .collection("info")
+        .document(widget.user.email)
+        .updateData({"weight": weight});}
   }
 }

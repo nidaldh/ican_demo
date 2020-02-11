@@ -1,6 +1,8 @@
 import 'package:demo_ican/data_layer/model/lecture.dart';
 import 'package:demo_ican/ui_layer/web/web_controler.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LectureList extends StatelessWidget {
 //  final _links = ['https://google.com'];
@@ -9,7 +11,11 @@ class LectureList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Web View"),
+          title: Text(AppLocalizations.of(context).tr("lecture"),
+              style: GoogleFonts.cairo(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20)),
           backgroundColor: Colors.deepPurple,
         ),
         body: Padding(
@@ -20,9 +26,11 @@ class LectureList extends StatelessWidget {
               itemCount: _list.length,
               itemBuilder: (context, index) {
                 return Card(
-                  //                           <-- Card widget
                   child: ListTile(
-                    title: Text(_list[index].name),
+                    title: Text(_list[index].name,style:GoogleFonts.cairo(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14)),
                     onTap: () => _handleURLButtonPress(
                         context, _list[index].url, _list[index].name),
                   ),
@@ -30,17 +38,6 @@ class LectureList extends StatelessWidget {
               },
             )));
   }
-
-//  Widget _urlButton(BuildContext context, String url) {
-//    return Container(
-//        padding: EdgeInsets.all(20.0),
-//        child: FlatButton(
-//          color: Theme.of(context).primaryColor,
-//          padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
-//          child: Text(url),
-//          onPressed: () => _handleURLButtonPress(context, url),
-//        ));
-//  }
 
   void _handleURLButtonPress(BuildContext context, String url, String name) {
     Navigator.push(

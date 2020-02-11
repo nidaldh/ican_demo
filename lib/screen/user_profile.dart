@@ -19,7 +19,7 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
-        title: Text("profile"),
+        title: Text(AppLocalizations.of(context).tr("user_profile")),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.update),
@@ -53,7 +53,7 @@ class _UserProfileState extends State<UserProfile> {
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               children: <Widget>[
                 ProfileHead(Icons.perm_identity,
-                    AppLocalizations.of(context).tr("add_BMI")),
+                    widget.user.name),
                 MyItem(Icons.phone, widget.user.phoneNumber),
                 MyItem(Icons.alternate_email,
                     widget.user.email),
@@ -149,7 +149,7 @@ Material ProfileHead(IconData icon, String string) {
 //          Icon(icon,color: Colors.white,),
           Center(
             child: Text(
-              "فداء ناجح",
+              string,
               style: GoogleFonts.cairo(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,

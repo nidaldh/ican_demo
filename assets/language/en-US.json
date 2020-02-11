@@ -17,11 +17,20 @@
   "change_language": "العربية",
 
   "user_profile":"user profile",
-  "add_BMI": "BMI",
+  "add_BMI": "Body Mass Index",
   "BMI_chart": "chart of BMI",
   "videos": "Videos",
   "lecture":"Nutrition lectures",
-  "Healthy_recipes": "Healthy_recipes"
+  "Healthy_recipes": "Healthy_recipes",
 
+  "name": "name",
+  "age": "age",
+  "weight": "weight",
+  "location": "Location",
+  "height": "height",
+  "phone_number": "phone number",
+
+  "chat": "group chat",
+  "add_info": "add user info"
 
 }

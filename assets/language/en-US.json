@@ -31,6 +31,16 @@
   "phone_number": "phone number",
 
   "chat": "group chat",
-  "add_info": "add user info"
+  "add_info": "add user info",
+
+  "empty_input": "the field is required *",
+  "phone_number_error": "the phone number should be 10 digit",
+  "age_error": "age should be more than 10 years",
+  "weight_error": "the weight should not be less than 30 kg",
+  "height_error": "the height should not be less than 130 cm",
+
+  "kg": "kg",
+  "cm": "cm"
+
 
 }

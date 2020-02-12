@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddUser extends StatefulWidget {
   final User user;
@@ -24,9 +25,9 @@ class _AddUserState extends State<AddUser> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-//      backgroundColor: Colors.deepPurple,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("add_info")),
+        title: Text(AppLocalizations.of(context).tr("add_info"),style: GoogleFonts.cairo(
+            color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20)),
         elevation: 0,
         backgroundColor: Colors.purple,
       ),
@@ -40,7 +41,7 @@ class _AddUserState extends State<AddUser> {
                 initialValue: widget.user.name??null,
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter some text';
+                    return AppLocalizations.of(context).tr("empty_input");
                   }
                   return null;
                 },
@@ -63,7 +64,8 @@ class _AddUserState extends State<AddUser> {
                   if (value.isEmpty || value
                       .trim()
                       .length == 9) {
-                    return 'the number must be 10 digit';
+                    return AppLocalizations.of(context).tr("phone_number_error");
+
                   }
                   return null;
                 },
@@ -87,7 +89,8 @@ class _AddUserState extends State<AddUser> {
                   if (value
                       .trim()
                       .isEmpty || int.parse(value) < 10) {
-                    return 'the age must be 10 and above ';
+                    return AppLocalizations.of(context).tr("age_error");
+
                   }
                   return null;
                 },
@@ -111,7 +114,7 @@ class _AddUserState extends State<AddUser> {
                   if (value
                       .trim()
                       .isEmpty) {
-                    return 'please enter your location';
+                    return AppLocalizations.of(context).tr("empty_input");
                   }
                   return null;
                 },
@@ -119,7 +122,6 @@ class _AddUserState extends State<AddUser> {
                   location = val.trim();
                   print(location);
                 },
-
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context).tr("location"),
                   border: new OutlineInputBorder(
@@ -132,8 +134,11 @@ class _AddUserState extends State<AddUser> {
               TextFormField(
                 initialValue: widget.user.weight.toString()??null,
                 validator: (value) {
-                  if (value.isEmpty || double.parse(value) <= 20) {
-                    return 'please enter your weight';
+                  if (value.isEmpty ) {
+                    return AppLocalizations.of(context).tr("empty_input");
+                  }
+                  if (double.parse(value) <= 30){
+                    return AppLocalizations.of(context).tr("weight_input");
                   }
                   return null;
                 },
@@ -143,7 +148,7 @@ class _AddUserState extends State<AddUser> {
                 },
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
-                  helperText: "Kg",
+                  helperText: AppLocalizations.of(context).tr("kg"),
                   labelText: AppLocalizations.of(context).tr("weight"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
@@ -155,8 +160,11 @@ class _AddUserState extends State<AddUser> {
               TextFormField(
                 initialValue: widget.user.height.toString()??null,
                 validator: (value) {
-                  if (value.isEmpty || double.parse(value) <= 150) {
-                    return 'please enter your height';
+                  if (value.isEmpty ) {
+                    return AppLocalizations.of(context).tr("empty_erro");
+                  }
+                  if( double.parse(value) <= 130){
+                    return AppLocalizations.of(context).tr("height_error");
                   }
                   return null;
                 },
@@ -166,7 +174,7 @@ class _AddUserState extends State<AddUser> {
                 },
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
-                  helperText: "cm",
+                  helperText: AppLocalizations.of(context).tr("cm"),
                   alignLabelWithHint: true,
                   labelText: AppLocalizations.of(context).tr("height"),
                   border: new OutlineInputBorder(

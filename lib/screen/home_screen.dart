@@ -13,31 +13,107 @@ import 'package:demo_ican/ui_layer/chat/chat_screen.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
 import 'package:demo_ican/ui_layer/ibm/temp_chart_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final String email;
-  String name2 = '';
-  String phone = "";
-  int age = 0;
-  String location = "";
-  double height = 0;
-  double weight = 0;
-  User user;
-  BuildContext context2;
+
   HomeScreen({Key key, @required this.email}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
+  String name2 = '';
+
+  String phone = "";
+
+  int age = 0;
+
+  String location = "";
+
+  double height = 0;
+
+  double weight = 0;
+
+  User user;
+
+  BuildContext context2;
+
   Firestore firestore = Firestore.instance;
+
   final StorageReference storageReference = FirebaseStorage().ref().child("");
+
+  @override
+  void initState() {
+    super.initState();
+    registerNotification();
+  }
+
+
+  void sendTokenToServer(String fcmToken) {
+    print('token: $fcmToken');
+  }
+
+  void registerNotification() {
+
+    firebaseMessaging.onTokenRefresh.listen(sendTokenToServer);
+    firebaseMessaging.getToken();
+    firebaseMessaging.subscribeToTopic('all');
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        setState(() {
+          print("onMessage: $message");
+        });
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text(message['notification']['title']),
+              subtitle: Text(message['notification']['body']),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+// Find the Scaffold in the widget tree and use it to show a SnackBar.
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        setState(() {
+          print("onLaunch: $message");
+        });
+
+        // TODO optional
+      },
+      onResume: (Map<String, dynamic> message) async {
+        setState(() {
+          print("onResume: $message");
+        });
+
+        // TODO optional
+      },
+    );
+  }
+
   initUser() async {
     print("start");
     print("call firestore");
     await firestore
         .collection("info")
-        .document(email)
+        .document(widget.email)
         .get()
         .then((DocumentSnapshot ds) {
       name2 = ds.data['name'];
@@ -48,7 +124,7 @@ class HomeScreen extends StatelessWidget {
       weight = ds.data['weight'];
     }).catchError((err) => print(err.toString()));
 
-    user = new User(name2, age, phone, weight, height, location, email: email);
+    user = new User(name2, age, phone, weight, height, location, email: widget.email);
 //  print(user.name);
   }
 

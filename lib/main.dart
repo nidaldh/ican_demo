@@ -1,11 +1,6 @@
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/screen/home_screen.dart';
 import 'package:demo_ican/screen/splash_screen.dart';
 import 'package:demo_ican/screen/login_screen.dart';
-import 'package:demo_ican/temp_switch.dart';
-import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,7 +68,6 @@ class _AppState extends State<App> {
               return SplashScreen();
             }
             if (state is Authenticated) {
-//              print("email in main ="+state.displayName);
                 return HomeScreen(email: state.displayName);
 //                return HomePage();
             }

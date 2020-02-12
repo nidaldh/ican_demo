@@ -42,8 +42,6 @@ class ChatScreenState extends State<ChatScreen2> {
   void initState() {
     super.initState();
     registerNotification();
-
-    configLocalNotification();
   }
 
   void registerNotification() {
@@ -76,24 +74,23 @@ class ChatScreenState extends State<ChatScreen2> {
 //        );
       },
       onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
+        setState(() {
+          print("onLaunch: $message");
+        });
+
         // TODO optional
       },
       onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
+        setState(() {
+          print("onResume: $message");
+        });
+
         // TODO optional
       },
     );
   }
 
-  void configLocalNotification() {
-    var initializationSettingsAndroid =
-        new AndroidInitializationSettings('app_icon');
-    var initializationSettingsIOS = new IOSInitializationSettings();
-    var initializationSettings = new InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
+
 
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(

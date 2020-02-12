@@ -29,6 +29,7 @@
   "location": "Location",
   "height": "height",
   "phone_number": "phone number",
+  "date": "date",
 
   "chat": "group chat",
   "add_info": "add user info",
@@ -39,7 +40,9 @@
   "age_error": "age should be more than 10 years",
   "weight_error": "the weight should not be less than 30 kg",
   "height_error": "the height should not be less than 130 cm",
-
+  "date_error": "please enter the date",
+  "save": "save",
+  "show_ibm": "show chart",
   "kg": "kg",
   "cm": "cm",
   "goal": "goal"

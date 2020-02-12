@@ -3,8 +3,10 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:demo_ican/ui_layer/chart/new_chart.dart';
 import 'package:demo_ican/ui_layer/chart/temp_chart.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class ShowIBM extends StatefulWidget {
@@ -17,12 +19,13 @@ class ShowIBM extends StatefulWidget {
 }
 
 class _ShowIBMState extends State<ShowIBM> {
+  final f = new NumberFormat("###.00");
   final _formKey = GlobalKey<FormState>();
   final format = DateFormat("yyyy-MM-dd");
   String date;
   double weight;
   double height;
-  double bmi;
+  double bmi=null;
   Firestore firestore = Firestore.instance;
 
   @override
@@ -50,7 +53,10 @@ class _ShowIBMState extends State<ShowIBM> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add IBM"),
+        title: Text(AppLocalizations.of(context).tr("add_BMI"),style: GoogleFonts.cairo(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: 20)),
         elevation: 0,
         backgroundColor: Colors.deepPurpleAccent,
       ),
@@ -65,7 +71,7 @@ class _ShowIBMState extends State<ShowIBM> {
                 child: DateTimeField(
                   validator: (value) {
                     if (value == null) {
-                      return 'Please select date';
+                      return AppLocalizations.of(context).tr("date_error");
                     }
                     return null;
                   },
@@ -74,7 +80,7 @@ class _ShowIBMState extends State<ShowIBM> {
                     print(date);
                   },
                   decoration: InputDecoration(
-                    labelText: 'date',
+                    labelText: AppLocalizations.of(context).tr("date"),
                     border: new OutlineInputBorder(
                         borderSide: new BorderSide(color: Colors.teal)),
                   ),
@@ -96,7 +102,7 @@ class _ShowIBMState extends State<ShowIBM> {
                 child: TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Please enter some text';
+                      return AppLocalizations.of(context).tr("weight_error");
                     }
                     return null;
                   },
@@ -106,8 +112,7 @@ class _ShowIBMState extends State<ShowIBM> {
                   },
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
-//                    icon: Icon(Icons.person),
-                    labelText: 'weight',
+                    labelText: AppLocalizations.of(context).tr("weight"),
                     border: new OutlineInputBorder(
                         borderSide: new BorderSide(color: Colors.teal)),
                   ),
@@ -120,7 +125,7 @@ class _ShowIBMState extends State<ShowIBM> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   OutlineButton(
-                    child: Text("save"),
+                    child: Text(AppLocalizations.of(context).tr("save")),
 //                    backgroundColor: Colors.deepPurpleAccent,
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
@@ -133,8 +138,9 @@ class _ShowIBMState extends State<ShowIBM> {
                       }
                     },
                   ),
+                  SizedBox(width: 20,),
                   OutlineButton(
-                    child: Text("show BMI"),
+                    child: Text(AppLocalizations.of(context).tr("show_ibm")),
 //                    backgroundColor: Colors.deepPurpleAccent,
                     onPressed: () {
                       setState(() {
@@ -150,10 +156,19 @@ class _ShowIBMState extends State<ShowIBM> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Card(
+                  color: getColor(bmi??10),
                   borderOnForeground: true,
+                  elevation: 10,
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    bmi.toString() ?? "BMI",
+                  child: Center(
+                    child: Text(
+//                    bmi.toString().isEmpty? "BMI" : bmi.toString(),
+                      bmi.toString()=="null"?"BMI": f.format(bmi) ,
+                        style: GoogleFonts.cairo(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20)
+                    ),
                   ),
                 ),
               ),
@@ -161,14 +176,6 @@ class _ShowIBMState extends State<ShowIBM> {
                 height: 10,
               ),
               ChartTemp(_bmi),
-//            NewChart(_bmi)
-//              Padding(
-//                padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-//                child: AnimatedLineChart(
-//                  chart,
-//                  key: UniqueKey(),
-//                ),
-//              )
               ],
           ),
         ),
@@ -223,4 +230,18 @@ class _ShowIBMState extends State<ShowIBM> {
           .updateData({"weight": weight});
     }
   }
+
+ Color getColor(double weight) {
+    print(weight.toString()+"color");
+    if(weight<18.5)
+      return Colors.blue[300];
+    else if(weight<25)
+      return Colors.green[600];
+    else if(weight<30)
+      return Colors.orangeAccent[200];
+    else if(weight<35)
+      return Colors.orangeAccent[700];
+    else if(35<weight)
+      return Colors.red[400];
+ }
 }

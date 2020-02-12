@@ -8,5 +8,4 @@ class NotificationMessage{
 
   NotificationMessage({@required this.title,@required this.body});
 
-
 }

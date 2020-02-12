@@ -16,10 +16,6 @@ class ChatMessage extends StatelessWidget {
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-//            new Container(
-//              margin: const EdgeInsets.only(right: 16.0),
-//              child: new CircleAvatar(backgroundImage: new NetworkImage(snapshot.data['senderPhotoUrl'])),
-//            ),
           Expanded(
             child: Tooltip(
               child: Bubble(

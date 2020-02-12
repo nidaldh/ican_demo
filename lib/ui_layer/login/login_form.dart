@@ -1,4 +1,3 @@
-
 import 'package:demo_ican/bloc_layer/authentication_bloc/authentication_bloc.dart';
 import 'package:demo_ican/bloc_layer/authentication_bloc/authentication_event.dart';
 import 'package:demo_ican/bloc_layer/login/bloc.dart';
@@ -8,7 +7,6 @@ import 'package:demo_ican/data_layer/user_repository.dart';
 import 'package:demo_ican/ui_layer/register/create_account_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 import 'google_login_button.dart';
 import 'login_button.dart';
@@ -48,7 +46,6 @@ class _LoginFormState extends State<LoginForm> {
     _emailController.addListener(_onEmailChanged);
     _passwordController.addListener(_onPasswordChanged);
   }
-
 
   /*We use a BlocListener widget in order to execute one-time actions
    in response to state changes. In this case, we are showing different
@@ -146,6 +143,14 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                         GoogleLoginButton(),
                         CreateAccountButton(userRepository: _userRepository),
+                        FlatButton(
+
+                          onPressed:isLoginButtonEnabled(state)? () async {
+                            await _userRepository
+                                .resetPassword(_emailController.text);
+                          }:null,
+                          child: Text('forgot password'),
+                        )
                       ],
                     ),
                   ),

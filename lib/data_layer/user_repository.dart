@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -30,6 +31,11 @@ class UserRepository{
     );
   }
 
+  Future<void> resetPassword(String email) {
+    return _firebaseAuth.sendPasswordResetEmail(
+      email: email,
+    );
+  }
   Future<void> signUp({String email, String password}) async {
     return await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,

@@ -104,7 +104,7 @@ class HomeScreen extends StatelessWidget {
                       data.changeLocale(Locale('ar', 'DZ'));
                   },
                   title: Text(
-                    AppLocalizations.of(context).tr("clickMe"),
+                    AppLocalizations.of(context).tr("change_language"),
                     style: TextStyle(color: Colors.white),
                   ),
                   leading: Icon(
@@ -130,7 +130,7 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
           title: Text(
-            AppLocalizations.of(context).tr("title", args: ['title']),
+            AppLocalizations.of(context).tr("title"),
             style: GoogleFonts.cairo(
                 color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20),
           ),

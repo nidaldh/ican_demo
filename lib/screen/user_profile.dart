@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class UserProfile extends StatefulWidget {
   User user;
@@ -14,30 +15,40 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final f = new NumberFormat("###.00");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
-        title: Text(AppLocalizations.of(context).tr("user_profile")),
+        title: Text(AppLocalizations.of(context).tr("user_profile"),
+            style: GoogleFonts.cairo(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 20)),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.update),
-            onPressed: () async {
-              dynamic date = await Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return AddUser(
-                        user: this.widget.user,
-                      ) ??
-                      "nothing";
-                }),
-              );
-              print(date);
-              setState(() {
-                print(date['user']);
-              });
-              print("weight " + widget.user.height.toString());
-            },
+          Tooltip(
+            waitDuration: Duration(microseconds: 1),
+            showDuration: Duration(seconds: 2),
+            message: AppLocalizations.of(context).tr("edit_info"),
+            child: IconButton(
+              icon: Icon(Icons.update),
+              onPressed: () async {
+                dynamic date = await Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return AddUser(
+                          user: this.widget.user,
+                        ) ??
+                        "nothing";
+                  }),
+                );
+                print(date);
+                setState(() {
+                  print(date['user']);
+                });
+                print("weight " + widget.user.height.toString());
+              },
+            ),
           )
         ],
       ),
@@ -52,18 +63,13 @@ class _UserProfileState extends State<UserProfile> {
               mainAxisSpacing: 5,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               children: <Widget>[
-                ProfileHead(Icons.perm_identity,
-                    widget.user.name),
+                ProfileHead(Icons.perm_identity, widget.user.name),
                 MyItem(Icons.phone, widget.user.phoneNumber),
-                MyItem(Icons.alternate_email,
-                    widget.user.email),
-                MyItem(Icons.location_on,
-                    widget.user.location),
-                WLItem("Kg",
-                    widget.user.weight.toString()),
-                WLItem("cm",
-                    widget.user.height.toString()),
-                MyItem(Icons.star, (widget.user.weight*.95).toString()+" kg"),
+                MyItem(Icons.alternate_email, widget.user.email),
+                MyItem(Icons.location_on, widget.user.location),
+                WLItem("kg", f.format(widget.user.weight)),
+                WLItem("cm", f.format(widget.user.height)),
+                StarItem(f.format(widget.user.weight * .95)),
               ],
               staggeredTiles: [
                 StaggeredTile.extent(2, 140),
@@ -75,114 +81,129 @@ class _UserProfileState extends State<UserProfile> {
                 StaggeredTile.extent(3, 60),
               ],
             )),
-//            Center(child: Text(widget.user.name)),
-//            Divider(
-//              thickness: 3,
-//              color: Colors.deepPurple,
-//            ),
-//            Text(widget.user.phoneNumber),
-//            Divider(
-//              thickness: 3,
-//              color: Colors.deepPurple,
-//            ),
-//            Text(widget.user.email),
-//            Divider(
-//              thickness: 3,
-//              color: Colors.deepPurple,
-//            ),
-//            Text(widget.user.location),
-//            Divider(
-//              thickness: 3,
-//              color: Colors.deepPurple,
-//            ),
-//            Text(widget.user.weight.toString()),
-//            Divider(
-//              thickness: 3,
-//              color: Colors.deepPurple,
-//            ),
-//            Text(widget.user.height.toString()),
-//            Divider(
-//              thickness: 3,
-//              color: Colors.deepPurple,
-//            ),
-//            Text(widget.user.age.toString()),
-//            Divider(
-//              thickness: 3,
-//              color: Colors.deepPurple,
-//            ),
           ],
         ),
       ),
     );
   }
-}
-Material WLItem(String type,String value){
-  return Material(
-      child: InkWell(
+
+  Material WLItem(String type, String value) {
+    return Material(
         child: Card(
             color: Colors.amber,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(type,style:GoogleFonts.cairo(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16) ,),
+                Text(
+                  AppLocalizations.of(context).tr(type),
+                  style: GoogleFonts.cairo(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 16),
+                ),
                 SizedBox(
                   width: 10,
                 ),
-                Text(value,style:GoogleFonts.cairo(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16) ,),
+                Text(
+                  value,
+                  style: GoogleFonts.cairo(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 20),
+                ),
               ],
-            )),
-      ));
-}
+            )));
+  }
 
-Material ProfileHead(IconData icon, String string) {
-  return Material(
-    child: Card(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-//          Icon(icon,color: Colors.white,),
-          Center(
-            child: Text(
-              string,
-              style: GoogleFonts.cairo(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 30),
-            ),
-          ),
-        ],
-      ),
-      color: Colors.purple,
-    ),
-  );
-}
+  Material StarItem(String value) {
+    return Material(
+        child: InkWell(
+      child: Card(
+          color: Colors.amber,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+          AppLocalizations.of(context).tr("goal"),
+                style: GoogleFonts.cairo(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18),
+              ),
 
-Material MyItem(IconData icon, String string) {
-  return Material(
-      child: InkWell(
-    child: Card(
-        color: Colors.amber,
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                value,
+                style: GoogleFonts.cairo(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 20),
+              ),
+              SizedBox(
+                width: 10,
+              ),Text(
+                AppLocalizations.of(context).tr("kg"),
+                style: GoogleFonts.cairo(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 20),
+              ),
+              Icon(
+                Icons.star,
+                color: Colors.purple,
+              ),
+            ],
+          )),
+    ));
+  }
+
+  Material MyItem(IconData icon, String string) {
+    return Material(
+        child: Card(
+            color: Colors.amber,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  AppLocalizations.of(context).tr(string),
+                  style: GoogleFonts.cairo(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Icon(
+                  icon,
+                  color: Colors.purple,
+                ),
+              ],
+            )));
+  }
+
+  Material ProfileHead(IconData icon, String string) {
+    return Material(
+      child: Card(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(string,style:GoogleFonts.cairo(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                fontSize: 16) ,),
-            SizedBox(
-              width: 10,
-            ),
-            Icon(
-              icon,
-              color: Colors.purple,
+//          Icon(icon,color: Colors.white,),
+            Center(
+              child: Text(
+                string,
+                style: GoogleFonts.cairo(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 30),
+              ),
             ),
           ],
-        )),
-  ));
+        ),
+        color: Colors.purple,
+      ),
+    );
+  }
 }

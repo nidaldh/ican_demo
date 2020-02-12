@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
+import 'package:demo_ican/ui_layer/chart/new_chart.dart';
 import 'package:demo_ican/ui_layer/chart/temp_chart.dart';
+import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -28,9 +30,24 @@ class _ShowIBMState extends State<ShowIBM> {
     getDates();
     super.initState();
   }
-
+  LineChart chart;
+  Map<DateTime, double> createLine2() {
+    Map<DateTime, double> data = {};
+    data[DateTime.now().subtract(Duration(minutes: 40))] = 13.0;
+    data[DateTime.now().subtract(Duration(minutes: 30))] = 24.0;
+    data[DateTime.now().subtract(Duration(minutes: 22))] = 39.0;
+    data[DateTime.now().subtract(Duration(minutes: 20))] = 29.0;
+    data[DateTime.now().subtract(Duration(minutes: 15))] = 27.0;
+    data[DateTime.now().subtract(Duration(minutes: 12))] = 9.0;
+    data[DateTime.now().subtract(Duration(minutes: 5))] = 35.0;
+    return data;
+  }
   @override
   Widget build(BuildContext context) {
+    Map<DateTime, double> line1 = createLine2();
+
+    chart = LineChart.fromDateTimeMaps([line1], [Colors.green], ['C']);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Add IBM"),
@@ -101,7 +118,6 @@ class _ShowIBMState extends State<ShowIBM> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: <Widget>[
                   OutlineButton(
                     child: Text("save"),
@@ -137,20 +153,32 @@ class _ShowIBMState extends State<ShowIBM> {
                   borderOnForeground: true,
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
-                    bmi.toString()?? "BMI",
+                    bmi.toString() ?? "BMI",
                   ),
                 ),
               ),
+              SizedBox(
+                height: 10,
+              ),
               ChartTemp(_bmi),
-            ],
+//            NewChart(_bmi)
+//              Padding(
+//                padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+//                child: AnimatedLineChart(
+//                  chart,
+//                  key: UniqueKey(),
+//                ),
+//              )
+              ],
           ),
         ),
       ),
     );
   }
 
-  double calculateBMi() {
 
+
+  double calculateBMi() {
     print("calculate");
     bmi = weight / ((widget.user.height * widget.user.height) / 10000);
     add();
@@ -160,8 +188,7 @@ class _ShowIBMState extends State<ShowIBM> {
   List<BMI> _bmi = [];
 
   Future getDates() async {
-    if(_bmi.length>0)
-      return null;
+    if (_bmi.length > 0) return null;
     print("get data");
     QuerySnapshot querySnapshot = await firestore
         .collection("info")
@@ -176,7 +203,6 @@ class _ShowIBMState extends State<ShowIBM> {
       print(f.data);
     });
 
-
     _bmi.sort((a, b) => a.date.compareTo(b.date));
   }
 
@@ -189,11 +215,12 @@ class _ShowIBMState extends State<ShowIBM> {
         .collection("IBM")
         .document(date)
         .setData({"weight": weight, "BMI": bmi});
-    if(DateTime.parse(date).compareTo(DateTime.now())>=1){
+    if (DateTime.parse(date).compareTo(DateTime.now()) >= 1) {
       print("change weight");
-    await firestore
-        .collection("info")
-        .document(widget.user.email)
-        .updateData({"weight": weight});}
+      await firestore
+          .collection("info")
+          .document(widget.user.email)
+          .updateData({"weight": weight});
+    }
   }
 }

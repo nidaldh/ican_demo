@@ -8,8 +8,10 @@ import 'package:demo_ican/screen/recipes_List_screen.dart';
 import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
 import 'package:demo_ican/screen/leacture_view.dart';
+import 'package:demo_ican/ui_layer/chart/new_chart.dart';
 import 'package:demo_ican/ui_layer/chat/chat_screen.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
+import 'package:demo_ican/ui_layer/ibm/temp_chart_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -289,6 +291,7 @@ class HomeScreen extends StatelessWidget {
     if (position == 1) {
       Navigator.of(context2).push(
         MaterialPageRoute(builder: (context) {
+//          return ChartScreen();
           return ShowIBM(
             user: user,
           );

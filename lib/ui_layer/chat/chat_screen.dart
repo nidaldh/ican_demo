@@ -1,14 +1,19 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
+import 'package:demo_ican/data_layer/send_notification/messaging.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'dart:async';
 
 import 'message2.dart';
 
@@ -22,11 +27,93 @@ class ChatScreen2 extends StatefulWidget {
 }
 
 class ChatScreenState extends State<ChatScreen2> {
+  final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
+
+  
   final TextEditingController _textController = new TextEditingController();
   bool _isComposing = false;
   final reference = Firestore.instance.collection("messages");
   Stream<QuerySnapshot> get query => reference.snapshots();
   final analytics = new FirebaseAnalytics();
+
+  @override
+  void initState() {
+    super.initState();
+    registerNotification();
+
+    configLocalNotification();
+  }
+
+  void registerNotification() {
+
+    firebaseMessaging.onTokenRefresh.listen(sendTokenToServer);
+    firebaseMessaging.getToken();
+    firebaseMessaging.subscribeToTopic('all');
+    print("in initial");
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        final notification = message['notification'];
+        setState(() {
+          print("hal hal hal:   "+ notification['body']);
+          print("onMessage: $message");
+        });
+//        showDialog(
+//          context: context,
+//          builder: (context) => AlertDialog(
+//            content: ListTile(
+//              title: Text(message['notification']['title']),
+//              subtitle: Text(message['notification']['body']),
+//            ),
+//            actions: <Widget>[
+//              FlatButton(
+//                child: Text('Ok'),
+//                onPressed: () => Navigator.of(context).pop(),
+//              ),
+//            ],
+//          ),
+//        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        // TODO optional
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        // TODO optional
+      },
+    );
+  }
+
+  void configLocalNotification() {
+    var initializationSettingsAndroid =
+        new AndroidInitializationSettings('app_icon');
+    var initializationSettingsIOS = new IOSInitializationSettings();
+    var initializationSettings = new InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void showNotification(message) async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+      Platform.isAndroid
+          ? 'com.dfa.flutterchatdemo'
+          : 'com.duytq.flutterchatdemo',
+      'Flutter chat demo',
+      'your channel description',
+      playSound: true,
+      enableVibration: true,
+      importance: Importance.Max,
+      priority: Priority.High,
+    );
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(0, message['title'].toString(),
+        message['body'].toString(), platformChannelSpecifics,
+        payload: json.encode(message));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +188,6 @@ class ChatScreenState extends State<ChatScreen2> {
                   onPressed: () async {
                     pr.show();
                     print("images pikecr");
-//                    File imageFile = await ImagePicker.pickImage();
                     var image = await ImagePicker.pickImage(
                         source: ImageSource.gallery);
                     final FirebaseStorage _storage = FirebaseStorage(
@@ -148,6 +234,7 @@ class ChatScreenState extends State<ChatScreen2> {
       _isComposing = false;
     });
     _sendMessage(text: text);
+    sendNotification( widget.user.name, text);
   }
 
   void _sendMessage({String text, String imageUrl}) {
@@ -168,5 +255,13 @@ class ChatScreenState extends State<ChatScreen2> {
       'senderName': widget.user.name,
     });
     analytics.logEvent(name: 'send_message');
+  }
+
+  void sendTokenToServer(String fcmToken) {
+    print('token: $fcmToken');
+  }
+
+  void sendNotification(String title,String body) async {
+    await Messaging.sendToAll(title: title, body: body);
   }
 }

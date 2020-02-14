@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 ////ignore: must_be_immutable
 //class CustomizedLine extends StatefulWidget {
 //  CustomizedLine({this.sample, Key key}) : super(key: key);
@@ -253,7 +254,6 @@ import 'package:intl/intl.dart';
 //  }
 //}
 
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartTemp extends StatelessWidget {
   List<BMI> _bmi;
@@ -261,8 +261,10 @@ class ChartTemp extends StatelessWidget {
   ChartTemp(this._bmi);
 
 
+
   @override
   Widget build(BuildContext context) {
+//    _bmi=[BMI(DateTime.now(), 20)];
     return SafeArea(
       child: Container(
           child: SfCartesianChart(
@@ -281,17 +283,12 @@ class ChartTemp extends StatelessWidget {
                   maximum: 65,
                   interval: 5,
                   majorGridLines: MajorGridLines(color: Colors.black12)),
-//                    Enable tooltip
               tooltipBehavior: TooltipBehavior(
-//                    color: Colors.red,
                   enable: true,
-//                      header: "",
-//                      format: DateTime(2018, 7, 21).toString().substring(0, 10)
               ),
               enableMultiSelection: true,
               series: <LineSeries<BMI, DateTime>>[
         LineSeries<BMI, DateTime>(
-//            pointColorMapper: (BMI bmi, _) => getcolor(bmi.bmi),
             markerSettings: MarkerSettings(isVisible: true),
             dataSource: this._bmi,
             xValueMapper: (BMI bmi, _) => bmi.date,

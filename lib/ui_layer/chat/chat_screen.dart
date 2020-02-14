@@ -2,20 +2,27 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:demo_ican/data_layer/send_notification/messaging.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import 'message2.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 class ChatScreen2 extends StatefulWidget {
   User user;
@@ -30,19 +37,56 @@ class ChatScreenState extends State<ChatScreen2> {
   final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
-
-  
   final TextEditingController _textController = new TextEditingController();
   bool _isComposing = false;
   final reference = Firestore.instance.collection("messages");
   Stream<QuerySnapshot> get query => reference.snapshots();
   final analytics = new FirebaseAnalytics();
+  ConnectivityResult result;
+
+  final Connectivity _connectivity = Connectivity();
+  StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
+
 
   @override
   void initState() {
     super.initState();
     registerNotification();
+    initConnectivity();
+//    _connectivitySubscription =
+//        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+///
+
+///
+
+  Future<void> initConnectivity() async {
+
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+    print("internet :::: ");
+    print(result);
+//    return _updateConnectionStatus(result);
+  }
+
 
   void registerNotification() {
 
@@ -57,21 +101,6 @@ class ChatScreenState extends State<ChatScreen2> {
           print("hal hal hal:   "+ notification['body']);
           print("onMessage: $message");
         });
-//        showDialog(
-//          context: context,
-//          builder: (context) => AlertDialog(
-//            content: ListTile(
-//              title: Text(message['notification']['title']),
-//              subtitle: Text(message['notification']['body']),
-//            ),
-//            actions: <Widget>[
-//              FlatButton(
-//                child: Text('Ok'),
-//                onPressed: () => Navigator.of(context).pop(),
-//              ),
-//            ],
-//          ),
-//        );
       },
       onLaunch: (Map<String, dynamic> message) async {
         setState(() {
@@ -117,14 +146,13 @@ class ChatScreenState extends State<ChatScreen2> {
     return new Scaffold(
         appBar: new AppBar(
           backgroundColor: Colors.purple,
-          title: new Text("Group chat"),
-          elevation:
-              Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
+          title: new Text(AppLocalizations.of(context).tr("chat")),
+          elevation: 4.0,
         ),
         body: new Column(children: <Widget>[
           new Flexible(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(1, 3, 1, 0),
+              padding: const EdgeInsets.fromLTRB(1, 0, 1, 0),
               child: new FirestoreAnimatedList(
                 query: query,
                 itemBuilder: (
@@ -157,9 +185,6 @@ class ChatScreenState extends State<ChatScreen2> {
 
   Widget _buildTextComposer() {
     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
-
-//    pr.style(message: 'Showing some progress...');
-
     pr.style(
       message: 'Send Image',
       borderRadius: 10.0,
@@ -183,10 +208,39 @@ class ChatScreenState extends State<ChatScreen2> {
               child: new IconButton(
                   icon: new Icon(Icons.photo_camera),
                   onPressed: () async {
-                    pr.show();
-                    print("images pikecr");
+                    await initConnectivity();
+                    if(result== ConnectivityResult.none){
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content: Text("there is no internet connection please connect to internet"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('Ok'),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                          ],
+                        ),
+                      );
+                      return null;}
+
+
                     var image = await ImagePicker.pickImage(
                         source: ImageSource.gallery);
+                    if (image ==null){
+                      Fluttertoast.showToast(
+                          msg: "No Image Selected",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIos: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                      pr.hide();
+                      return null;}
+                    pr.show();
+                    print("images pikecr");
                     final FirebaseStorage _storage = FirebaseStorage(
                         storageBucket: 'gs://icanhel-demo.appspot.com/');
                     StorageUploadTask _uploadTask;
@@ -204,8 +258,9 @@ class ChatScreenState extends State<ChatScreen2> {
               child: new TextField(
                 controller: _textController,
                 onChanged: (String text) {
+//                  initConnectivity();
                   setState(() {
-                    _isComposing = text.length > 0;
+                    _isComposing = text.length > 0; //;
                   });
                 },
                 onSubmitted: _handleSubmitted,
@@ -226,6 +281,21 @@ class ChatScreenState extends State<ChatScreen2> {
   }
 
   Future<Null> _handleSubmitted(String text) async {
+    await initConnectivity();
+    if(result== ConnectivityResult.none){
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text("there is no internet connection please connect to internet"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
+      return null;}
     _textController.clear();
     setState(() {
       _isComposing = false;

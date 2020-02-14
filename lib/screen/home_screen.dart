@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
+import 'package:demo_ican/pop_image.dart';
 import 'package:demo_ican/screen/recipes_List_screen.dart';
 import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
@@ -140,7 +141,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
-                        return UserProfile(user);
+//                        return UserProfile(user);
+                        return PopImage();
                       }),
                     );
                   },

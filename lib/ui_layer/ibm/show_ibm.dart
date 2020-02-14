@@ -4,7 +4,6 @@ import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:demo_ican/ui_layer/chart/new_chart.dart';
 import 'package:demo_ican/ui_layer/chart/temp_chart.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -33,23 +32,10 @@ class _ShowIBMState extends State<ShowIBM> {
     getDates();
     super.initState();
   }
-  LineChart chart;
-  Map<DateTime, double> createLine2() {
-    Map<DateTime, double> data = {};
-    data[DateTime.now().subtract(Duration(minutes: 40))] = 13.0;
-    data[DateTime.now().subtract(Duration(minutes: 30))] = 24.0;
-    data[DateTime.now().subtract(Duration(minutes: 22))] = 39.0;
-    data[DateTime.now().subtract(Duration(minutes: 20))] = 29.0;
-    data[DateTime.now().subtract(Duration(minutes: 15))] = 27.0;
-    data[DateTime.now().subtract(Duration(minutes: 12))] = 9.0;
-    data[DateTime.now().subtract(Duration(minutes: 5))] = 35.0;
-    return data;
-  }
+
   @override
   Widget build(BuildContext context) {
-    Map<DateTime, double> line1 = createLine2();
 
-    chart = LineChart.fromDateTimeMaps([line1], [Colors.green], ['C']);
 
     return Scaffold(
       appBar: AppBar(
@@ -162,7 +148,6 @@ class _ShowIBMState extends State<ShowIBM> {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Center(
                     child: Text(
-//                    bmi.toString().isEmpty? "BMI" : bmi.toString(),
                       bmi.toString()=="null"?"BMI": f.format(bmi) ,
                         style: GoogleFonts.cairo(
                         color: Colors.white,
@@ -176,6 +161,7 @@ class _ShowIBMState extends State<ShowIBM> {
                 height: 10,
               ),
               ChartTemp(_bmi),
+//              ChartTemp(),
               ],
           ),
         ),

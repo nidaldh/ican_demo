@@ -45,7 +45,6 @@ class ChatScreenState extends State<ChatScreen2> {
   ConnectivityResult result;
 
   final Connectivity _connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
 
 
@@ -62,10 +61,6 @@ class ChatScreenState extends State<ChatScreen2> {
   void dispose() {
     super.dispose();
   }
-
-///
-
-///
 
   Future<void> initConnectivity() async {
 

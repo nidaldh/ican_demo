@@ -1,7 +1,11 @@
 import 'package:bubble/bubble.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'detail_screen.dart';
 
 @override
 class ChatMessage extends StatelessWidget {
@@ -41,21 +45,44 @@ class ChatMessage extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: new Image.network(
-                                  snapshot.data['imageUrl'],
-                                  width: 250.0,
+                                child:
+//                                new Image.network(
+//                                  snapshot.data['imageUrl'],
+//                                  width: 250.0,
+//                                ),
+                                    GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (_) {
+                                      return DetailScreen(
+                                        url: snapshot.data['imageUrl'],
+                                      );
+                                    }));
+                                  },
+                                  child: Hero(
+                                    tag: 'imageHero',
+                                    child: CachedNetworkImage(
+                                      width: 200,
+                                      imageUrl: snapshot.data['imageUrl'],
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    ),
+                                  ),
                                 ),
                               )
-                            : new Text(snapshot.data['text'],style:GoogleFonts.cairo(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16)),
+                            : new Text(snapshot.data['text'],
+                                style: GoogleFonts.cairo(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16)),
                       ),
                     ],
                   ),
                 ),
               ),
-              message:snapshot.data['date'] ,
+              message: snapshot.data['date'],
             ),
           ),
         ],
@@ -63,3 +90,4 @@ class ChatMessage extends StatelessWidget {
     );
   }
 }
+

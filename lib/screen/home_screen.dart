@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
@@ -31,7 +32,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
   String name2 = '';
@@ -66,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void registerNotification() {
-
     firebaseMessaging.onTokenRefresh.listen(sendTokenToServer);
     firebaseMessaging.getToken();
     firebaseMessaging.subscribeToTopic('all');
@@ -125,7 +124,8 @@ class _HomeScreenState extends State<HomeScreen> {
       weight = ds.data['weight'];
     }).catchError((err) => print(err.toString()));
 
-    user = new User(name2, age, phone, weight, height, location, email: widget.email);
+    user = new User(name2, age, phone, weight, height, location,
+        email: widget.email);
 //  print(user.name);
   }
 
@@ -141,8 +141,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
-//                        return UserProfile(user);
-                        return PopImage();
+                        return UserProfile(user);
+//                        return PopImage();
                       }),
                     );
                   },
@@ -279,16 +279,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
 
-                if (snapshot.connectionState == ConnectionState.done){
-    print(snapshot.data.length);
-    return CarouselSlider.builder(
-    itemCount: snapshot.data.length,
-    itemBuilder: (BuildContext context, int itemIndex) =>
-    Container(
-    child: Image.network(
-    snapshot.data[itemIndex].data['url'])),
-    );
-    }
+                if (snapshot.connectionState == ConnectionState.done) {
+                  print(snapshot.data.length);
+                  return CarouselSlider.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int itemIndex) =>
+                        Container(
+                            child: Image.network(
+                                snapshot.data[itemIndex].data['url'])),
+//                    CachedNetworkImage(
+//                      imageUrl: snapshot.data[itemIndex].data['url'],
+//                      placeholder: (context, url) => CircularProgressIndicator(),
+//                      errorWidget: (context, url, error) => Icon(Icons.error),
+//                    ),
+                  );
+                }
                 return Container();
               },
             ),
@@ -325,6 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future getNotify() async {
     print("in Notify");
+//    firestore.collection("notify").snapshots().listen(onData)
     QuerySnapshot qn = await firestore.collection("notify").getDocuments();
     return qn.documents;
   }

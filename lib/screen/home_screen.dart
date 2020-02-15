@@ -111,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+
   initUser() async {
     print("start");
     print("call firestore");
@@ -126,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
       phone = ds.data['phone_number'];
       weight = ds.data['weight'];
     }).catchError((err) async {
+      print(err);
       user = new User(name2, age, phone, weight, height, location,
           email: widget.email);
       print(err.toString());
@@ -136,13 +138,24 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }),
       );
+
+//      setState(() {
+//        user=data['user'];
+//      });
+
     });
-    if (data['user'] == null)
+//    if (data['user'] == null)
+
+    print(data.toString());
+    try{
+    print(data['user']);
+    user = data['user'];
+      }
+          catch(e) {
+      print(e);
       user = new User(name2, age, phone, weight, height, location,
           email: widget.email);
-    else
-      user = data['user'];
-
+    }
 //  print(user.name);
   }
 
@@ -214,6 +227,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {

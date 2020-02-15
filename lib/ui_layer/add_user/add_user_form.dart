@@ -3,6 +3,7 @@ import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class AddUser extends StatefulWidget {
   final User user;
@@ -203,7 +204,21 @@ class _AddUserState extends State<AddUser> {
   }
 
   add()async {
+   var pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+    pr.style(
+      message: 'updatng',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      progressWidget: CircularProgressIndicator(),
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      progressTextStyle: TextStyle(
+          color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+      messageTextStyle: TextStyle(
+          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+    );
     print(widget.user.email);
+    pr.show();
     await firestore.collection("info").document(widget.user.email).setData({
       'name': name,
       'phone_number':phone,
@@ -213,12 +228,14 @@ class _AddUserState extends State<AddUser> {
       'weight':weight,
     });
 
+
     widget.user.name=name;
     widget.user.phoneNumber=phone;
     widget.user.age=age;
     widget.user.location=location;
     widget.user.height=height;
     widget.user.weight=weight;
+    pr.hide();
     Navigator.pop(context,{
       'user':widget.user
     });

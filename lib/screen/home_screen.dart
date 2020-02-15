@@ -178,7 +178,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   title: Text(
                     AppLocalizations.of(context).tr("user_profile"),
-                    style: TextStyle(color: Colors.white),
+                    style: GoogleFonts.cairo(
+                        color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
                   ),
                   leading: Icon(
                     Icons.person,
@@ -196,10 +197,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   title: Text(
                     AppLocalizations.of(context).tr("chat"),
-                    style: TextStyle(color: Colors.white),
+                    style: GoogleFonts.cairo(
+                        color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
                   ),
                   leading: Icon(
-                    Icons.person,
+                    Icons.chat,
                     color: Colors.white,
                   )),
               Divider(
@@ -215,7 +217,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   title: Text(
                     AppLocalizations.of(context).tr("change_language"),
-                    style: TextStyle(color: Colors.white),
+                      style: GoogleFonts.cairo(
+                          color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16)
                   ),
                   leading: Icon(
                     Icons.language,

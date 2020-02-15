@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:intl/intl.dart';
@@ -141,7 +142,8 @@ class ChatScreenState extends State<ChatScreen2> {
     return new Scaffold(
         appBar: new AppBar(
           backgroundColor: Colors.purple,
-          title: new Text(AppLocalizations.of(context).tr("chat")),
+          title: new Text(AppLocalizations.of(context).tr("chat"),style: GoogleFonts.cairo(
+              color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20)),
           elevation: 4.0,
         ),
         body: new Column(children: <Widget>[

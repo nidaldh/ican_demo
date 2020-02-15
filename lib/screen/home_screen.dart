@@ -17,6 +17,7 @@ import 'package:demo_ican/ui_layer/ibm/temp_chart_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -53,7 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Firestore firestore = Firestore.instance;
 
   final StorageReference storageReference = FirebaseStorage().ref().child("");
-
+  final reference = Firestore.instance.collection("notify");
+  Stream<QuerySnapshot> get query => reference.snapshots();
   @override
   void initState() {
     super.initState();
@@ -227,76 +229,152 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: Column(
           children: <Widget>[
-            FutureBuilder(
-              future: getNotify(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting)
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Container(
-                      child: Card(
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                    ),
-                  );
-                if (snapshot.connectionState == ConnectionState.done)
-                  return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (_, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                              color: Colors.amber,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Center(
-                                    child: Text(
-                                  snapshot.data[index].data['note'],
-                                  style: GoogleFonts.cairo(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 20),
-                                )),
-                              )),
-                        );
-                      });
-                return Container();
-              },
-            ),
-            FutureBuilder(
-              future: getImage(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting)
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Container(
-                      child: Card(
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                    ),
-                  );
-
-                if (snapshot.connectionState == ConnectionState.done) {
-                  print(snapshot.data.length);
-                  return CarouselSlider.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int itemIndex) =>
-                        Container(
-                            child: Image.network(
-                                snapshot.data[itemIndex].data['url'])),
-//                    CachedNetworkImage(
-//                      imageUrl: snapshot.data[itemIndex].data['url'],
-//                      placeholder: (context, url) => CircularProgressIndicator(),
-//                      errorWidget: (context, url, error) => Icon(Icons.error),
+//            FutureBuilder(
+//              future: getNotify(),
+//              builder: (context, snapshot) {
+//                if (snapshot.connectionState == ConnectionState.waiting)
+//                  return Padding(
+//                    padding: const EdgeInsets.all(20.0),
+//                    child: Container(
+//                      child: Card(
+//                        child: Center(child: CircularProgressIndicator()),
+//                      ),
 //                    ),
-                  );
-                }
-                return Container();
-              },
+//                  );
+//                if (snapshot.connectionState == ConnectionState.done)
+//                  return ListView.builder(
+//                      scrollDirection: Axis.vertical,
+//                      shrinkWrap: true,
+//                      physics: ClampingScrollPhysics(),
+//                      itemCount: snapshot.data.length,
+//                      itemBuilder: (_, index) {
+//                        return Padding(
+//                          padding: const EdgeInsets.all(8.0),
+//                          child:
+//                          Card(
+//                              color: Colors.amber,
+//                              child: Padding(
+//                                padding: const EdgeInsets.all(20.0),
+//                                child: Center(
+//                                    child: Text(
+//                                  snapshot.data[index].data['note'],
+//                                  style: GoogleFonts.cairo(
+//                                      color: Colors.white,
+//                                      fontWeight: FontWeight.w700,
+//                                      fontSize: 20),
+//                                )),
+//                              )),
+//                        );
+//                      });
+//                return Container();
+//              },
+//            ),
+          ///
+//            FutureBuilder(
+//              future: getImage(),
+//              builder: (context, snapshot) {
+//                if (snapshot.connectionState == ConnectionState.waiting)
+//                  return Padding(
+//                    padding: const EdgeInsets.all(20.0),
+//                    child: Container(
+//                      child: Card(
+//                        child: Center(child: CircularProgressIndicator()),
+//                      ),
+//                    ),
+//                  );
+//
+//                if (snapshot.connectionState == ConnectionState.done) {
+//                  print(snapshot.data.length);
+//                  return CarouselSlider.builder(
+//                    itemCount: snapshot.data.length,
+//                    itemBuilder: (BuildContext context, int itemIndex) =>
+//                        Container(
+//                            child: Image.network(
+//                                snapshot.data[itemIndex].data['url'])),
+////                    CachedNetworkImage(
+////                      imageUrl: snapshot.data[itemIndex].data['url'],
+////                      placeholder: (context, url) => CircularProgressIndicator(),
+////                      errorWidget: (context, url, error) => Icon(Icons.error),
+////                    ),
+//                  );
+//                }
+//                return Container();
+//              },
+//            ),
+
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: new FirestoreAnimatedList(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics()
+                  ,query: query,
+                  itemBuilder: (
+                      BuildContext context,
+                      DocumentSnapshot snapshot,
+                      Animation<double> animation,
+                      int index,
+                      ) =>
+                      FadeTransition(
+                        opacity: animation,
+                        child:
+                        Card(
+                            color: Colors.amber,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Center(
+                                  child: Text(
+                                    snapshot.data['note'],
+                                    style: GoogleFonts.cairo(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 20),
+                                  )),
+                            )),
+//                        Text(
+//                           snapshot.data['note'],
+//                        ),
+                      ),
+                ),
+              ),
             ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: new FirestoreAnimatedList(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics()
+                  ,query: query,
+                  itemBuilder: (
+                      BuildContext context,
+                      DocumentSnapshot snapshot,
+                      Animation<double> animation,
+                      int index,
+                      ) =>
+                      FadeTransition(
+                        opacity: animation,
+                        child:
+                        Card(
+                            color: Colors.amber,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Center(
+                                  child: Text(
+                                    snapshot.data['note'],
+                                    style: GoogleFonts.cairo(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 20),
+                                  )),
+                            )),
+//                        Text(
+//                           snapshot.data['note'],
+//                        ),
+                      ),
+                ),
+              ),
+            ),
+
             Expanded(
                 child: StaggeredGridView.count(
               crossAxisCount: 2,
@@ -330,7 +408,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future getNotify() async {
     print("in Notify");
-//    firestore.collection("notify").snapshots().listen(onData)
     QuerySnapshot qn = await firestore.collection("notify").getDocuments();
     return qn.documents;
   }

@@ -159,10 +159,8 @@ class ChatScreenState extends State<ChatScreen2> {
                     FadeTransition(
                   opacity: animation,
                   child: ChatMessage(
-//                  index: index,
                     snapshot: snapshot,
                     me: snapshot.data['senderName'] == widget.user.name,
-//                  onTap: _removeMessage,
                   ),
                 ),
               ),

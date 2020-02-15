@@ -44,6 +44,7 @@ class _ShowIBMState extends State<ShowIBM> {
 
   @override
   Widget build(BuildContext context) {
+    print("Len"+_bmi.length.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).tr("add_BMI"),
@@ -71,7 +72,7 @@ class _ShowIBMState extends State<ShowIBM> {
                   },
                   onSaved: (val) {
                     date = val.toString().substring(0, 10);
-                    print(date);
+//                    print(date);
                   },
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context).tr("date"),
@@ -102,7 +103,7 @@ class _ShowIBMState extends State<ShowIBM> {
                   },
                   onSaved: (val) {
                     weight = double.parse(val.trim());
-                    print(weight);
+//                    print(weight);
                   },
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
@@ -136,11 +137,11 @@ class _ShowIBMState extends State<ShowIBM> {
                     width: 20,
                   ),
                   Tooltip(
-                    message:  (_bmi.length > 0)?"show chart":"you have to add bmi first",
+                    message:  (_bmi.length >= 2)?AppLocalizations.of(context).tr("show_ibm"):AppLocalizations.of(context).tr("bmi_limit"),
                     child: OutlineButton(
                       child: Text(AppLocalizations.of(context).tr("show_ibm")),
 //                    backgroundColor: Colors.deepPurpleAccent,
-                      onPressed:  (_bmi.length > 0) ?() {
+                      onPressed:  (_bmi.length >= 2) ?() {
 //                      setState(() {
 //                        getDates();
 //                      });
@@ -235,7 +236,7 @@ class _ShowIBMState extends State<ShowIBM> {
   }
 
   double calculateBMi() {
-    print("calculate");
+//    print("calculate");
     bmi = weight / ((widget.user.height * widget.user.height) / 10000);
     add();
     return bmi;
@@ -243,8 +244,8 @@ class _ShowIBMState extends State<ShowIBM> {
 
 
   Future getDates() async {
-//    if (_bmi.length > 0) return null;
-    print("get data");
+    if (_bmi.length > 0) return null;
+//    print("get data");
     QuerySnapshot querySnapshot = await firestore
         .collection("info")
         .document(widget.user.email)
@@ -252,11 +253,15 @@ class _ShowIBMState extends State<ShowIBM> {
         .getDocuments();
     querySnapshot.documents.forEach((f) {
       DateTime.parse(f.documentID);
-      print(DateTime.parse(f.documentID));
+//      print(DateTime.parse(f.documentID));
       _bmi.add(BMI(DateTime.parse(f.documentID), f.data['BMI']));
-      print(f.documentID.toString());
-      print(f.data);
+//      print(f.documentID.toString());
+//      print(f.data);
     });
+    setState(() {
+
+    });
+    print("len2::" + _bmi.length.toString());
 
     _bmi.sort((a, b) => a.date.compareTo(b.date));
   }
@@ -265,9 +270,8 @@ class _ShowIBMState extends State<ShowIBM> {
 
 
   add() async {
-    print(widget.user.email);
-
-    print("date: " + date.substring(0, 10));
+//    print(widget.user.email);
+//    print("date: " + date.substring(0, 10));
     await firestore
         .collection("info")
         .document(widget.user.email)
@@ -284,7 +288,7 @@ class _ShowIBMState extends State<ShowIBM> {
   }
 
   Color getColor(double weight) {
-//    print(weight.toString() + "color");
+    print(weight.toString() + "color");
     if (weight < 18.5)
       return Colors.blue[300];
     else if (weight < 25)

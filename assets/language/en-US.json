@@ -19,6 +19,8 @@
   "user_profile":"user profile",
   "add_BMI": "Body Mass Index",
   "BMI_chart": "chart of BMI",
+  "bmi_limit": "you have to insert 2 bmi first",
+
   "videos": "Videos",
   "lecture":"Nutrition lectures",
   "Healthy_recipes": "Healthy_recipes",

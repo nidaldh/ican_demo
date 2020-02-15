@@ -60,8 +60,9 @@
   "login": "دخول",
   "register": "تسجيل",
   "registering": "جاري التسجيل...",
-  "registration_failure": "حدث خطء ما"
-
+  "registration_failure": "حدث خطء ما",
+  "tooltip_forget_password": "الرجاء ادخال البريد الالكتروني",
+  "reset_email_message": "ستصلك رسالة على بريدك الالكتروني لاستعادة كلمة المرور "
 
 
 

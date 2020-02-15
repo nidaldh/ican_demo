@@ -145,12 +145,28 @@ class _LoginFormState extends State<LoginForm> {
                         GoogleLoginButton(),
                         CreateAccountButton(userRepository: _userRepository),
                         FlatButton(
-
-                          onPressed:isLoginButtonEnabled(state)? () async {
+                          onPressed:state.isEmailValid? () async {
                             await _userRepository
-                                .resetPassword(_emailController.text);
+                                .resetPassword(_emailController.text).catchError((err)=>print(err));
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                content:
+                                  Text(AppLocalizations.of(context).tr("reset_email_message")),
+
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text('Ok'),
+                                    onPressed: () => Navigator.of(context).pop(),
+                                  ),
+                                ],
+                              ),
+                            );
                           }:null,
-                          child: Text(AppLocalizations.of(context).tr("forgot_password")),
+                          child: Tooltip(
+                          message: AppLocalizations.of(context).tr("tooltip_forget_password")    ,
+                          waitDuration: Duration(microseconds: 1),
+                          child: Text(AppLocalizations.of(context).tr("forgot_password"))),
                         )
                       ],
                     ),

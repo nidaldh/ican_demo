@@ -26,6 +26,7 @@ class LoginScreen extends StatelessWidget {
       data: data,
       child: Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context).tr("login")),
+            backgroundColor: Colors.amber,
         actions: <Widget>[
           OutlineButton(
             onPressed: () {

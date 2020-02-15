@@ -34,7 +34,7 @@ class UserRepository{
   Future<void> resetPassword(String email) {
     return _firebaseAuth.sendPasswordResetEmail(
       email: email,
-    );
+    ).catchError((err)=>print(err));
   }
   Future<void> signUp({String email, String password}) async {
     return await _firebaseAuth.createUserWithEmailAndPassword(

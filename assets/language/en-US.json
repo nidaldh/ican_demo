@@ -58,7 +58,11 @@
   "login": "login",
   "register": "register",
   "Registering": "Registering...",
-  "Registration Failure": "Registration Failure"
+  "Registration Failure": "Registration Failure",
+  "tooltip_forget_password": "please enter your email",
+  "reset_email_message": "you will receive an email to reset your password "
+
+
 
 
 

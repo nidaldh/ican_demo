@@ -5,15 +5,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/bloc_layer/authentication_bloc/bloc.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
-import 'package:demo_ican/pop_image.dart';
 import 'package:demo_ican/screen/recipes_List_screen.dart';
 import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
 import 'package:demo_ican/screen/leacture_view.dart';
-import 'package:demo_ican/ui_layer/chart/new_chart.dart';
+import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
 import 'package:demo_ican/ui_layer/chat/chat_screen.dart';
+import 'package:demo_ican/ui_layer/chat/detail_screen.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
-import 'package:demo_ican/ui_layer/ibm/temp_chart_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -52,16 +51,18 @@ class _HomeScreenState extends State<HomeScreen> {
   BuildContext context2;
 
   Firestore firestore = Firestore.instance;
-
+  dynamic data;
   final StorageReference storageReference = FirebaseStorage().ref().child("");
   final reference = Firestore.instance.collection("notify");
   Stream<QuerySnapshot> get query => reference.snapshots();
+  final reference2 = Firestore.instance.collection("image");
+  Stream<QuerySnapshot> get query2 => reference2.snapshots();
   @override
   void initState() {
     super.initState();
+    initUser();
     registerNotification();
   }
-
 
   void sendTokenToServer(String fcmToken) {
     print('token: $fcmToken');
@@ -124,10 +125,24 @@ class _HomeScreenState extends State<HomeScreen> {
       height = ds.data['height'];
       phone = ds.data['phone_number'];
       weight = ds.data['weight'];
-    }).catchError((err) => print(err.toString()));
+    }).catchError((err) async {
+      user = new User(name2, age, phone, weight, height, location,
+          email: widget.email);
+      print(err.toString());
+      data = await Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) {
+          return AddUser(
+            user: user,
+          );
+        }),
+      );
+    });
+    if (data['user'] == null)
+      user = new User(name2, age, phone, weight, height, location,
+          email: widget.email);
+    else
+      user = data['user'];
 
-    user = new User(name2, age, phone, weight, height, location,
-        email: widget.email);
 //  print(user.name);
   }
 
@@ -203,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     context2 = context;
-    initUser();
+//    initUser();
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
       data: data,
@@ -269,112 +284,125 @@ class _HomeScreenState extends State<HomeScreen> {
 //                return Container();
 //              },
 //            ),
-          ///
-//            FutureBuilder(
-//              future: getImage(),
-//              builder: (context, snapshot) {
-//                if (snapshot.connectionState == ConnectionState.waiting)
-//                  return Padding(
-//                    padding: const EdgeInsets.all(20.0),
-//                    child: Container(
-//                      child: Card(
-//                        child: Center(child: CircularProgressIndicator()),
-//                      ),
+            ///
+            ///
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: new FirestoreAnimatedList(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  query: query,
+                  itemBuilder: (
+                    BuildContext context,
+                    DocumentSnapshot snapshot,
+                    Animation<double> animation,
+                    int index,
+                  ) =>
+                      FadeTransition(
+                    opacity: animation,
+                    child: Card(
+                        color: Colors.amber,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Center(
+                              child: Text(
+                            snapshot.data['note'],
+                            style: GoogleFonts.cairo(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20),
+                          )),
+                        )),
+//                        Text(
+//                           snapshot.data['note'],
+//                        ),
+                  ),
+                ),
+              ),
+            ),
+
+            ///
+            FutureBuilder(
+              future: getImage(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      child: Card(
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                    ),
+                  );
+
+                if (snapshot.connectionState == ConnectionState.done) {
+                  print(snapshot.data.length);
+                  return CarouselSlider.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int itemIndex) =>
+                        Container(
+                            child:
+//                              Image.network(
+//                                  snapshot.data[itemIndex].data['url'])
+                                GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) {
+                          return DetailScreen(
+                            url: snapshot.data[itemIndex].data['url'],
+                          );
+                        }));
+                      },
+                      child: CachedNetworkImage(
+//                        width: 200,
+                        imageUrl: snapshot.data[itemIndex].data['url'],
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                    )),
+//                    CachedNetworkImage(
+//                      imageUrl: snapshot.data[itemIndex].data['url'],
+//                      placeholder: (context, url) => CircularProgressIndicator(),
+//                      errorWidget: (context, url, error) => Icon(Icons.error),
 //                    ),
-//                  );
-//
-//                if (snapshot.connectionState == ConnectionState.done) {
-//                  print(snapshot.data.length);
-//                  return CarouselSlider.builder(
-//                    itemCount: snapshot.data.length,
-//                    itemBuilder: (BuildContext context, int itemIndex) =>
-//                        Container(
-//                            child: Image.network(
-//                                snapshot.data[itemIndex].data['url'])),
+                  );
+                }
+                return Container();
+              },
+            ),
+
+            ///
+
+//            Flexible(
+//              child: Padding(
+//                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+//                child: new FirestoreAnimatedList(
+////                  shrinkWrap: true,
+////                  physics: ClampingScrollPhysics(),
+////                  scrollDirection:Axis.horizontal,
+//                  query: query2,
+//                  itemBuilder: (
+//                      BuildContext context,
+//                      DocumentSnapshot snapshot,
+//                      Animation<double> animation,
+//                      int index,
+//                      ) =>
+//                            Container(
+//                                child: CachedNetworkImage(
+//                                  imageUrl:
+//                                    snapshot.data['url'],
+//                                )
+//                            ),
 ////                    CachedNetworkImage(
 ////                      imageUrl: snapshot.data[itemIndex].data['url'],
 ////                      placeholder: (context, url) => CircularProgressIndicator(),
 ////                      errorWidget: (context, url, error) => Icon(Icons.error),
 ////                    ),
-//                  );
-//                }
-//                return Container();
-//              },
+//                ),
+//              ),
 //            ),
-
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: new FirestoreAnimatedList(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics()
-                  ,query: query,
-                  itemBuilder: (
-                      BuildContext context,
-                      DocumentSnapshot snapshot,
-                      Animation<double> animation,
-                      int index,
-                      ) =>
-                      FadeTransition(
-                        opacity: animation,
-                        child:
-                        Card(
-                            color: Colors.amber,
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Center(
-                                  child: Text(
-                                    snapshot.data['note'],
-                                    style: GoogleFonts.cairo(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 20),
-                                  )),
-                            )),
-//                        Text(
-//                           snapshot.data['note'],
-//                        ),
-                      ),
-                ),
-              ),
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: new FirestoreAnimatedList(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics()
-                  ,query: query,
-                  itemBuilder: (
-                      BuildContext context,
-                      DocumentSnapshot snapshot,
-                      Animation<double> animation,
-                      int index,
-                      ) =>
-                      FadeTransition(
-                        opacity: animation,
-                        child:
-                        Card(
-                            color: Colors.amber,
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Center(
-                                  child: Text(
-                                    snapshot.data['note'],
-                                    style: GoogleFonts.cairo(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 20),
-                                  )),
-                            )),
-//                        Text(
-//                           snapshot.data['note'],
-//                        ),
-                      ),
-                ),
-              ),
-            ),
-
+            ///
             Expanded(
                 child: StaggeredGridView.count(
               crossAxisCount: 2,

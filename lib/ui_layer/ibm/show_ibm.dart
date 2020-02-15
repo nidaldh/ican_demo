@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
-import 'package:demo_ican/ui_layer/chart/new_chart.dart';
+import 'package:demo_ican/ui_layer/chart/chart.dart';
 import 'package:demo_ican/ui_layer/chart/temp_chart.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -24,33 +25,40 @@ class _ShowIBMState extends State<ShowIBM> {
   String date;
   double weight;
   double height;
-  double bmi=null;
+  double bmi ;
   Firestore firestore = Firestore.instance;
+  List<BMI> _bmi = [];
+  var reference ;
+  Stream<QuerySnapshot>  query;
 
   @override
   void initState() {
+     reference = Firestore.instance.collection("info")
+        .document(widget.user.email)
+        .collection("IBM");
+     query = reference.snapshots();
+//    startQuery();
     getDates();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("add_BMI"),style: GoogleFonts.cairo(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 20)),
+        title: Text(AppLocalizations.of(context).tr("add_BMI"),
+            style: GoogleFonts.cairo(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 20)),
         elevation: 0,
         backgroundColor: Colors.deepPurpleAccent,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.fromLTRB(10,10,10,0),
         child: Form(
           key: _formKey,
-          child: ListView(
+          child: Column(
             children: <Widget>[
               Card(
                 color: Colors.white,
@@ -87,7 +95,7 @@ class _ShowIBMState extends State<ShowIBM> {
                 color: Colors.white,
                 child: TextFormField(
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value.isEmpty|| double.parse(value) < 30) {
                       return AppLocalizations.of(context).tr("weight_error");
                     }
                     return null;
@@ -124,15 +132,26 @@ class _ShowIBMState extends State<ShowIBM> {
                       }
                     },
                   ),
-                  SizedBox(width: 20,),
-                  OutlineButton(
-                    child: Text(AppLocalizations.of(context).tr("show_ibm")),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Tooltip(
+                    message:  (_bmi.length > 0)?"show chart":"you have to add bmi first",
+                    child: OutlineButton(
+                      child: Text(AppLocalizations.of(context).tr("show_ibm")),
 //                    backgroundColor: Colors.deepPurpleAccent,
-                    onPressed: () {
-                      setState(() {
-                        getDates();
-                      });
-                    },
+                      onPressed:  (_bmi.length > 0) ?() {
+//                      setState(() {
+//                        getDates();
+//                      });
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return Chart2(_bmi,title: "nidal");
+//                        return PopImage();
+                          }),
+                        );
+                      }:null,
+                    ),
                   ),
                 ],
               ),
@@ -142,34 +161,78 @@ class _ShowIBMState extends State<ShowIBM> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Card(
-                  color: getColor(bmi??10),
+                  color: getColor(bmi ?? 10),
                   borderOnForeground: true,
                   elevation: 10,
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Center(
                     child: Text(
-                      bmi.toString()=="null"?"BMI": f.format(bmi) ,
+                        bmi.toString() == "null" ? "BMI" : f.format(bmi),
                         style: GoogleFonts.cairo(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20)
-                    ),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20)),
                   ),
                 ),
               ),
               SizedBox(
                 height: 10,
               ),
-              ChartTemp(_bmi),
+//              ChartTemp(_bmi),
 //              ChartTemp(),
-              ],
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: new FirestoreAnimatedList(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    query: query = reference.snapshots(),
+                    itemBuilder: (
+                        BuildContext context,
+                        DocumentSnapshot snapshot,
+                        Animation<double> animation,
+                        int index,
+                        ) =>
+                        FadeTransition(
+                          opacity: animation,
+                          child: Card(
+                              color: getColor(snapshot.data['BMI']),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Center(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+
+                                        Text(
+                                    f.format( snapshot.data['BMI']),
+                                          style: GoogleFonts.cairo(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16),
+                                        ),SizedBox(width: 10,), Text(
+                                          snapshot.documentID.toString(),
+                                          style: GoogleFonts.cairo(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16),
+                                        ),
+                                      ],
+                                    )),
+                              )),
+//                        Text(
+//                           snapshot.data['note'],
+//                        ),
+                        ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-
-
 
   double calculateBMi() {
     print("calculate");
@@ -178,10 +241,9 @@ class _ShowIBMState extends State<ShowIBM> {
     return bmi;
   }
 
-  List<BMI> _bmi = [];
 
   Future getDates() async {
-    if (_bmi.length > 0) return null;
+//    if (_bmi.length > 0) return null;
     print("get data");
     QuerySnapshot querySnapshot = await firestore
         .collection("info")
@@ -199,8 +261,12 @@ class _ShowIBMState extends State<ShowIBM> {
     _bmi.sort((a, b) => a.date.compareTo(b.date));
   }
 
+
+
+
   add() async {
     print(widget.user.email);
+
     print("date: " + date.substring(0, 10));
     await firestore
         .collection("info")
@@ -217,17 +283,18 @@ class _ShowIBMState extends State<ShowIBM> {
     }
   }
 
- Color getColor(double weight) {
-    print(weight.toString()+"color");
-    if(weight<18.5)
+  Color getColor(double weight) {
+//    print(weight.toString() + "color");
+    if (weight < 18.5)
       return Colors.blue[300];
-    else if(weight<25)
+    else if (weight < 25)
       return Colors.green[600];
-    else if(weight<30)
+    else if (weight < 30)
       return Colors.orangeAccent[200];
-    else if(weight<35)
+    else if (weight < 35)
       return Colors.orangeAccent[700];
-    else if(35<weight)
-      return Colors.red[400];
- }
+    else if (35 < weight) return Colors.red[400];
+  }
+
+
 }

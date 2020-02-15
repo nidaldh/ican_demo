@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -171,6 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
+                        return UserProfile(user);
                         return UserProfile(user);
 //                        return PopImage();
                       }),
@@ -449,11 +449,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future getNotify() async {
-    print("in Notify");
-    QuerySnapshot qn = await firestore.collection("notify").getDocuments();
-    return qn.documents;
-  }
+//  Future getNotify() async {
+//    print("in Notify");
+//    QuerySnapshot qn = await firestore.collection("notify").getDocuments();
+//    return qn.documents;
+//  }
 
   Future getImage() async {
     print("in Image");

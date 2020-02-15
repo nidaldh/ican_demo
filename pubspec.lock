@@ -204,6 +204,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.2"
+  fl_animated_linechart:
+    dependency: "direct main"
+    description:
+      name: fl_animated_linechart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   flutter:
     dependency: "direct main"
     description: flutter

@@ -162,7 +162,7 @@ class _AddUserState extends State<AddUser> {
                 initialValue: widget.user.height.toString()??null,
                 validator: (value) {
                   if (value.isEmpty ) {
-                    return AppLocalizations.of(context).tr("empty_erro");
+                    return AppLocalizations.of(context).tr("empty_input");
                   }
                   if( double.parse(value) <= 130){
                     return AppLocalizations.of(context).tr("height_error");

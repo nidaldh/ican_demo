@@ -45,7 +45,21 @@
   "show_ibm": "show chart",
   "kg": "kg",
   "cm": "cm",
-  "goal": "goal"
+  "goal": "goal",
+
+  "login_failure": "Login Failure",
+  "logging_in": "Logging in",
+  "Email": "email",
+  "invalid_email": "please make sure form the email",
+  "Password": "password",
+  "invalid_password": "password should contain character and digits",
+  "forgot_password": "forgot password",
+  "create_new_account": "create new account",
+  "login": "login",
+  "register": "register",
+  "Registering": "Registering...",
+  "Registration Failure": "Registration Failure"
+
 
 
 

@@ -5,6 +5,7 @@ import 'package:demo_ican/bloc_layer/login/login_bloc.dart';
 import 'package:demo_ican/bloc_layer/login/login_state.dart';
 import 'package:demo_ican/data_layer/user_repository.dart';
 import 'package:demo_ican/ui_layer/register/create_account_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -64,7 +65,7 @@ class _LoginFormState extends State<LoginForm> {
               SnackBar(
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text('Login Failure'), Icon(Icons.error)],
+                  children: [Text(AppLocalizations.of(context).tr("login_failure")), Icon(Icons.error)],
                 ),
                 backgroundColor: Colors.red,
               ),
@@ -78,7 +79,7 @@ class _LoginFormState extends State<LoginForm> {
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Logging In...'),
+                    Text(AppLocalizations.of(context).tr("logging_in")),
                     CircularProgressIndicator(),
                   ],
                 ),
@@ -109,26 +110,26 @@ class _LoginFormState extends State<LoginForm> {
                     controller: _emailController,
                     decoration: InputDecoration(
                       icon: Icon(Icons.email),
-                      labelText: 'Email',
+                      labelText: AppLocalizations.of(context).tr("email"),
                     ),
                     keyboardType: TextInputType.emailAddress,
                     autovalidate: true,
                     autocorrect: false,
                     validator: (_) {
-                      return !state.isEmailValid ? 'Invalid Email' : null;
+                      return !state.isEmailValid ? AppLocalizations.of(context).tr("invalid_email") : null;
                     },
                   ),
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
                       icon: Icon(Icons.lock),
-                      labelText: 'Password',
+                      labelText: AppLocalizations.of(context).tr("password"),
                     ),
                     obscureText: true,
                     autovalidate: true,
                     autocorrect: false,
                     validator: (_) {
-                      return !state.isPasswordValid ? 'Invalid Password' : null;
+                      return !state.isPasswordValid ? AppLocalizations.of(context).tr("invalid_password") : null;
                     },
                   ),
                   Padding(
@@ -149,7 +150,7 @@ class _LoginFormState extends State<LoginForm> {
                             await _userRepository
                                 .resetPassword(_emailController.text);
                           }:null,
-                          child: Text('forgot password'),
+                          child: Text(AppLocalizations.of(context).tr("forgot_password")),
                         )
                       ],
                     ),

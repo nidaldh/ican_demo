@@ -1,4 +1,5 @@
 import 'package:demo_ican/data_layer/user_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'register_screen.dart';
@@ -16,7 +17,7 @@ class CreateAccountButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
       child: Text(
-        'Create an Account',
+        AppLocalizations.of(context).tr("create_new_account"),
       ),
       onPressed: () {
         Navigator.of(context).push(

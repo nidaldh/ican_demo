@@ -30,10 +30,10 @@ class LoginScreen extends StatelessWidget {
         actions: <Widget>[
           OutlineButton(
             onPressed: () {
-              print(data.savedLocale);
-              if(data.savedLocale.toString().compareTo("ar_DZ") ==0)
+              print(data.locale);
+              if(data.locale.toString().compareTo("ar_DZ") ==0)
               data.changeLocale(Locale('en', 'US'));
-              if(data.savedLocale.toString().compareTo("en_US") ==0)
+              if(data.locale.toString().compareTo("en_US") ==0)
               data.changeLocale(Locale('ar', 'DZ'));
             },
             child: Text(AppLocalizations.of(context).tr("change_language")),

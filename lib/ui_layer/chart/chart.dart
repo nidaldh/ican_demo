@@ -80,3 +80,8 @@ class _MyHomePageState extends State<Chart2> {
     );
   }
 }
+class BMI {
+  BMI(this.date, this.bmi);
+  final DateTime date;
+  final double bmi;
+}

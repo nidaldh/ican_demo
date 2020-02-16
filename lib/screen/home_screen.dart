@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void sendTokenToServer(String fcmToken) {
-    print('token: $fcmToken');
+//    print('token: $fcmToken');
   }
 
   void registerNotification() {
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
       phone = ds.data['phone_number'];
       weight = ds.data['weight'];
     }).catchError((err) async {
-      print(err);
+//      print(err);
       user = new User(name2, age, phone, weight, height, location,
           email: widget.email);
       print(err.toString());
@@ -210,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ListTile(
                   onTap: () {
-                    if (data.savedLocale.toString().compareTo("ar_DZ") == 0)
+                    if (data.localeF.toString().compareTo("ar_DZ") == 0)
                       data.changeLocale(Locale('en', 'US'));
                     else
                       data.changeLocale(Locale('ar', 'DZ'));

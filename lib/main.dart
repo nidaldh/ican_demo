@@ -58,10 +58,11 @@ class _AppState extends State<App> {
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          EasylocaLizationDelegate(locale: data.locale, path: 'assets/language')
+//          EasylocaLizationDelegate(locale: data.locale, path: 'assets/language')
+          EasyLocalizationDelegate(locale: data.locale, path: 'assets/language')
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.savedLocale,
+        locale: data.locale,
         home: BlocBuilder<AuthenticationBloc, AuthenticationState> (
           builder: (context, state) {
             if (state is Uninitialized) {

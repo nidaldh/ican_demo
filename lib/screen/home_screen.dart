@@ -210,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ListTile(
                   onTap: () {
-                    if (data.localeF.toString().compareTo("ar_DZ") == 0)
+                    if (data.locale.toString().compareTo("ar_DZ") == 0)
                       data.changeLocale(Locale('en', 'US'));
                     else
                       data.changeLocale(Locale('ar', 'DZ'));
@@ -459,9 +459,8 @@ class _HomeScreenState extends State<HomeScreen> {
 //  }
 
   Future getImage() async {
-    print("in Image");
+//    print("in Image");
     QuerySnapshot qn = await firestore.collection("image").getDocuments();
-
     return qn.documents;
   }
 

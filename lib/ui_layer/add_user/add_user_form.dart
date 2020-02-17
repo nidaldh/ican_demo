@@ -3,6 +3,7 @@ import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class AddUser extends StatefulWidget {
@@ -33,7 +34,7 @@ class _AddUserState extends State<AddUser> {
         backgroundColor: Colors.purple,
       ),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+        padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -51,6 +52,7 @@ class _AddUserState extends State<AddUser> {
                   print(name);
                 },
                 decoration: InputDecoration(
+                  icon: Icon(Icons.person),
                   labelText: AppLocalizations.of(context).tr("name"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.teal)),
@@ -64,7 +66,7 @@ class _AddUserState extends State<AddUser> {
                 validator: (value) {
                   if (value.isEmpty || value
                       .trim()
-                      .length == 9) {
+                      .length != 10) {
                     return AppLocalizations.of(context).tr("phone_number_error");
 
                   }
@@ -76,6 +78,7 @@ class _AddUserState extends State<AddUser> {
                 },
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
+                  icon: Icon(MdiIcons.phone),
                   labelText: AppLocalizations.of(context).tr("phone_number"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
@@ -101,6 +104,7 @@ class _AddUserState extends State<AddUser> {
                 },
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
+                  icon: Icon(MdiIcons.humanFemaleGirl),
                   labelText: AppLocalizations.of(context).tr("age"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
@@ -124,6 +128,7 @@ class _AddUserState extends State<AddUser> {
                   print(location);
                 },
                 decoration: InputDecoration(
+                  icon: Icon(Icons.location_on),
                   labelText: AppLocalizations.of(context).tr("location"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
@@ -149,7 +154,8 @@ class _AddUserState extends State<AddUser> {
                 },
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
-                  helperText: AppLocalizations.of(context).tr("kg"),
+                  icon: Icon(MdiIcons.weightKilogram),
+//                  helperText: AppLocalizations.of(context).tr("kg"),
                   labelText: AppLocalizations.of(context).tr("weight"),
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.amberAccent)),
@@ -175,7 +181,11 @@ class _AddUserState extends State<AddUser> {
                 },
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
-                  helperText: AppLocalizations.of(context).tr("cm"),
+                  icon: Icon(MdiIcons.humanMaleHeight),
+                  semanticCounterText: "cm",
+
+//prefixIcon: Icon(Icons.chat),
+//                  helperText: AppLocalizations.of(context).tr("cm"),
                   alignLabelWithHint: true,
                   labelText: AppLocalizations.of(context).tr("height"),
                   border: new OutlineInputBorder(

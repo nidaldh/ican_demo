@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewContainer extends StatefulWidget {
   final url;
   String title;
-  WebViewContainer(this.url,{this.title});
+  WebViewContainer(this.url, {this.title});
 
   @override
   createState() => _WebViewContainerState(this.url);
@@ -20,7 +21,11 @@ class _WebViewContainerState extends State<WebViewContainer> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(widget.title,style: GoogleFonts.cairo(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w700
+          ),),
           backgroundColor: Colors.deepPurple,
         ),
         body: Column(

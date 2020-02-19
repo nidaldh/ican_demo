@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:demo_ican/ui_layer/chart/chart.dart';
-import 'package:demo_ican/ui_layer/chart/temp_chart.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:flutter/material.dart';

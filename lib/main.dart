@@ -15,14 +15,25 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
 
+  print("nidal");
   runApp(
-    BlocProvider(
-      create: (context) =>
-          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
-      child: EasyLocalization(child: App(userRepository: userRepository)),
-    ),
+   BlocProvider(
+     create: (context) =>
+         AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
+     child: EasyLocalization(child: App(userRepository: userRepository)),
+   ),
+  // Test()
   );
 }
+class Test extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.deepPurple,
+    );
+  }
+}
+
 
 ///We are using BlocBuilder in order to render UI based on
 /// the AuthenticationBloc state.

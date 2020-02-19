@@ -98,14 +98,12 @@ class _HomeScreenState extends State<HomeScreen> {
           print("onLaunch: $message");
         });
 
-        // TODO optional
       },
       onResume: (Map<String, dynamic> message) async {
         setState(() {
           print("onResume: $message");
         });
 
-        // TODO optional
       },
     );
   }
@@ -170,7 +168,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
-                        return UserProfile(user);
                         return UserProfile(user);
 //                        return PopImage();
                       }),

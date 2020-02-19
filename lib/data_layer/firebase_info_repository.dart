@@ -21,7 +21,6 @@ class FirebaseInfoRepository implements InfoRepository{
 
   @override
   Future<void> updateInfo(Info update) {
-    // TODO: implement updateInfo
     return infoCollection.document(update.id).updateData(update.toEntity().toDocument());
   }
 

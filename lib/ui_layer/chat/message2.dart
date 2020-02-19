@@ -2,7 +2,6 @@ import 'package:bubble/bubble.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'detail_screen.dart';
@@ -37,7 +36,7 @@ class ChatMessage extends StatelessWidget {
                     children: <Widget>[
                       if (!me)
                         new Text(snapshot.data['senderName'],
-                            style: Theme.of(context).textTheme.subhead),
+                            style: Theme.of(context).textTheme.subtitle1),
                       new Container(
                         margin: const EdgeInsets.only(top: 5),
                         child: snapshot.data['imageUrl'] != null
@@ -59,16 +58,13 @@ class ChatMessage extends StatelessWidget {
                                       );
                                     }));
                                   },
-                                  child: Hero(
-                                    tag: 'imageHero',
-                                    child: CachedNetworkImage(
-                                      width: 200,
-                                      imageUrl: snapshot.data['imageUrl'],
-                                      placeholder: (context, url) =>
-                                          CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    ),
+                                  child: CachedNetworkImage(
+                                    width: 200,
+                                    imageUrl: snapshot.data['imageUrl'],
+                                    placeholder: (context, url) =>
+                                        CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
                                   ),
                                 ),
                               )

@@ -1,4 +1,3 @@
-import 'package:demo_ican/data_layer/model/lecture.dart';
 import 'package:demo_ican/data_layer/model/recipes.dart';
 import 'package:demo_ican/ui_layer/web/web_controler.dart';
 import 'package:easy_localization/easy_localization.dart';

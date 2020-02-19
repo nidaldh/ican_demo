@@ -12,6 +12,7 @@ import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
 import 'package:demo_ican/ui_layer/chat/chat_screen.dart';
 import 'package:demo_ican/ui_layer/chat/detail_screen.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
+import 'package:demo_ican/ui_layer/size_config.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -258,6 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: Column(
+
           children: <Widget>[
 //            FutureBuilder(
 //              future: getNotify(),
@@ -301,38 +303,49 @@ class _HomeScreenState extends State<HomeScreen> {
 //            ),
             ///
             ///
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: new FirestoreAnimatedList(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  query: query,
-                  itemBuilder: (
-                    BuildContext context,
-                    DocumentSnapshot snapshot,
-                    Animation<double> animation,
-                    int index,
-                  ) =>
-                      FadeTransition(
-                    opacity: animation,
-                    child: Card(
-                        color: Colors.amber,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Center(
-                              child: Text(
-                            snapshot.data['note'],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+              child: new FirestoreAnimatedList(
+                errorChild:Card(
+                    color: Colors.amber,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                          child: Text(
+                            "no notification",
                             style: GoogleFonts.cairo(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 20),
+                                fontSize: 1.2*SizeConfig.textMultiplier),
                           )),
+                    )) ,
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                query: query,
+                itemBuilder: (
+                  BuildContext context,
+                  DocumentSnapshot snapshot,
+                  Animation<double> animation,
+                  int index,
+                ) =>
+                    FadeTransition(
+                  opacity: animation,
+                  child: Card(
+                      color: Colors.amber,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Center(
+                            child: Text(
+                          snapshot.data['note'],
+                          style: GoogleFonts.cairo(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 1.2*SizeConfig.textMultiplier),
                         )),
+                      )),
 //                        Text(
 //                           snapshot.data['note'],
 //                        ),
-                  ),
                 ),
               ),
             ),
@@ -354,6 +367,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   print(snapshot.data.length);
                   return CarouselSlider.builder(
+//                    scrollPhysics: ClampingScrollPhysics(),
+                    height: 1 * SizeConfig.heightMultiplier,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int itemIndex) =>
                         Container(
@@ -369,7 +384,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         }));
                       },
                       child: CachedNetworkImage(
-//                        width: 200,
                         imageUrl: snapshot.data[itemIndex].data['url'],
                         placeholder: (context, url) =>
                             CircularProgressIndicator(),
@@ -420,7 +434,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ///
             Expanded(
                 child: StaggeredGridView.count(
-              crossAxisCount: 2,
+                  physics: ClampingScrollPhysics(),
+                  crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -481,7 +496,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: GoogleFonts.cairo(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: 16),
+                          fontSize: 1*SizeConfig.textMultiplier),
                     ),
                   ],
                 )),

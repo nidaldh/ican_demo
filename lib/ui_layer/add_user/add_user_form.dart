@@ -38,6 +38,7 @@ class _AddUserState extends State<AddUser> {
         child: Form(
           key: _formKey,
           child: ListView(
+            physics: ClampingScrollPhysics(),
             children: <Widget>[
               TextFormField(
                 initialValue: widget.user.name??null,
@@ -195,9 +196,10 @@ class _AddUserState extends State<AddUser> {
               SizedBox(
                 height: 10,
               ),
-              FloatingActionButton(
+              RaisedButton(
                 child: Text("save"),
-                backgroundColor: Colors.amberAccent,
+//                backgroundColor: Colors.amberAccent,
+              color: Colors.amberAccent,
                 onPressed: () async{
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();

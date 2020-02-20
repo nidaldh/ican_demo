@@ -55,6 +55,7 @@ class _UserProfileState extends State<UserProfile> {
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
+
           children: <Widget>[
             Expanded(
                 child: StaggeredGridView.count(

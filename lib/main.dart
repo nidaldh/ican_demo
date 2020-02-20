@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'bloc_layer/authentication_bloc/bloc.dart';
 import 'bloc_layer/simple_bloc_delegate.dart';
 import 'data_layer/user_repository.dart';
@@ -17,7 +18,6 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
 
-  print("nidal");
   runApp(
     BlocProvider(
       create: (context) =>
@@ -54,20 +54,22 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   void initState() {
-    print(widget._userRepository.getUser().toString());
+//    print(widget._userRepository.getUser().toString());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+//    inituser();
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
       data: data,
       child: LayoutBuilder(builder: (context, constraints) {
         return OrientationBuilder(builder: (context, orientation) {
           SizeConfig().init(constraints, orientation);
+
           return MaterialApp(
-            theme: AppTheme.lightTheme,
+//            theme: AppTheme.lightTheme,
             debugShowCheckedModeBanner: false,
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
@@ -94,4 +96,13 @@ class _AppState extends State<App> {
       }),
     );
   }
+
+//  void inituser() async{
+//      SharedPreferences prefs = await SharedPreferences.getInstance();
+//      //Return String
+//      String stringValue = prefs.getString('stringValue');
+//      print(stringValue);
+////      return stringValue;
+//
+//  }
 }

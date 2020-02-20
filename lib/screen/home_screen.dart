@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   final String email;
@@ -98,17 +98,14 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           print("onLaunch: $message");
         });
-
       },
       onResume: (Map<String, dynamic> message) async {
         setState(() {
           print("onResume: $message");
         });
-
       },
     );
   }
-
 
   initUser() async {
     print("start");
@@ -140,16 +137,14 @@ class _HomeScreenState extends State<HomeScreen> {
 //      setState(() {
 //        user=data['user'];
 //      });
-
     });
 //    if (data['user'] == null)
 
     print(data.toString());
-    try{
-    print(data['user']);
-    user = data['user'];
-      }
-          catch(e) {
+    try {
+      print(data['user']);
+      user = data['user'];
+    } catch (e) {
       print(e);
       user = new User(name2, age, phone, weight, height, location,
           email: widget.email);
@@ -177,7 +172,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: Text(
                     AppLocalizations.of(context).tr("user_profile"),
                     style: GoogleFonts.cairo(
-                        color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),
                   ),
                   leading: Icon(
                     Icons.person,
@@ -196,7 +193,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: Text(
                     AppLocalizations.of(context).tr("chat"),
                     style: GoogleFonts.cairo(
-                        color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),
                   ),
                   leading: Icon(
                     Icons.chat,
@@ -214,10 +213,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       data.changeLocale(Locale('ar', 'DZ'));
                   },
                   title: Text(
-                    AppLocalizations.of(context).tr("change_language"),
+                      AppLocalizations.of(context).tr("change_language"),
                       style: GoogleFonts.cairo(
-                          color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16)
-                  ),
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16)),
                   leading: Icon(
                     Icons.language,
                     color: Colors.white,
@@ -228,12 +228,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
+  _incrementCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int counter = (prefs.getInt('counter') ?? 0) + 1;
+    print('Pressed $counter times.');
+    await prefs.setInt('counter', counter);
+  }
 
 
   @override
   Widget build(BuildContext context) {
     context2 = context;
+    _incrementCounter();
 //    initUser();
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
@@ -259,7 +265,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: Column(
-
           children: <Widget>[
 //            FutureBuilder(
 //              future: getNotify(),
@@ -306,19 +311,19 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
               child: new FirestoreAnimatedList(
-                errorChild:Card(
+                errorChild: Card(
                     color: Colors.amber,
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Center(
                           child: Text(
-                            "no notification",
-                            style: GoogleFonts.cairo(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 1.2*SizeConfig.textMultiplier),
-                          )),
-                    )) ,
+                        "no notification",
+                        style: GoogleFonts.cairo(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 1.2 * SizeConfig.textMultiplier),
+                      )),
+                    )),
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
                 query: query,
@@ -340,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: GoogleFonts.cairo(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
-                              fontSize: 1.2*SizeConfig.textMultiplier),
+                              fontSize: 1.2 * SizeConfig.textMultiplier),
                         )),
                       )),
 //                        Text(
@@ -434,8 +439,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ///
             Expanded(
                 child: StaggeredGridView.count(
-                  physics: ClampingScrollPhysics(),
-                  crossAxisCount: 2,
+              physics: ClampingScrollPhysics(),
+              crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -496,7 +501,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: GoogleFonts.cairo(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: 1*SizeConfig.textMultiplier),
+                          fontSize: 1 * SizeConfig.textMultiplier),
                     ),
                   ],
                 )),

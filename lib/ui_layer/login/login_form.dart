@@ -8,6 +8,7 @@ import 'package:demo_ican/ui_layer/register/create_account_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'google_login_button.dart';
 import 'login_button.dart';
@@ -25,12 +26,14 @@ class LoginForm extends StatefulWidget {
   State<LoginForm> createState() => _LoginFormState();
 }
 
+
 class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   LoginBloc _loginBloc;
-
+  String email="";
+  SharedPreferences prefs;
   UserRepository get _userRepository => widget._userRepository;
 
   bool get isPopulated =>
@@ -42,10 +45,26 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   void initState() {
+    WidgetsFlutterBinding.ensureInitialized();
+    getStringValuesSF();
     super.initState();
     _loginBloc = BlocProvider.of<LoginBloc>(context);
     _emailController.addListener(_onEmailChanged);
     _passwordController.addListener(_onPasswordChanged);
+  }
+
+
+  getStringValuesSF() async {
+    prefs = await SharedPreferences.getInstance();
+    //Return String
+    String stringValue = prefs.getString('email');
+    if(stringValue!=null){
+      print(stringValue);
+      email=stringValue;
+
+    print("sharead ::: "+email);}
+    print(stringValue);
+//    return stringValue.substring(0);
   }
 
   /*We use a BlocListener widget in order to execute one-time actions
@@ -56,6 +75,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+//    print("in Build");
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.isFailure) {
@@ -107,6 +127,7 @@ class _LoginFormState extends State<LoginForm> {
                     child: Image.asset('assets/image001.jpg', height: 200),
                   ),
                   TextFormField(
+//                    initialValue: _emailController.runtimeType.toString(),
                     controller: _emailController,
                     decoration: InputDecoration(
                       icon: Icon(Icons.email),
@@ -115,6 +136,9 @@ class _LoginFormState extends State<LoginForm> {
                     keyboardType: TextInputType.emailAddress,
                     autovalidate: true,
                     autocorrect: false,
+                    onSaved: (value){
+                      _emailController.text=value;
+                    },
                     validator: (_) {
                       return !state.isEmailValid ? AppLocalizations.of(context).tr("invalid_email") : null;
                     },
@@ -199,7 +223,8 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  void _onFormSubmitted() {
+  void _onFormSubmitted() async {
+    await prefs.setString("email", _emailController.text);
     _loginBloc.add(
       LoginWithCredentialsPressed(
         email: _emailController.text,

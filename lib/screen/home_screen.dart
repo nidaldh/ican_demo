@@ -228,18 +228,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  _incrementCounter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int counter = (prefs.getInt('counter') ?? 0) + 1;
-    print('Pressed $counter times.');
-    await prefs.setInt('counter', counter);
-  }
+//  _incrementCounter() async {
+//    SharedPreferences prefs = await SharedPreferences.getInstance();
+//    int counter = (prefs.getInt('counter') ?? 0) + 1;
+//    print('Pressed $counter times.');
+//    await prefs.setInt('counter', counter);
+//  }
 
 
   @override
   Widget build(BuildContext context) {
     context2 = context;
-    _incrementCounter();
+//    _incrementCounter();
 //    initUser();
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(

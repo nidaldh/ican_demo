@@ -32,6 +32,7 @@
   "height": "height",
   "phone_number": "phone number",
   "date": "date",
+  "date_error_future": "the date should not be in the future",
 
   "chat": "group chat",
   "add_info": "add user info",

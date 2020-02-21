@@ -24,18 +24,19 @@ class _ShowIBMState extends State<ShowIBM> {
   String date;
   double weight;
   double height;
-  double bmi ;
+  double bmi;
   Firestore firestore = Firestore.instance;
   List<BMI> _bmi = [];
-  var reference ;
-  Stream<QuerySnapshot>  query;
+  var reference;
+  Stream<QuerySnapshot> query;
 
   @override
   void initState() {
-     reference = Firestore.instance.collection("info")
+    reference = Firestore.instance
+        .collection("info")
         .document(widget.user.email)
         .collection("IBM");
-     query = reference.snapshots();
+    query = reference.snapshots();
 //    startQuery();
     getDates();
     super.initState();
@@ -43,7 +44,7 @@ class _ShowIBMState extends State<ShowIBM> {
 
   @override
   Widget build(BuildContext context) {
-    print("Len"+_bmi.length.toString());
+//    print("Len" + _bmi.length.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).tr("add_BMI"),
@@ -55,7 +56,7 @@ class _ShowIBMState extends State<ShowIBM> {
         backgroundColor: Colors.deepPurpleAccent,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(10,10,10,0),
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -64,12 +65,15 @@ class _ShowIBMState extends State<ShowIBM> {
                 color: Colors.white,
                 child: DateTimeField(
                   validator: (value) {
+                    if(value.compareTo(DateTime.now())>0)
+                      return AppLocalizations.of(context).tr("date_error_future");
                     if (value == null) {
                       return AppLocalizations.of(context).tr("date_error");
                     }
                     return null;
                   },
                   onSaved: (val) {
+                    print(val.runtimeType);
                     date = val.toString().substring(0, 10);
 //                    print(date);
                   },
@@ -95,7 +99,7 @@ class _ShowIBMState extends State<ShowIBM> {
                 color: Colors.white,
                 child: TextFormField(
                   validator: (value) {
-                    if (value.isEmpty|| double.parse(value) < 30) {
+                    if (value.isEmpty || double.parse(value) < 30) {
                       return AppLocalizations.of(context).tr("weight_error");
                     }
                     return null;
@@ -136,21 +140,25 @@ class _ShowIBMState extends State<ShowIBM> {
                     width: 20,
                   ),
                   Tooltip(
-                    message:  (_bmi.length >= 2)?AppLocalizations.of(context).tr("show_ibm"):AppLocalizations.of(context).tr("bmi_limit"),
+                    message: (_bmi.length >= 2)
+                        ? AppLocalizations.of(context).tr("show_ibm")
+                        : AppLocalizations.of(context).tr("bmi_limit"),
                     child: OutlineButton(
                       child: Text(AppLocalizations.of(context).tr("show_ibm")),
 //                    backgroundColor: Colors.deepPurpleAccent,
-                      onPressed:  (_bmi.length >= 2) ?() {
+                      onPressed: (_bmi.length >= 2)
+                          ? () {
 //                      setState(() {
 //                        getDates();
 //                      });
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) {
-                            return Chart2(_bmi,title: "nidal");
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return Chart2(_bmi, title: "nidal");
 //                        return PopImage();
-                          }),
-                        );
-                      }:null,
+                                }),
+                              );
+                            }
+                          : null,
                     ),
                   ),
                 ],
@@ -188,42 +196,45 @@ class _ShowIBMState extends State<ShowIBM> {
                     physics: ClampingScrollPhysics(),
                     query: query = reference.snapshots(),
                     itemBuilder: (
-                        BuildContext context,
-                        DocumentSnapshot snapshot,
-                        Animation<double> animation,
-                        int index,
-                        ) =>
+                      BuildContext context,
+                      DocumentSnapshot snapshot,
+                      Animation<double> animation,
+                      int index,
+                    ) =>
                         FadeTransition(
-                          opacity: animation,
-                          child: Card(
-                              color: getColor(snapshot.data['BMI']),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Center(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-
-                                        Text(
-                                    f.format( snapshot.data['BMI']),
-                                          style: GoogleFonts.cairo(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 16),
-                                        ),SizedBox(width: 10,), Text(
-                                          snapshot.documentID.toString(),
-                                          style: GoogleFonts.cairo(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 16),
-                                        ),
-                                      ],
-                                    )),
-                              )),
+                      opacity: animation,
+                      child: Card(
+                          color: getColor(snapshot.data['BMI']),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Center(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  f.format(snapshot.data['BMI']),
+                                  style: GoogleFonts.cairo(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  snapshot.documentID.toString(),
+                                  style: GoogleFonts.cairo(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16),
+                                ),
+                              ],
+                            )),
+                          )),
 //                        Text(
 //                           snapshot.data['note'],
 //                        ),
-                        ),
+                    ),
                   ),
                 ),
               ),
@@ -241,7 +252,6 @@ class _ShowIBMState extends State<ShowIBM> {
     return bmi;
   }
 
-
   Future getDates() async {
     if (_bmi.length > 0) return null;
 //    print("get data");
@@ -257,16 +267,11 @@ class _ShowIBMState extends State<ShowIBM> {
 //      print(f.documentID.toString());
 //      print(f.data);
     });
-    setState(() {
-
-    });
-    print("len2::" + _bmi.length.toString());
+    setState(() {});
+//    print("len2::" + _bmi.length.toString());
 
     _bmi.sort((a, b) => a.date.compareTo(b.date));
   }
-
-
-
 
   add() async {
 //    print(widget.user.email);
@@ -287,7 +292,7 @@ class _ShowIBMState extends State<ShowIBM> {
   }
 
   Color getColor(double weight) {
-    print(weight.toString() + "color");
+//    print(weight.toString() + "color");
     if (weight < 18.5)
       return Colors.blue[300];
     else if (weight < 25)
@@ -298,6 +303,4 @@ class _ShowIBMState extends State<ShowIBM> {
       return Colors.orangeAccent[700];
     else if (35 < weight) return Colors.red[400];
   }
-
-
 }

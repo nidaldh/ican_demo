@@ -21,7 +21,8 @@ class GoogleLoginButton extends StatelessWidget {
       icon: Icon(FontAwesomeIcons.google, color: Colors.white),
       onPressed: () {
         BlocProvider.of<LoginBloc>(context).add(
-          LoginWithGooglePressed(),
+          LoginWithGooglePressed(
+          ),
         );
       },
       label: Text('Sign in with Google', style: TextStyle(color: Colors.white)),

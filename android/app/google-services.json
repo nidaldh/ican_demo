@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "499261098091-9ik7bm5qcgvi0gj9ssgit643ujnq24gr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.nidaldh.demo_ican",
+            "certificate_hash": "10bb960a986b67b4c646f0da150e49941b17e7e4"
+          }
+        },
+        {
           "client_id": "499261098091-a4fdr6o36lio1c0a5aidl8e1oet0d3il.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -30,6 +38,13 @@
             {
               "client_id": "499261098091-a4fdr6o36lio1c0a5aidl8e1oet0d3il.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "499261098091-anm6r2jl21kgrr3dms4vhegnpg3dqjaa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.nidaldh.demoIcan"
+              }
             }
           ]
         }

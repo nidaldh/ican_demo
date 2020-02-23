@@ -121,6 +121,7 @@ class _LoginFormState extends State<LoginForm> {
             padding: EdgeInsets.all(20.0),
             child: Form(
               child: ListView(
+                physics: ClampingScrollPhysics(),
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),

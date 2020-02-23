@@ -228,12 +228,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-//  _incrementCounter() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    int counter = (prefs.getInt('counter') ?? 0) + 1;
-//    print('Pressed $counter times.');
-//    await prefs.setInt('counter', counter);
-//  }
 
 
   @override
@@ -373,10 +367,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   print(snapshot.data.length);
                   return CarouselSlider.builder(
 //                    scrollPhysics: ClampingScrollPhysics(),
-                    height: 1 * SizeConfig.heightMultiplier,
+//                    height: 1 * SizeConfig.heightMultiplier,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int itemIndex) =>
                         Container(
+                          padding: EdgeInsets.all(10),
                             child:
 //                              Image.network(
 //                                  snapshot.data[itemIndex].data['url'])
@@ -388,18 +383,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }));
                       },
-                      child: CachedNetworkImage(
-                        imageUrl: snapshot.data[itemIndex].data['url'],
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: snapshot.data[itemIndex].data['url'],
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                        ),
                       ),
                     )),
-//                    CachedNetworkImage(
-//                      imageUrl: snapshot.data[itemIndex].data['url'],
-//                      placeholder: (context, url) => CircularProgressIndicator(),
-//                      errorWidget: (context, url, error) => Icon(Icons.error),
-//                    ),
                   );
                 }
                 return Container();

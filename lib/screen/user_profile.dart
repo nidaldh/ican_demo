@@ -43,10 +43,11 @@ class _UserProfileState extends State<UserProfile> {
                   }),
                 );
 //                print(date);
-//                setState(() {
-//                  print(date['user']);
-//                });
-                print("weight " + widget.user.height.toString());
+                setState(() {
+//                  Log
+                  print("change data");
+                });
+//                print("weight " + widget.user.height.toString());
               },
             ),
           )

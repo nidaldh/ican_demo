@@ -141,7 +141,7 @@ class ChatScreenState extends State<ChatScreen2> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          backgroundColor: Colors.purple,
+          backgroundColor: Colors.deepPurple,
           title: new Text(AppLocalizations.of(context).tr("chat"),style: GoogleFonts.cairo(
               color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20)),
           elevation: 4.0,

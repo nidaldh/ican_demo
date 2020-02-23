@@ -229,7 +229,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     context2 = context;
@@ -366,39 +365,44 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   print(snapshot.data.length);
                   return CarouselSlider.builder(
-//                    scrollPhysics: ClampingScrollPhysics(),
+                    scrollPhysics: ClampingScrollPhysics(),
+                    autoPlay: true,
+//                    aspectRatio: 1,
 //                    height: 1 * SizeConfig.heightMultiplier,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int itemIndex) =>
                         Container(
-                          padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(10),
                             child:
 //                              Image.network(
 //                                  snapshot.data[itemIndex].data['url'])
                                 GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return DetailScreen(
-                            url: snapshot.data[itemIndex].data['url'],
-                          );
-                        }));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: CachedNetworkImage(
-                          imageUrl: snapshot.data[itemIndex].data['url'],
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
-                        ),
-                      ),
-                    )),
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (_) {
+                                  return DetailScreen(
+                                    url: snapshot.data[itemIndex].data['url'],
+                                  );
+                                }));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      snapshot.data[itemIndex].data['url'],
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
+                              ),
+                            )),
                   );
                 }
                 return Container();

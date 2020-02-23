@@ -51,6 +51,7 @@ class _MyHomePageState extends State<Chart2> {
         backgroundColor: Colors.deepPurpleAccent,
       ),
       body: Container(
+        padding: EdgeInsets.all(20),
         child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,8 +72,6 @@ class _MyHomePageState extends State<Chart2> {
                     child: AnimatedLineChart(
                       chart,
                       key: UniqueKey(),
-
-
                     ), //Unique key to force animations
                   )),
             ]),

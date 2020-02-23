@@ -69,7 +69,11 @@ class _AppState extends State<App> {
           SizeConfig().init(constraints, orientation);
 
           return MaterialApp(
-//            theme: AppTheme.lightTheme,
+            theme: ThemeData(
+              primarySwatch: Colors.amber,
+//              backgroundColor: Colors.red,
+//              primaryColor: Colors.red
+            ),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,

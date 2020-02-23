@@ -36,5 +36,6 @@ class AppTheme {
     height: 1.5,
   );
 
+
   static final TextStyle _subTitleDark = _subTitleLight.copyWith(color: Colors.white70);
 }

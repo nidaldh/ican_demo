@@ -65,11 +65,12 @@ class _ShowIBMState extends State<ShowIBM> {
                 color: Colors.white,
                 child: DateTimeField(
                   validator: (value) {
+                    if (value == null) {
+                    return AppLocalizations.of(context).tr("date_error");
+                  }
                     if(value.compareTo(DateTime.now())>0)
                       return AppLocalizations.of(context).tr("date_error_future");
-                    if (value == null) {
-                      return AppLocalizations.of(context).tr("date_error");
-                    }
+
                     return null;
                   },
                   onSaved: (val) {

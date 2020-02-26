@@ -19,12 +19,12 @@ void main() {
   final UserRepository userRepository = UserRepository();
 
   runApp(
-//    BlocProvider(
-//      create: (context) =>
-//          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
-//      child: EasyLocalization(child: App(userRepository: userRepository)),
-//    ),
-     MyApp()
+    BlocProvider(
+      create: (context) =>
+          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
+      child: EasyLocalization(child: App(userRepository: userRepository)),
+    ),
+//     MyApp()
   );
 }
 

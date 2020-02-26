@@ -4,6 +4,7 @@ import 'package:demo_ican/bloc_layer/login/bloc.dart';
 import 'package:demo_ican/bloc_layer/login/login_bloc.dart';
 import 'package:demo_ican/bloc_layer/login/login_state.dart';
 import 'package:demo_ican/data_layer/user_repository.dart';
+import 'package:demo_ican/ui_layer/login/facebook_login_button.dart';
 import 'package:demo_ican/ui_layer/register/create_account_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -168,6 +169,7 @@ class _LoginFormState extends State<LoginForm> {
                               : null,
                         ),
                         GoogleLoginButton(),
+                        FacebookLoginButton(),
                         CreateAccountButton(userRepository: _userRepository),
                         FlatButton(
                           onPressed:state.isEmailValid? () async {

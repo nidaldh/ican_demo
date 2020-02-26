@@ -1,12 +1,12 @@
+import 'package:demo_ican/screen/facebook.dart';
 import 'package:demo_ican/screen/home_screen.dart';
+import 'package:demo_ican/screen/phone.dart';
 import 'package:demo_ican/screen/splash_screen.dart';
 import 'package:demo_ican/screen/login_screen.dart';
-import 'package:demo_ican/ui_layer/app_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'bloc_layer/authentication_bloc/bloc.dart';
 import 'bloc_layer/simple_bloc_delegate.dart';
 import 'data_layer/user_repository.dart';
@@ -19,12 +19,12 @@ void main() {
   final UserRepository userRepository = UserRepository();
 
   runApp(
-    BlocProvider(
-      create: (context) =>
-          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
-      child: EasyLocalization(child: App(userRepository: userRepository)),
-    ),
-    // Test()
+//    BlocProvider(
+//      create: (context) =>
+//          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
+//      child: EasyLocalization(child: App(userRepository: userRepository)),
+//    ),
+     MyApp()
   );
 }
 
@@ -52,15 +52,9 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  @override
-  void initState() {
-//    print(widget._userRepository.getUser().toString());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-//    inituser();
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
       data: data,
@@ -71,8 +65,6 @@ class _AppState extends State<App> {
           return MaterialApp(
             theme: ThemeData(
               primarySwatch: Colors.amber,
-//              backgroundColor: Colors.red,
-//              primaryColor: Colors.red
             ),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: [
@@ -101,12 +93,74 @@ class _AppState extends State<App> {
     );
   }
 
-//  void inituser() async{
-//      SharedPreferences prefs = await SharedPreferences.getInstance();
-//      //Return String
-//      String stringValue = prefs.getString('stringValue');
-//      print(stringValue);
-////      return stringValue;
-//
-//  }
 }
+
+
+
+///Firebase functions
+///
+//
+//import 'package:flutter/material.dart';
+//import 'package:cloud_functions/cloud_functions.dart';
+//
+//void main() => runApp(Phone());
+//
+//class MyApp extends StatefulWidget {
+//  @override
+//  _MyAppState createState() => _MyAppState();
+//}
+//
+//class _MyAppState extends State<MyApp> {
+//  String _response = 'no response';
+//  int _responseCount = 0;
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    final HttpsCallable callable = CloudFunctions.instance
+//        .getHttpsCallable(functionName: 'repeat')
+//      ..timeout = const Duration(seconds: 30);
+//    return MaterialApp(
+//      home: Scaffold(
+//        appBar: AppBar(
+//          title: const Text('Cloud Functions example app'),
+//        ),
+//        body: Center(
+//          child: Container(
+//            margin: const EdgeInsets.only(top: 32.0, left: 16.0, right: 16.0),
+//            child: Column(
+//              children: <Widget>[
+//                Text('Response $_responseCount: $_response'),
+//                MaterialButton(
+//                  child: const Text('SEND REQUEST'),
+//                  onPressed: () async {
+//                    try {
+//                      final HttpsCallableResult result = await callable.call(
+//                        <String, dynamic>{
+//                          'message': 'hello world!',
+//                          'count': _responseCount,
+//                        },
+//                      );
+//                      print(result.data);
+//                      setState(() {
+//                        _response = result.data['repeat_message'];
+//                        _responseCount = result.data['repeat_count'];
+//                      });
+//                    } on CloudFunctionsException catch (e) {
+//                      print('caught firebase functions exception');
+//                      print(e.code);
+//                      print(e.message);
+//                      print(e.details);
+//                    } catch (e) {
+//                      print('caught generic exception');
+//                      print(e);
+//                    }
+//                  },
+//                ),
+//              ],
+//            ),
+//          ),
+//        ),
+//      ),
+//    );
+//  }
+//}

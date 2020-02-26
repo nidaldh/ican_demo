@@ -31,7 +31,6 @@ class _AddUserState extends State<AddUser> {
         title: Text(AppLocalizations.of(context).tr("add_info"),style: GoogleFonts.cairo(
             color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20)),
         elevation: 0,
-        backgroundColor: Colors.purple,
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(20, 20, 20, 0),

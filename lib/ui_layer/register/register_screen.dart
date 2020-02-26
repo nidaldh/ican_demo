@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc_layer/register/bloc/bloc.dart';
 import 'register_form.dart';
 
-
 class RegisterScreen extends StatelessWidget {
   final UserRepository _userRepository;
 
@@ -18,8 +17,10 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).tr('register')),
-      backgroundColor: Colors.amber,),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context).tr('register')),
+//        backgroundColor: Colors.amber,
+      ),
       body: Center(
         child: BlocProvider<RegisterBloc>(
           create: (context) => RegisterBloc(userRepository: _userRepository),

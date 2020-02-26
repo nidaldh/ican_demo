@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   initUser() async {
-    print("start");
+//    print("start");
     print("call firestore");
     await firestore
         .collection("info")

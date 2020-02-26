@@ -2,7 +2,7 @@ import 'package:demo_ican/screen/facebook.dart';
 import 'package:demo_ican/screen/home_screen.dart';
 import 'package:demo_ican/screen/phone.dart';
 import 'package:demo_ican/screen/splash_screen.dart';
-import 'package:demo_ican/screen/login_screen.dart';
+import 'package:demo_ican/ui_layer/login/login_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,6 +65,7 @@ class _AppState extends State<App> {
           return MaterialApp(
             theme: ThemeData(
               primarySwatch: Colors.amber,
+              primaryColor: Colors.deepPurple,
             ),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: [

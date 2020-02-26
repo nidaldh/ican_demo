@@ -5,7 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../ui_layer/login/login_form.dart';
+import 'login_form.dart';
 
 /*we are extending StatelessWidget and using a BlocProvider to initialize
  and close the LoginBloc as well as to make the LoginBloc instance available
@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget {
       data: data,
       child: Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context).tr("login")),
-            backgroundColor: Colors.amber,
+//            backgroundColor: Colors.amber,
         actions: <Widget>[
           OutlineButton(
             onPressed: () {

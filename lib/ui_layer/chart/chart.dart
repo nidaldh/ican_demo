@@ -48,7 +48,6 @@ class _MyHomePageState extends State<Chart2> {
     return Scaffold(
       appBar: AppBar(
         title: Text("BMI"),
-        backgroundColor: Colors.deepPurpleAccent,
       ),
       body: Container(
         padding: EdgeInsets.all(20),

@@ -53,7 +53,6 @@ class _ShowIBMState extends State<ShowIBM> {
                 fontWeight: FontWeight.w700,
                 fontSize: 20)),
         elevation: 0,
-        backgroundColor: Colors.deepPurpleAccent,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),

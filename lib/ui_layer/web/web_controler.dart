@@ -21,12 +21,12 @@ class _WebViewContainerState extends State<WebViewContainer> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title,style: GoogleFonts.cairo(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w700
-          ),),
-          backgroundColor: Colors.deepPurple,
+          title: Text(
+            widget.title,
+            style: GoogleFonts.cairo(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+          ),
+//          backgroundColor: Colors.deepPurple,
         ),
         body: Column(
           children: [

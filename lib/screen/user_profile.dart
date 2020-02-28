@@ -8,7 +8,8 @@ import 'package:intl/intl.dart';
 
 class UserProfile extends StatefulWidget {
   User user;
-  UserProfile(this.user);
+  String title;
+  UserProfile(this.user,{this.title});
 
   @override
   _UserProfileState createState() => _UserProfileState();
@@ -20,7 +21,6 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
         title: Text(AppLocalizations.of(context).tr("user_profile"),
             style: GoogleFonts.cairo(
                 color: Colors.white,
@@ -154,7 +154,7 @@ class _UserProfileState extends State<UserProfile> {
               ),
               Icon(
                 Icons.star,
-                color: Colors.purple,
+                color: Colors.yellowAccent,
               ),
             ],
           )),
@@ -180,7 +180,7 @@ class _UserProfileState extends State<UserProfile> {
                 ),
                 Icon(
                   icon,
-                  color: Colors.purple,
+                  color: Colors.deepPurpleAccent,
                 ),
               ],
             )));
@@ -204,7 +204,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
           ],
         ),
-        color: Colors.purple,
+        color: Colors.deepPurpleAccent,
       ),
     );
   }

@@ -59,10 +59,9 @@ class _VideoListState extends State<VideoList> {
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
                 fontSize: 20)),
-        backgroundColor: Colors.deepPurpleAccent,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: ListView.separated(
           itemBuilder: (context, index) {
             return Column(

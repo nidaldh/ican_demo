@@ -2,6 +2,7 @@ import 'package:demo_ican/screen/facebook.dart';
 import 'package:demo_ican/screen/home_screen.dart';
 import 'package:demo_ican/screen/phone.dart';
 import 'package:demo_ican/screen/splash_screen.dart';
+import 'package:demo_ican/ui_layer/admin/admin_screen.dart';
 import 'package:demo_ican/ui_layer/login/login_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,7 @@ class _AppState extends State<App> {
             theme: ThemeData(
               primarySwatch: Colors.amber,
               primaryColor: Colors.deepPurple,
+              brightness: Brightness.light,
             ),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: [
@@ -82,7 +84,8 @@ class _AppState extends State<App> {
                   return SplashScreen();
                 }
                 if (state is Authenticated) {
-                  return HomeScreen(email: state.displayName);
+//                  return HomeScreen(email: state.displayName);
+                  return AdminScreen();
 //                return HomePage();
                 }
                 return LoginScreen(userRepository: widget._userRepository);

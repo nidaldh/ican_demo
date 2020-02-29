@@ -59,7 +59,6 @@
   "invalid_password": "يجب ان تكون كلمة المرور مكونة من احرف و ارقام",
   "forgot_password": "نسيت كلمة المرور",
   "create_new_account": "إنشاء حساب جديد",
-  "login": "دخول",
   "register": "تسجيل",
   "registering": "جاري التسجيل...",
   "registration_failure": "حدث خطء ما",

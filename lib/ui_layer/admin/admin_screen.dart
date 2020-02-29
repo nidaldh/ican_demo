@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:demo_ican/screen/user_profile.dart';
+import 'package:demo_ican/ui_layer/admin/search_screen.dart';
+import 'package:demo_ican/ui_layer/admin/bottom_sheet.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firestore_ui/firestore_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,6 +29,15 @@ class _AdminScreenState extends State<AdminScreen> {
           style: GoogleFonts.cairo(
               color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20),
         ),
+        actions: <Widget>[
+          FlatButton.icon(onPressed: (){
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return SearchScreen();
+              }),
+            );
+          }, icon: Icon(Icons.search), label: Text("search")),
+        ],
       ),
       body: FirestoreAnimatedList(
         errorChild: Card(
@@ -55,7 +67,7 @@ class _AdminScreenState extends State<AdminScreen> {
           opacity: animation,
           child: InkWell(
             onTap: () {
-              _settingModalBottomSheet(context, snapshot);
+              settingModalBottomSheet(context, snapshot);
             },
             child: Card(
                 color: Colors.amber,
@@ -76,68 +88,5 @@ class _AdminScreenState extends State<AdminScreen> {
     );
   }
 
-  void _settingModalBottomSheet(context, DocumentSnapshot snapshot) {
-    User user;
-    try {
-      user = User(
-        snapshot.data['name'],
-        snapshot.data['age'],
-        snapshot.data['phone_number'],
-        snapshot.data['weight'],
-        snapshot.data['height'],
-        snapshot.data['location'],
-        email: snapshot.documentID,
-      );
-    } catch (e) {
-      print(e);
-    }
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return Container(
-            child: new Wrap(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(user.name,
-                        style: GoogleFonts.cairo(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20)),
-                  ],
-                ),
-                Divider(
-                  height: 1,
-                  color: Colors.black12,
-                  thickness: 1,
-                ),
-                new ListTile(
-                    leading: new Icon(Icons.person),
-                    title: new Text('profile'),
-                    onTap: () => {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              return UserProfile(user);
-                            }),
-                          )
-                        }),
-                new ListTile(
-                  leading: new Icon(Icons.insert_chart),
-                  title: new Text('IBM'),
-                  onTap: () => {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return ShowIBM(
-                          user: user,
-                        );
-                      }),
-                    )
-                  },
-                ),
-              ],
-            ),
-          );
-        });
-  }
+
 }

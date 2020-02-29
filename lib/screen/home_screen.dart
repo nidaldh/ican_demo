@@ -8,8 +8,10 @@ import 'package:demo_ican/screen/user_profile.dart';
 import 'package:demo_ican/screen/video_screen.dart';
 import 'package:demo_ican/screen/leacture_view.dart';
 import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
+import 'package:demo_ican/ui_layer/admin/admin_screen.dart';
 import 'package:demo_ican/ui_layer/chat/chat_screen.dart';
 import 'package:demo_ican/ui_layer/chat/detail_screen.dart';
+import 'package:demo_ican/ui_layer/home/drawer.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
 import 'package:demo_ican/ui_layer/size_config.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -20,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,22 +36,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-
   String name2 = '';
-
   String phone = "";
-
   int age = 0;
-
   String location = "";
-
   double height = 0;
-
   double weight = 0;
-
   User user;
-
   BuildContext context2;
+  bool admin=false;
 
   Firestore firestore = Firestore.instance;
   dynamic data;
@@ -121,8 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {
       height = ds.data['height'];
       phone = ds.data['phone_number'];
       weight = ds.data['weight'];
+      admin= ds.data['admin']==null?false:ds.data['admin'];
+      setState(() {});//to change the state
     }).catchError((err) async {
-//      print(err);
       user = new User(name2, age, phone, weight, height, location,
           email: widget.email);
       print(err.toString());
@@ -133,13 +130,10 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }),
       );
-
-//      setState(() {
-//        user=data['user'];
-//      });
+      setState(() {
+        user=data['user'];
+      });
     });
-//    if (data['user'] == null)
-
     print(data.toString());
     try {
       print(data['user']);
@@ -160,6 +154,25 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(20.0),
           child: ListView(
             children: <Widget>[
+              admin? ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) {
+                        return AdminScreen();
+                      }),
+                    );
+                  },
+                  title: Text(
+                    AppLocalizations.of(context).tr("admin"),
+                    style: GoogleFonts.cairo(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),
+                  ),
+                  leading: Icon(
+                    MdiIcons.head,
+                    color: Colors.white,
+                  )):Container(),
               ListTile(
                   onTap: () {
                     Navigator.of(context).push(
@@ -238,7 +251,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
-        drawer: sideBar(context, data),
+//        drawer: sideBar(context, data,user,admin),
+        drawer: sideBar(context,data),
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
           title: Text(

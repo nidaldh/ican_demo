@@ -1,6 +1,5 @@
-import 'package:demo_ican/screen/facebook.dart';
+
 import 'package:demo_ican/screen/home_screen.dart';
-import 'package:demo_ican/screen/phone.dart';
 import 'package:demo_ican/screen/splash_screen.dart';
 import 'package:demo_ican/ui_layer/admin/admin_screen.dart';
 import 'package:demo_ican/ui_layer/login/login_screen.dart';
@@ -84,8 +83,8 @@ class _AppState extends State<App> {
                   return SplashScreen();
                 }
                 if (state is Authenticated) {
-//                  return HomeScreen(email: state.displayName);
-                  return AdminScreen();
+                  return HomeScreen(email: state.displayName);
+//                  return AdminScreen();
 //                return HomePage();
                 }
                 return LoginScreen(userRepository: widget._userRepository);

@@ -20,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
-        title: Text("search"),
+          title: Text(AppLocalizations.of(context).tr("search"),style: GoogleFonts.cairo(),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -36,7 +36,9 @@ class _SearchScreenState extends State<SearchScreen> {
                       initialValue: x,
                       decoration: InputDecoration(
                         icon: Icon(Icons.search),
-                        labelText: "search",
+                        labelText: AppLocalizations.of(context).tr("search"),
+                        hintText:
+                            AppLocalizations.of(context).tr("search_hint"),
                         border: new OutlineInputBorder(
                             borderSide:
                                 new BorderSide(color: Colors.amberAccent)),
@@ -59,15 +61,18 @@ class _SearchScreenState extends State<SearchScreen> {
                       RaisedButton(
                         child: Row(
                           children: <Widget>[
-                            Text("search by name"),
-                            Icon(Icons.person)
+                            Text(
+                              AppLocalizations.of(context).tr("search_by_name"),
+                              style: GoogleFonts.cairo(color: Colors.white),
+                            ),
+//                            Icon(Icons.person)
                           ],
                         ),
-                        color: Colors.amberAccent,
+                        color: Colors.deepPurple,
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            index=0;
+                            index = 0;
                             setState(() {});
                           }
                         },
@@ -78,15 +83,19 @@ class _SearchScreenState extends State<SearchScreen> {
                       RaisedButton(
                         child: Row(
                           children: <Widget>[
-                            Text("search by location"),
-                            Icon(Icons.location_on)
+                            Text(
+                              AppLocalizations.of(context)
+                                  .tr("search_by_location"),
+                              style: GoogleFonts.cairo(color: Colors.white),
+                            ),
+//                            Icon(Icons.location_on)
                           ],
                         ),
-                        color: Colors.amberAccent,
+                        color: Colors.deepPurple,
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            index=1;
+                            index = 1;
                             setState(() {});
                           }
                         },
@@ -120,7 +129,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (_, index) {
                               return Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.fromLTRB(8.0,0,8,0),
                                 child: InkWell(
                                   onTap: () {
                                     settingModalBottomSheet(
@@ -129,7 +138,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   child: Card(
                                       color: Colors.amber,
                                       child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
+                                        padding: const EdgeInsets.all(10.0),
                                         child: Center(
                                             child: Text(
                                           snapshot.data[index].data['name'],
@@ -144,19 +153,22 @@ class _SearchScreenState extends State<SearchScreen> {
                               );
                             });
                       else
-                        return Card(
-                            color: Colors.amber,
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Center(
-                                  child: Text(
-                                "no data",
-                                style: GoogleFonts.cairo(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 1.2 * SizeConfig.textMultiplier),
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                              color: Colors.amber,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                    child: Text(
+                                  AppLocalizations.of(context).tr("no_data"),
+                                  style: GoogleFonts.cairo(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 1.2 * SizeConfig.textMultiplier),
+                                )),
                               )),
-                            ));
+                        );
                       return Container();
                     },
                   ),
@@ -168,9 +180,9 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
-  Future search(){
-    if(index ==0)
-      return getByName();
+
+  Future search() {
+    if (index == 0) return getByName();
     return getByLocation();
   }
 

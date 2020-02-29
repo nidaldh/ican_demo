@@ -63,7 +63,17 @@
   "Registering": "Registering...",
   "Registration Failure": "Registration Failure",
   "tooltip_forget_password": "please enter your email",
-  "reset_email_message": "you will receive an email to reset your password "
+  "reset_email_message": "you will receive an email to reset your password ",
+
+  "admin_screen": "Admin screen",
+  "users_list": "Users list",
+  "search": "Search",
+  "search_by_name": "Search by name",
+  "search_by_location": "Search by location",
+  "search_hint": "user name or address",
+  "no_data": "please check that you insert the correct information"
+
+
 
 
 

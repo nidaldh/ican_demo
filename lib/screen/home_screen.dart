@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                   title: Text(
-                    AppLocalizations.of(context).tr("admin"),
+                    AppLocalizations.of(context).tr("admin_screen"),
                     style: GoogleFonts.cairo(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,

@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'bloc_layer/authentication_bloc/bloc.dart';
 import 'bloc_layer/simple_bloc_delegate.dart';
 import 'data_layer/user_repository.dart';
@@ -64,6 +65,7 @@ class _AppState extends State<App> {
 
           return MaterialApp(
             theme: ThemeData(
+              textTheme: GoogleFonts.cairoTextTheme(),
               primarySwatch: Colors.amber,
               primaryColor: Colors.deepPurple,
               brightness: Brightness.light,

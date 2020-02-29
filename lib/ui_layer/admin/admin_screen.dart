@@ -25,18 +25,23 @@ class _AdminScreenState extends State<AdminScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "المستخدمين",
+          AppLocalizations.of(context).tr("users_list"),
           style: GoogleFonts.cairo(
               color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20),
         ),
         actions: <Widget>[
-          FlatButton.icon(onPressed: (){
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) {
-                return SearchScreen();
-              }),
-            );
-          }, icon: Icon(Icons.search), label: Text("search")),
+          Tooltip(
+            message:AppLocalizations.of(context).tr("search"),
+            child: FlatButton.icon(onPressed: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return SearchScreen();
+                }),
+              );
+            }, icon: Icon(Icons.search,color: Colors.white,),
+                label: Text(""),)
+            ),
+
         ],
       ),
       body: FirestoreAnimatedList(

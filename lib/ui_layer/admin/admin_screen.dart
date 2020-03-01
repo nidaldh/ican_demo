@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:demo_ican/screen/user_profile.dart';
+import 'package:demo_ican/ui_layer/admin/note.dart';
 import 'package:demo_ican/ui_layer/admin/search_screen.dart';
 import 'package:demo_ican/ui_layer/admin/bottom_sheet.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
@@ -35,6 +36,7 @@ class _AdminScreenState extends State<AdminScreen> {
             child: FlatButton.icon(onPressed: (){
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) {
+                  return NoteScreen();
                   return SearchScreen();
                 }),
               );

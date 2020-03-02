@@ -51,8 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final StorageReference storageReference = FirebaseStorage().ref().child("");
   final reference = Firestore.instance.collection("notify");
   Stream<QuerySnapshot> get query => reference.snapshots();
-  final reference2 = Firestore.instance.collection("image");
-  Stream<QuerySnapshot> get query2 => reference2.snapshots();
+
   @override
   void initState() {
     super.initState();

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:demo_ican/screen/user_profile.dart';
+import 'package:demo_ican/ui_layer/admin/image.dart';
 import 'package:demo_ican/ui_layer/admin/note.dart';
 import 'package:demo_ican/ui_layer/admin/search_screen.dart';
 import 'package:demo_ican/ui_layer/admin/bottom_sheet.dart';
@@ -44,7 +45,6 @@ class _AdminScreenState extends State<AdminScreen> {
 //            }, icon: Icon(Icons.search,color: Colors.white,),
 //                label: Text(""),)
 //            ),
-
         ],
       ),
       body: FirestoreAnimatedList(
@@ -96,22 +96,18 @@ class _AdminScreenState extends State<AdminScreen> {
     );
   }
 
- Widget appBarMenu(){
+  Widget appBarMenu() {
     print("nida;");
     return PopupMenuButton<int>(
-        onSelected:_select,
+      onSelected: _select,
       icon: Icon(Icons.menu),
       itemBuilder: (context) => [
-
         PopupMenuItem(
-          value: 0,
-          child: Text(AppLocalizations.of(context).tr("search"))
-
-        ),
+            value: 0, child: Text(AppLocalizations.of(context).tr("search"))),
         PopupMenuItem(
-          value: 1,
-            child: Text(AppLocalizations.of(context).tr("note"))
-        ),
+            value: 1, child: Text(AppLocalizations.of(context).tr("note"))),
+        PopupMenuItem(
+            value: 2, child: Text(AppLocalizations.of(context).tr("images"))),
       ],
     );
   }
@@ -120,9 +116,11 @@ class _AdminScreenState extends State<AdminScreen> {
     print(choice);
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) {
-        if(choice==1)
-        return NoteScreen();
-        else return SearchScreen();
+        if (choice == 1) return NoteScreen();
+        if (choice == 2)
+          return ImageScreen();
+        else
+          return SearchScreen();
       }),
     );
   }

@@ -203,34 +203,39 @@ class _ShowIBMState extends State<ShowIBM> {
                     ) =>
                         FadeTransition(
                       opacity: animation,
-                      child: Card(
-                          color: getColor(snapshot.data['BMI']),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Center(
-                                child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  f.format(snapshot.data['BMI']),
-                                  style: GoogleFonts.cairo(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  snapshot.documentID.toString(),
-                                  style: GoogleFonts.cairo(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16),
-                                ),
-                              ],
+                      child: InkWell(
+                          onLongPress: (){
+                            _showDialog(snapshot.documentID);
+                          },
+                        child: Card(
+                            color: getColor(snapshot.data['BMI']),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Center(
+                                  child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    f.format(snapshot.data['BMI']),
+                                    style: GoogleFonts.cairo(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    snapshot.documentID.toString(),
+                                    style: GoogleFonts.cairo(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16),
+                                  ),
+                                ],
+                              )),
                             )),
-                          )),
+                      ),
 //                        Text(
 //                           snapshot.data['note'],
 //                        ),
@@ -302,5 +307,38 @@ class _ShowIBMState extends State<ShowIBM> {
     else if (weight < 35)
       return Colors.orangeAccent[700];
     else if (35 < weight) return Colors.red[400];
+  }
+
+  void _showDialog(String id) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(AppLocalizations.of(context).tr("delete_bmi")
+              ,style: TextStyle(color: Colors.redAccent)),
+          content: new Text(AppLocalizations.of(context).tr("delete_alert_bmi")),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(AppLocalizations.of(context).tr("yes"),style: TextStyle(color: Colors.redAccent),),
+              onPressed: () {
+                reference.document(id).delete();
+                setState(() {
+
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text(AppLocalizations.of(context).tr("no"),style: TextStyle(color: Colors.lightGreen),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

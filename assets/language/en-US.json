@@ -84,7 +84,9 @@
   "note": "Note",
   "note_title": "Note Title",
   "update": "Send & Update",
-  "select_image": "Select Image"
+  "select_image": "Select Image",
+  "delete_bmi": "Delete BMI",
+  "delete_alert_bmi": "are you sure you want to remove this BMI record"
 
 
 

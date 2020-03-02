@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:demo_ican/ui_layer/chat/detail_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,8 +28,7 @@ class _ImageScreenState extends State<ImageScreen> {
   void initState() {
     super.initState();
     initConnectivity();
-//    _connectivitySubscription =
-//        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+
   }
 
   Future<void> initConnectivity() async {
@@ -55,7 +55,7 @@ class _ImageScreenState extends State<ImageScreen> {
     ProgressDialog pr =
         new ProgressDialog(context, type: ProgressDialogType.Normal);
     pr.style(
-      message: 'Send Image',
+      message: AppLocalizations.of(context).tr("send_image"),
       borderRadius: 10.0,
       backgroundColor: Colors.white,
       progressWidget: CircularProgressIndicator(),
@@ -68,7 +68,7 @@ class _ImageScreenState extends State<ImageScreen> {
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text("Image"),
+        title: Text(AppLocalizations.of(context).tr("image")),
       ),
       body: Column(
         children: <Widget>[
@@ -83,7 +83,7 @@ class _ImageScreenState extends State<ImageScreen> {
                       context: context,
                       builder: (context) => AlertDialog(
                         content: Text(
-                            "there is no internet connection please connect to internet"),
+                            AppLocalizations.of(context).tr("no_internet")),
                         actions: <Widget>[
                           FlatButton(
                             child: Text('Ok'),
@@ -98,7 +98,7 @@ class _ImageScreenState extends State<ImageScreen> {
                       await ImagePicker.pickImage(source: ImageSource.gallery);
                   if (image == null) {
                     Fluttertoast.showToast(
-                        msg: "No Image Selected",
+                        msg: AppLocalizations.of(context).tr("no_image_selected"),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
                         timeInSecForIos: 1,
@@ -109,7 +109,6 @@ class _ImageScreenState extends State<ImageScreen> {
                     return null;
                   }
                   pr.show();
-                  print("images pikecr");
                   final FirebaseStorage _storage = FirebaseStorage(
                       storageBucket: 'gs://icanhel-demo.appspot.com/');
                   StorageUploadTask _uploadTask;
@@ -156,8 +155,6 @@ class _ImageScreenState extends State<ImageScreen> {
                             },
                             onLongPress: (){
                               _showDialog(snapshot.data[itemIndex].documentID);
-//                              reference.document().delete();
-//                            print(snapshot.data[itemIndex].documentID);
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -212,12 +209,12 @@ class _ImageScreenState extends State<ImageScreen> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Delete"),
-          content: new Text("are you sure you want to remove this image"),
+          title: new Text(AppLocalizations.of(context).tr("delete_image")
+              ,style: TextStyle(color: Colors.redAccent)),
+          content: new Text(AppLocalizations.of(context).tr("delete_alert")),
           actions: <Widget>[
-            // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("yes",style: TextStyle(color: Colors.redAccent),),
+              child: new Text(AppLocalizations.of(context).tr("yes"),style: TextStyle(color: Colors.redAccent),),
               onPressed: () {
                 reference.document(id).delete();
                 setState(() {
@@ -227,7 +224,7 @@ class _ImageScreenState extends State<ImageScreen> {
               },
             ),
             new FlatButton(
-              child: new Text("No",style: TextStyle(color: Colors.lightGreen),),
+              child: new Text(AppLocalizations.of(context).tr("no"),style: TextStyle(color: Colors.lightGreen),),
               onPressed: () {
                 Navigator.of(context).pop();
               },

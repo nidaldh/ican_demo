@@ -71,7 +71,16 @@
   "search_by_name": "Search by name",
   "search_by_location": "Search by location",
   "search_hint": "user name or address",
-  "no_data": "please check that you insert the correct information"
+  "no_data": "please check that you insert the correct information",
+
+  "send_image": "Send Image",
+  "image": "Images",
+  "no_internet": "there is no internet connection please connect to internet",
+  "no_image_selected":"No Image Selected",
+  "delete_image": "Delete image",
+  "delete_alert": "are you sure you want to remove this image",
+  "yes": "Yes",
+  "no": "No"
 
 
 

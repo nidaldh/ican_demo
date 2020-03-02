@@ -18,11 +18,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
 import 'message2.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 class ChatScreen2 extends StatefulWidget {
@@ -207,7 +203,7 @@ class ChatScreenState extends State<ChatScreen2> {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          content: Text("there is no internet connection please connect to internet"),
+                          content: Text(AppLocalizations.of(context).tr("no_internet")),
                           actions: <Widget>[
                             FlatButton(
                               child: Text('Ok'),
@@ -223,7 +219,7 @@ class ChatScreenState extends State<ChatScreen2> {
                         source: ImageSource.gallery);
                     if (image ==null){
                       Fluttertoast.showToast(
-                          msg: "No Image Selected",
+                          msg: AppLocalizations.of(context).tr("no_image_selected"),
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIos: 1,
@@ -280,7 +276,7 @@ class ChatScreenState extends State<ChatScreen2> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Text("there is no internet connection please connect to internet"),
+          content: Text(AppLocalizations.of(context).tr("no_internet")),
           actions: <Widget>[
             FlatButton(
               child: Text('Ok'),

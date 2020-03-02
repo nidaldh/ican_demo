@@ -75,10 +75,10 @@
 
   "send_image": "Send Image",
   "image": "Images",
-  "no_internet": "there is no internet connection please connect to internet",
+  "no_internet": "There is no internet connection please connect to internet",
   "no_image_selected":"No Image Selected",
   "delete_image": "Delete image",
-  "delete_alert": "are you sure you want to remove this image",
+  "delete_alert": "Are you sure you want to remove this image",
   "yes": "Yes",
   "no": "No",
   "note": "Note",
@@ -86,7 +86,9 @@
   "update": "Send & Update",
   "select_image": "Select Image",
   "delete_bmi": "Delete BMI",
-  "delete_alert_bmi": "are you sure you want to remove this BMI record"
+  "delete_alert_bmi": "Sre you sure you want to remove this BMI record",
+  "delete_message": "Delete Message",
+  "delete_alert_message": "Are you sure you want to remove this message"
 
 
 

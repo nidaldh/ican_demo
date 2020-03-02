@@ -1,7 +1,9 @@
 import 'package:bubble/bubble.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'detail_screen.dart';
@@ -12,6 +14,35 @@ class ChatMessage extends StatelessWidget {
   final DocumentSnapshot snapshot;
   final Animation animation;
   bool me;
+  void _showDialog(BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(AppLocalizations.of(context).tr("delete_message")
+              ,style: TextStyle(color: Colors.redAccent)),
+          content: new Text(AppLocalizations.of(context).tr("delete_alert_message")),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(AppLocalizations.of(context).tr("yes"),style: TextStyle(color: Colors.redAccent),),
+              onPressed: () {
+                Firestore.instance.collection("messages").document(snapshot.documentID).delete();
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text(AppLocalizations.of(context).tr("no"),style: TextStyle(color: Colors.lightGreen),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Widget build(BuildContext context) {
     return new Container(
@@ -20,10 +51,9 @@ class ChatMessage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            child: Tooltip(
+            child: InkWell(
               child: Bubble(
                 color: me ? Colors.amberAccent : Colors.deepPurpleAccent,
-//              borderRadius: BorderRadius.circular(10.0),
                 nip: me ? BubbleNip.rightBottom : BubbleNip.leftBottom,
                 alignment: me ? Alignment.topRight : Alignment.topLeft,
                 elevation: 6.0,
@@ -32,7 +62,6 @@ class ChatMessage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment:
                         me ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-//                  crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       if (!me)
                         new Text(snapshot.data['senderName'],
@@ -45,10 +74,6 @@ class ChatMessage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child:
-//                                new Image.network(
-//                                  snapshot.data['imageUrl'],
-//                                  width: 250.0,
-//                                ),
                                     GestureDetector(
                                   onTap: () {
                                     Navigator.push(context,
@@ -78,12 +103,21 @@ class ChatMessage extends StatelessWidget {
                   ),
                 ),
               ),
-              message: snapshot.data['date'],
+              onDoubleTap: (){
+                Fluttertoast.showToast(msg: snapshot.data['date']);
+              },
+              onLongPress: (){
+                if(me)
+                _showDialog(context);
+                return null;
+              },
             ),
           ),
         ],
       ),
     );
   }
+
+
 }
 

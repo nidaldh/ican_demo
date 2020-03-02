@@ -31,18 +31,19 @@ class _AdminScreenState extends State<AdminScreen> {
               color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20),
         ),
         actions: <Widget>[
-          Tooltip(
-            message:AppLocalizations.of(context).tr("search"),
-            child: FlatButton.icon(onPressed: (){
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return NoteScreen();
-                  return SearchScreen();
-                }),
-              );
-            }, icon: Icon(Icons.search,color: Colors.white,),
-                label: Text(""),)
-            ),
+          appBarMenu(),
+//          Tooltip(
+//            message:AppLocalizations.of(context).tr("search"),
+//            child: FlatButton.icon(onPressed: (){
+//              Navigator.of(context).push(
+//                MaterialPageRoute(builder: (context) {
+//                  return NoteScreen();
+//                  return SearchScreen();
+//                }),
+//              );
+//            }, icon: Icon(Icons.search,color: Colors.white,),
+//                label: Text(""),)
+//            ),
 
         ],
       ),
@@ -95,5 +96,34 @@ class _AdminScreenState extends State<AdminScreen> {
     );
   }
 
+ Widget appBarMenu(){
+    print("nida;");
+    return PopupMenuButton<int>(
+        onSelected:_select,
+      icon: Icon(Icons.menu),
+      itemBuilder: (context) => [
 
+        PopupMenuItem(
+          value: 0,
+          child: Text(AppLocalizations.of(context).tr("search"))
+
+        ),
+        PopupMenuItem(
+          value: 1,
+            child: Text(AppLocalizations.of(context).tr("note"))
+        ),
+      ],
+    );
+  }
+
+  void _select(int choice) {
+    print(choice);
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) {
+        if(choice==1)
+        return NoteScreen();
+        else return SearchScreen();
+      }),
+    );
+  }
 }

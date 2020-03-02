@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double weight = 0;
   User user;
   BuildContext context2;
-  bool admin=true;
+  bool admin=false;
 
   Firestore firestore = Firestore.instance;
   dynamic data;
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
       height = ds.data['height'];
       phone = ds.data['phone_number'];
       weight = ds.data['weight'];
-//      admin= ds.data['admin']==null?false:ds.data['admin'];
+      admin= ds.data['admin']==null?false:ds.data['admin'];
       setState(() {});//to change the state
     }).catchError((err) async {
       user = new User(name2, age, phone, weight, height, location,
@@ -196,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
-                        return ChatScreen2(
+                        return ChatScreen(
                           user: user,
                         );
                       }),

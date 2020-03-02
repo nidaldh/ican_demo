@@ -71,83 +71,87 @@ class _NoteScreenState extends State<NoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("note"),),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                initialValue: note,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.title),
-                  labelText: AppLocalizations.of(context).tr("note_title"),
-                  border: new OutlineInputBorder(
-                      borderSide:
-                      new BorderSide(color: Colors.amberAccent)),
-                ),
-                validator: (value) {
-                  if (value.trim().isEmpty) {
-                    return AppLocalizations.of(context).tr("empty_input");
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  print(value);
-                  title = value.trim();
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                initialValue: note,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.note),
-                  labelText: AppLocalizations.of(context).tr("note"),
-                  border: new OutlineInputBorder(
-                      borderSide:
-                      new BorderSide(color: Colors.amberAccent)),
-                ),
-                validator: (value) {
-                  if (value.trim().isEmpty) {
-                    return AppLocalizations.of(context).tr("empty_input");
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  print(value);
-                  note = value.trim();
-                },
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context).tr("push"),
-                        style: GoogleFonts.cairo(color: Colors.white),
-                      ),
-                    ],
+      appBar: AppBar(title: Text(AppLocalizations.of(context).tr("note"),style: GoogleFonts.cairo(),),),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  initialValue: note,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.title),
+                    labelText: AppLocalizations.of(context).tr("note_title"),
+                    border: new OutlineInputBorder(
+                        borderSide:
+                        new BorderSide(color: Colors.amberAccent)),
                   ),
-                  color: Colors.deepPurple,
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                      index = 0;
-                      add();
-                      setState(() {});
+                  validator: (value) {
+                    if (value.trim().isEmpty) {
+                      return AppLocalizations.of(context).tr("empty_input");
                     }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    print(value);
+                    title = value.trim();
                   },
                 ),
+              ),
+              SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  initialValue: note,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.note),
+                    labelText: AppLocalizations.of(context).tr("note"),
+                    border: new OutlineInputBorder(
+                        borderSide:
+                        new BorderSide(color: Colors.amberAccent)),
+                  ),
+                  validator: (value) {
+                    if (value.trim().isEmpty) {
+                      return AppLocalizations.of(context).tr("empty_input");
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    print(value);
+                    note = value.trim();
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          AppLocalizations.of(context).tr("update"),
+                          style: GoogleFonts.cairo(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    color: Colors.deepPurple,
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
+                        index = 0;
+                        add();
+                        setState(() {});
+                      }
+                    },
+                  ),
 
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

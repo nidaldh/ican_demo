@@ -80,7 +80,13 @@
   "delete_image": "Delete image",
   "delete_alert": "are you sure you want to remove this image",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "note": "Note",
+  "note_title": "Note Title",
+  "update": "Send & Update",
+  "select_image": "Select Image"
+
+
 
 
 

@@ -58,7 +58,7 @@ Drawer sideBar(BuildContext context, var data,User user,bool admin) {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return ChatScreen2(
+                      return ChatScreen(
                         user: user,
                       );
                     }),

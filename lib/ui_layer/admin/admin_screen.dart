@@ -33,18 +33,6 @@ class _AdminScreenState extends State<AdminScreen> {
         ),
         actions: <Widget>[
           appBarMenu(),
-//          Tooltip(
-//            message:AppLocalizations.of(context).tr("search"),
-//            child: FlatButton.icon(onPressed: (){
-//              Navigator.of(context).push(
-//                MaterialPageRoute(builder: (context) {
-//                  return NoteScreen();
-//                  return SearchScreen();
-//                }),
-//              );
-//            }, icon: Icon(Icons.search,color: Colors.white,),
-//                label: Text(""),)
-//            ),
         ],
       ),
       body: FirestoreAnimatedList(
@@ -107,7 +95,7 @@ class _AdminScreenState extends State<AdminScreen> {
         PopupMenuItem(
             value: 1, child: Text(AppLocalizations.of(context).tr("note"))),
         PopupMenuItem(
-            value: 2, child: Text(AppLocalizations.of(context).tr("images"))),
+            value: 2, child: Text(AppLocalizations.of(context).tr("image"))),
       ],
     );
   }

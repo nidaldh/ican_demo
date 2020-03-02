@@ -21,16 +21,16 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'message2.dart';
 import 'package:flutter/services.dart';
 
-class ChatScreen2 extends StatefulWidget {
+class ChatScreen extends StatefulWidget {
   User user;
 
-  ChatScreen2({this.user});
+  ChatScreen({this.user});
 
   @override
   State createState() => new ChatScreenState();
 }
 
-class ChatScreenState extends State<ChatScreen2> {
+class ChatScreenState extends State<ChatScreen> {
   final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();

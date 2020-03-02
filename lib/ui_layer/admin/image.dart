@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -68,61 +69,74 @@ class _ImageScreenState extends State<ImageScreen> {
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("image")),
+        title: Text(AppLocalizations.of(context).tr("image"),style: GoogleFonts.cairo(),),
       ),
       body: Column(
         children: <Widget>[
           Container(
             margin: new EdgeInsets.symmetric(horizontal: 4.0),
-            child: new IconButton(
-                icon: new Icon(Icons.photo_camera),
-                onPressed: () async {
-                  await initConnectivity();
-                  if (result == ConnectivityResult.none) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        content: Text(
-                            AppLocalizations.of(context).tr("no_internet")),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text('Ok'),
-                            onPressed: () => Navigator.of(context).pop(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new RaisedButton(
+                  color: Colors.amberAccent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(AppLocalizations.of(context).tr("select_image")),
+                        SizedBox(width: 10,),
+                        new Icon(Icons.photo_camera),
+                      ],
+                    ),
+                    onPressed: () async {
+                      await initConnectivity();
+                      if (result == ConnectivityResult.none) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: Text(
+                                AppLocalizations.of(context).tr("no_internet")),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('Ok'),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                    return null;
-                  }
-                  var image =
-                      await ImagePicker.pickImage(source: ImageSource.gallery);
-                  if (image == null) {
-                    Fluttertoast.showToast(
-                        msg: AppLocalizations.of(context).tr("no_image_selected"),
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIos: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                    pr.hide();
-                    return null;
-                  }
-                  pr.show();
-                  final FirebaseStorage _storage = FirebaseStorage(
-                      storageBucket: 'gs://icanhel-demo.appspot.com/');
-                  StorageUploadTask _uploadTask;
-                  String filePath = 'note_image/${DateTime.now()}.png';
-                  _uploadTask = _storage.ref().child(filePath).putFile(image);
-                  StorageTaskSnapshot storageTaskSnapshot =
-                      await _uploadTask.onComplete;
+                        );
+                        return null;
+                      }
+                      var image =
+                          await ImagePicker.pickImage(source: ImageSource.gallery);
+                      if (image == null) {
+                        Fluttertoast.showToast(
+                            msg: AppLocalizations.of(context).tr("no_image_selected"),
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        pr.hide();
+                        return null;
+                      }
+                      pr.show();
+                      final FirebaseStorage _storage = FirebaseStorage(
+                          storageBucket: 'gs://icanhel-demo.appspot.com/');
+                      StorageUploadTask _uploadTask;
+                      String filePath = 'note_image/${DateTime.now()}.png';
+                      _uploadTask = _storage.ref().child(filePath).putFile(image);
+                      StorageTaskSnapshot storageTaskSnapshot =
+                          await _uploadTask.onComplete;
 
-                  String downloadUrl =
-                      await storageTaskSnapshot.ref.getDownloadURL();
-                  _sendNote(downloadUrl);
-                  pr.hide();
-                  setState(() {});
-                }),
+                      String downloadUrl =
+                          await storageTaskSnapshot.ref.getDownloadURL();
+                      _sendNote(downloadUrl);
+                      pr.hide();
+                      setState(() {});
+                    }),
+              ],
+            ),
           ),
           FutureBuilder(
             future: getImage(),

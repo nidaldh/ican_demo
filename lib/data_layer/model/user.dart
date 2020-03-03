@@ -8,9 +8,9 @@ class User {
   double weight;
   double height;
   String location;
-
+  bool admin;
   User(this.name, this.age, this.phoneNumber,
-       this.weight, this.height, this.location,{this.lastName,this.password,this.email});
+       this.weight, this.height, this.location,{this.lastName,this.password,this.email,this.admin});
 
 }
 

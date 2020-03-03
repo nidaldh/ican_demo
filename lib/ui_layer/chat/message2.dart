@@ -10,10 +10,10 @@ import 'detail_screen.dart';
 
 @override
 class ChatMessage extends StatelessWidget {
-  ChatMessage({this.snapshot, this.animation, this.me});
+  ChatMessage({this.snapshot, this.me,this.admin});
   final DocumentSnapshot snapshot;
-  final Animation animation;
   bool me;
+  bool admin;
   void _showDialog(BuildContext context) {
     // flutter defined function
     showDialog(
@@ -107,7 +107,9 @@ class ChatMessage extends StatelessWidget {
                 Fluttertoast.showToast(msg: snapshot.data['date']);
               },
               onLongPress: (){
-                if(me)
+                print("long");
+                if(admin||me)
+//                if(me)
                 _showDialog(context);
                 return null;
               },

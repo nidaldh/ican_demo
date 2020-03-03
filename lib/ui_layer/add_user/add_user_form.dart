@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -21,15 +23,48 @@ class _AddUserState extends State<AddUser> {
   String location;
   double height;
   double weight;
+  bool admin;
   Firestore firestore = Firestore.instance;
+  ConnectivityResult result;
+
+  final Connectivity _connectivity = Connectivity();
+  @override
+  void initState() {
+    // TODO: implement initState
+    initConnectivity();
+
+    super.initState();
+  }
+
+  Future<void> initConnectivity() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+    print("internet :::: ");
+    print(result);
+//    return _updateConnectionStatus(result);
+  }
 
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("add_info"),style: GoogleFonts.cairo(
-            color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20)),
+        title: Text(AppLocalizations.of(context).tr("add_info"),
+            style: GoogleFonts.cairo(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 20)),
         elevation: 0,
       ),
       body: Padding(
@@ -40,7 +75,7 @@ class _AddUserState extends State<AddUser> {
             physics: ClampingScrollPhysics(),
             children: <Widget>[
               TextFormField(
-                initialValue: widget.user.name??null,
+                initialValue: widget.user.name ?? null,
                 validator: (value) {
                   if (value.isEmpty) {
                     return AppLocalizations.of(context).tr("empty_input");
@@ -62,13 +97,11 @@ class _AddUserState extends State<AddUser> {
                 height: 10,
               ),
               TextFormField(
-                initialValue: widget.user.phoneNumber??null,
+                initialValue: widget.user.phoneNumber ?? null,
                 validator: (value) {
-                  if (value.isEmpty || value
-                      .trim()
-                      .length != 10) {
-                    return AppLocalizations.of(context).tr("phone_number_error");
-
+                  if (value.isEmpty || value.trim().length != 10) {
+                    return AppLocalizations.of(context)
+                        .tr("phone_number_error");
                   }
                   return null;
                 },
@@ -88,13 +121,10 @@ class _AddUserState extends State<AddUser> {
                 height: 10,
               ),
               TextFormField(
-                initialValue: widget.user.age.toString()??null,
+                initialValue: widget.user.age.toString() ?? null,
                 validator: (value) {
-                  if (value
-                      .trim()
-                      .isEmpty || int.parse(value) < 10) {
+                  if (value.trim().isEmpty || int.parse(value) < 10) {
                     return AppLocalizations.of(context).tr("age_error");
-
                   }
                   return null;
                 },
@@ -114,11 +144,9 @@ class _AddUserState extends State<AddUser> {
                 height: 10,
               ),
               TextFormField(
-                initialValue: widget.user.location ??null,
+                initialValue: widget.user.location ?? null,
                 validator: (value) {
-                  if (value
-                      .trim()
-                      .isEmpty) {
+                  if (value.trim().isEmpty) {
                     return AppLocalizations.of(context).tr("empty_input");
                   }
                   return null;
@@ -138,12 +166,12 @@ class _AddUserState extends State<AddUser> {
                 height: 10,
               ),
               TextFormField(
-                initialValue: widget.user.weight.toString()??null,
+                initialValue: widget.user.weight.toString() ?? null,
                 validator: (value) {
-                  if (value.isEmpty ) {
+                  if (value.isEmpty) {
                     return AppLocalizations.of(context).tr("empty_input");
                   }
-                  if (double.parse(value) <= 30){
+                  if (double.parse(value) <= 30) {
                     return AppLocalizations.of(context).tr("weight_input");
                   }
                   return null;
@@ -165,12 +193,12 @@ class _AddUserState extends State<AddUser> {
                 height: 10,
               ),
               TextFormField(
-                initialValue: widget.user.height.toString()??null,
+                initialValue: widget.user.height.toString() ?? null,
                 validator: (value) {
-                  if (value.isEmpty ) {
+                  if (value.isEmpty) {
                     return AppLocalizations.of(context).tr("empty_input");
                   }
-                  if( double.parse(value) <= 130){
+                  if (double.parse(value) <= 130) {
                     return AppLocalizations.of(context).tr("height_error");
                   }
                   return null;
@@ -198,14 +226,30 @@ class _AddUserState extends State<AddUser> {
               RaisedButton(
                 child: Text("save"),
 //                backgroundColor: Colors.amberAccent,
-              color: Colors.amberAccent,
-                onPressed: () async{
+                color: Colors.amberAccent,
+                onPressed: () async {
+                  await initConnectivity();
+                  if (result == ConnectivityResult.none) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        content: Text(
+                            AppLocalizations.of(context).tr("no_internet")),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('Ok'),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ],
+                      ),
+                    );
+                    return null;
+                  }
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
-                   await add();
+                    await add();
                   }
                 },
-
               )
             ],
           ),
@@ -214,8 +258,8 @@ class _AddUserState extends State<AddUser> {
     );
   }
 
-  add()async {
-   var pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+  add() async {
+    var pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
     pr.style(
       message: 'updatng',
       borderRadius: 10.0,
@@ -232,24 +276,21 @@ class _AddUserState extends State<AddUser> {
     pr.show();
     await firestore.collection("info").document(widget.user.email).setData({
       'name': name,
-      'phone_number':phone,
-      'age':age,
-      'location':location,
-      'height':height,
-      'weight':weight,
+      'phone_number': phone,
+      'age': age,
+      'location': location,
+      'height': height,
+      'weight': weight,
+      'admin':widget.user.admin
     });
 
-
-    widget.user.name=name;
-    widget.user.phoneNumber=phone;
-    widget.user.age=age;
-    widget.user.location=location;
-    widget.user.height=height;
-    widget.user.weight=weight;
+    widget.user.name = name;
+    widget.user.phoneNumber = phone;
+    widget.user.age = age;
+    widget.user.location = location;
+    widget.user.height = height;
+    widget.user.weight = weight;
     pr.hide();
-    Navigator.pop(context,{
-      'user':widget.user
-    });
-
+    Navigator.pop(context, {'user': widget.user});
   }
 }

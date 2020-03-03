@@ -23,8 +23,8 @@ import 'package:flutter/services.dart';
 
 class ChatScreen extends StatefulWidget {
   User user;
-
-  ChatScreen({this.user});
+  bool admin=false;
+  ChatScreen({this.user,this.admin});
 
   @override
   State createState() => new ChatScreenState();
@@ -43,15 +43,12 @@ class ChatScreenState extends State<ChatScreen> {
 
   final Connectivity _connectivity = Connectivity();
 
-
-
   @override
   void initState() {
     super.initState();
     registerNotification();
     initConnectivity();
-//    _connectivitySubscription =
-//        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+
   }
 
   @override
@@ -60,7 +57,6 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> initConnectivity() async {
-
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       result = await _connectivity.checkConnectivity();
@@ -79,9 +75,7 @@ class ChatScreenState extends State<ChatScreen> {
 //    return _updateConnectionStatus(result);
   }
 
-
   void registerNotification() {
-
     firebaseMessaging.onTokenRefresh.listen(sendTokenToServer);
     firebaseMessaging.getToken();
     firebaseMessaging.subscribeToTopic('all');
@@ -90,7 +84,7 @@ class ChatScreenState extends State<ChatScreen> {
       onMessage: (Map<String, dynamic> message) async {
         final notification = message['notification'];
         setState(() {
-          print("hal hal hal:   "+ notification['body']);
+          print("hal hal hal:   " + notification['body']);
           print("onMessage: $message");
         });
       },
@@ -110,8 +104,6 @@ class ChatScreenState extends State<ChatScreen> {
       },
     );
   }
-
-
 
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
@@ -137,8 +129,11 @@ class ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text(AppLocalizations.of(context).tr("chat"),style: GoogleFonts.cairo(
-              color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20)),
+          title: new Text(AppLocalizations.of(context).tr("chat"),
+              style: GoogleFonts.cairo(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20)),
           elevation: 4.0,
         ),
         body: new Column(children: <Widget>[
@@ -156,6 +151,7 @@ class ChatScreenState extends State<ChatScreen> {
                     FadeTransition(
                   opacity: animation,
                   child: ChatMessage(
+                    admin: widget.admin,
                     snapshot: snapshot,
                     me: snapshot.data['senderName'] == widget.user.name,
                   ),
@@ -199,11 +195,12 @@ class ChatScreenState extends State<ChatScreen> {
                   icon: new Icon(Icons.photo_camera),
                   onPressed: () async {
                     await initConnectivity();
-                    if(result== ConnectivityResult.none){
+                    if (result == ConnectivityResult.none) {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          content: Text(AppLocalizations.of(context).tr("no_internet")),
+                          content: Text(
+                              AppLocalizations.of(context).tr("no_internet")),
                           actions: <Widget>[
                             FlatButton(
                               child: Text('Ok'),
@@ -212,23 +209,24 @@ class ChatScreenState extends State<ChatScreen> {
                           ],
                         ),
                       );
-                      return null;}
-
+                      return null;
+                    }
 
                     var image = await ImagePicker.pickImage(
                         source: ImageSource.gallery);
-                    if (image ==null){
+                    if (image == null) {
                       Fluttertoast.showToast(
-                          msg: AppLocalizations.of(context).tr("no_image_selected"),
+                          msg: AppLocalizations.of(context)
+                              .tr("no_image_selected"),
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIos: 1,
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
-                          fontSize: 16.0
-                      );
+                          fontSize: 16.0);
                       pr.hide();
-                      return null;}
+                      return null;
+                    }
                     pr.show();
                     print("images pikecr");
                     final FirebaseStorage _storage = FirebaseStorage(
@@ -272,7 +270,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   Future<Null> _handleSubmitted(String text) async {
     await initConnectivity();
-    if(result== ConnectivityResult.none){
+    if (result == ConnectivityResult.none) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -285,13 +283,14 @@ class ChatScreenState extends State<ChatScreen> {
           ],
         ),
       );
-      return null;}
+      return null;
+    }
     _textController.clear();
     setState(() {
       _isComposing = false;
     });
     _sendMessage(text: text);
-    sendNotification( widget.user.name, text);
+    sendNotification(widget.user.name, text);
   }
 
   void _sendMessage({String text, String imageUrl}) {
@@ -318,7 +317,7 @@ class ChatScreenState extends State<ChatScreen> {
     print('token: $fcmToken');
   }
 
-  void sendNotification(String title,String body) async {
+  void sendNotification(String title, String body) async {
     await Messaging.sendToAll(title: title, body: body);
   }
 }

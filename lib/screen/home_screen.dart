@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {});//to change the state
     }).catchError((err) async {
       user = new User(name2, age, phone, weight, height, location,
-          email: widget.email);
+          email: widget.email,admin: admin);
       print(err.toString());
       data = await Navigator.of(context).push(
         MaterialPageRoute(builder: (context) {
@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       print(e);
       user = new User(name2, age, phone, weight, height, location,
-          email: widget.email);
+          email: widget.email,admin:admin);
     }
 //  print(user.name);
   }
@@ -198,6 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       MaterialPageRoute(builder: (context) {
                         return ChatScreen(
                           user: user,
+                          admin: admin,
                         );
                       }),
                     );

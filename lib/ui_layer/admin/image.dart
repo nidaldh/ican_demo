@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,11 +9,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 class ImageScreen extends StatefulWidget {
   @override
@@ -121,17 +125,19 @@ class _ImageScreenState extends State<ImageScreen> {
                         return null;
                       }
                       pr.show();
+                      final dir = await path_provider.getTemporaryDirectory();
+                      final targetPath = dir.absolute.path + "/temp.jpg";
+                      var imageComp= await testCompressAndGetFile(image,targetPath);
                       final FirebaseStorage _storage = FirebaseStorage(
                           storageBucket: 'gs://icanhel-demo.appspot.com/');
                       StorageUploadTask _uploadTask;
                       String filePath = 'note_image/${DateTime.now()}.png';
-                      _uploadTask = _storage.ref().child(filePath).putFile(image);
+                      _uploadTask = _storage.ref().child(filePath).putFile(imageComp);
                       StorageTaskSnapshot storageTaskSnapshot =
                           await _uploadTask.onComplete;
-
                       String downloadUrl =
                           await storageTaskSnapshot.ref.getDownloadURL();
-                      _sendNote(downloadUrl);
+                      _sendImage(downloadUrl);
                       pr.hide();
                       setState(() {});
                     }),
@@ -203,7 +209,7 @@ class _ImageScreenState extends State<ImageScreen> {
     return qn.documents;
   }
 
-  void _sendNote(String imageUrl) {
+  void _sendImage(String imageUrl) {
     print(DateTime.now().millisecondsSinceEpoch);
     var format2 = DateFormat('kk:mm:ss  y-M-d', 'ar');
     var dateString2 = format2.format(DateTime.now());
@@ -247,5 +253,22 @@ class _ImageScreenState extends State<ImageScreen> {
         );
       },
     );
+  }
+
+  Future<File> testCompressAndGetFile(File file, String targetPath) async {
+    print("testCompressAndGetFile");
+    final result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 50,
+      minWidth: 1024,
+      minHeight: 1024,
+      rotate: 90,
+    );
+
+    print(file.lengthSync());
+    print(result.lengthSync());
+
+    return result;
   }
 }

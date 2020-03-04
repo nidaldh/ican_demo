@@ -11,6 +11,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'message2.dart';
 import 'package:flutter/services.dart';
-
+import 'package:path_provider/path_provider.dart' as path_provider;
 class ChatScreen extends StatefulWidget {
   User user;
   bool admin=false;
@@ -233,7 +234,11 @@ class ChatScreenState extends State<ChatScreen> {
                         storageBucket: 'gs://icanhel-demo.appspot.com/');
                     StorageUploadTask _uploadTask;
                     String filePath = 'images/${DateTime.now()}.png';
-                    _uploadTask = _storage.ref().child(filePath).putFile(image);
+                    ///
+                    final dir = await path_provider.getTemporaryDirectory();
+                    final targetPath = dir.absolute.path + "/temp.jpg";
+                   var imageComp= await testCompressAndGetFile(image,targetPath);
+                    _uploadTask = _storage.ref().child(filePath).putFile(imageComp);
                     StorageTaskSnapshot storageTaskSnapshot =
                         await _uploadTask.onComplete;
                     pr.hide();
@@ -319,5 +324,34 @@ class ChatScreenState extends State<ChatScreen> {
 
   void sendNotification(String title, String body) async {
     await Messaging.sendToAll(title: title, body: body);
+  }
+
+//  Future<File> testCompressAndGetFile(File file) async {
+//    var result = await FlutterImageCompress.compressAndGetFile(
+//      file.absolute.path, "_"+file.absolute.path,
+//      quality: 88,
+//      rotate: 180,
+//    );
+//
+////    print(file.lengthSync());
+////    print(result.lengthSync());
+//
+//    return result;
+//  }
+  Future<File> testCompressAndGetFile(File file, String targetPath) async {
+    print("testCompressAndGetFile");
+    final result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 50,
+      minWidth: 1024,
+      minHeight: 1024,
+      rotate: 90,
+    );
+
+    print(file.lengthSync());
+    print(result.lengthSync());
+
+    return result;
   }
 }

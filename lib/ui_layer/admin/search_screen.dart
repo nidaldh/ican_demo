@@ -132,7 +132,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 padding: const EdgeInsets.fromLTRB(8.0,0,8,0),
                                 child: InkWell(
                                   onTap: () {
-                                    settingModalBottomSheet(
+                                    detailBottomSheet(
                                         context, snapshot.data[index]);
                                   },
                                   child: Card(

@@ -38,7 +38,6 @@ class LectureList extends StatelessWidget {
               },
             )));
   }
-
   void _handleURLButtonPress(BuildContext context, String url, String name) {
     Navigator.push(
         context,

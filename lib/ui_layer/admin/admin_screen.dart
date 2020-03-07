@@ -63,7 +63,7 @@ class _AdminScreenState extends State<AdminScreen> {
           opacity: animation,
           child: InkWell(
             onTap: () {
-              settingModalBottomSheet(context, snapshot);
+              detailBottomSheet(context, snapshot);
             },
             child: Card(
                 color: Colors.amber,

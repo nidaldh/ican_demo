@@ -531,7 +531,6 @@ class _HomeScreenState extends State<HomeScreen> {
     if (position == 1) {
       Navigator.of(context2).push(
         MaterialPageRoute(builder: (context) {
-//          return ChartScreen();
           return ShowIBM(
             user: user,
           );

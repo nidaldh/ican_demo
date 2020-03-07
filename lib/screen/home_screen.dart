@@ -551,7 +551,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (position == 4) {
       Navigator.of(context2).push(
         MaterialPageRoute(builder: (context) {
-          return VideoList();
+          return VideoList(user);
         }),
       );
     }

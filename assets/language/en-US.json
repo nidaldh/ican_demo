@@ -88,15 +88,10 @@
   "delete_bmi": "Delete BMI",
   "delete_alert_bmi": "Sre you sure you want to remove this BMI record",
   "delete_message": "Delete Message",
-  "delete_alert_message": "Are you sure you want to remove this message"
-
-
-
-
-
-
-
-
+  "delete_alert_message": "Are you sure you want to remove this message",
+  "enter_video_details": "Enter video details",
+  "video_title": "Video title",
+  "video_id": "Video URL or ID"
 
 
 }

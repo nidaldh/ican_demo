@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_ican/data_layer/model/user.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 /// Creates list of video players
 class VideoList extends StatefulWidget {
+  User user;
+  VideoList(this.user);
   @override
   _VideoListState createState() => _VideoListState();
 }
@@ -30,13 +33,12 @@ class _VideoListState extends State<VideoList> {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          IconButton(
+         widget.user.admin ?IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              print("pressed");
               _asyncInputDialog(context);
             },
-          )
+          ): Container()
         ],
         title: Text(AppLocalizations.of(context).tr("videos"),
             style: GoogleFonts.cairo(
@@ -45,7 +47,7 @@ class _VideoListState extends State<VideoList> {
                 fontSize: 20)),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: FutureBuilder(
           future: getDate(),
           builder: (context, snapshot) {
@@ -133,13 +135,13 @@ class _VideoListState extends State<VideoList> {
             key: _formKey,
             child: Container(
               width: 300,
-              height: 300,
+              height: 290,
               child: new Column(
                 children: <Widget>[
                   TextFormField(
-//                  initialValue: note,
+                  initialValue: title,
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context).tr("video title"),
+                      labelText: AppLocalizations.of(context).tr("video_title"),
                       border: new OutlineInputBorder(
                           borderSide:
                               new BorderSide(color: Colors.amberAccent)),
@@ -159,7 +161,7 @@ class _VideoListState extends State<VideoList> {
                     height: 20,
                   ),
                   TextFormField(
-//                  initialValue: note,
+                  initialValue: id,
                     decoration: InputDecoration(
                       labelText: AppLocalizations.of(context).tr("video_id"),
                       border: new OutlineInputBorder(
@@ -170,7 +172,9 @@ class _VideoListState extends State<VideoList> {
                       if (value.trim().isEmpty) {
                         return AppLocalizations.of(context).tr("empty_input");
                       }
-
+                      if(YoutubePlayer.convertUrlToId(value)==null){
+                        return AppLocalizations.of(context).tr("error_id");
+                      }
                       return null;
                     },
                     onSaved: (value) {
@@ -179,29 +183,43 @@ class _VideoListState extends State<VideoList> {
                       print(id);
                     },
                   ),
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              AppLocalizations.of(context).tr("update"),
+                              style: GoogleFonts.cairo(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        color: Colors.deepPurple,
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            await firestore
+                                .collection("videos")
+                                .document(title)
+                                .setData({"id": id}).catchError((err) {
+                              Fluttertoast.showToast(msg: "error");
+                            });
+                            Fluttertoast.showToast(msg: "updated");
+                            Navigator.of(context).pop(teamName);
+                            setState(() {});
+                            setState(() {});
+                          }
+                        },
+                      ),
+
+                    ],
+                  )
                 ],
               ),
             ),
           ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  await firestore
-                      .collection("videos")
-                      .document(title)
-                      .setData({"id": id}).catchError((err) {
-                    Fluttertoast.showToast(msg: "error");
-                  });
-                  Fluttertoast.showToast(msg: "updated");
-                  Navigator.of(context).pop(teamName);
-                  setState(() {});
-                }
-              },
-            ),
-          ],
         );
       },
     );

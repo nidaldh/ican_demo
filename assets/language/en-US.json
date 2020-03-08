@@ -91,7 +91,8 @@
   "delete_alert_message": "Are you sure you want to remove this message",
   "enter_video_details": "Enter video details",
   "video_title": "Video title",
-  "video_id": "Video URL or ID"
+  "video_id": "Video URL or ID",
+  "new_bmi_record_notification": "قامت {} بتسجيل BMI جديد"
 
 
 }

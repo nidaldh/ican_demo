@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:demo_ican/data_layer/model/user.dart';
+import 'package:demo_ican/data_layer/send_notification/messaging.dart';
 import 'package:demo_ican/ui_layer/chart/chart.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
@@ -65,10 +66,11 @@ class _ShowIBMState extends State<ShowIBM> {
                 child: DateTimeField(
                   validator: (value) {
                     if (value == null) {
-                    return AppLocalizations.of(context).tr("date_error");
-                  }
-                    if(value.compareTo(DateTime.now())>0)
-                      return AppLocalizations.of(context).tr("date_error_future");
+                      return AppLocalizations.of(context).tr("date_error");
+                    }
+                    if (value.compareTo(DateTime.now()) > 0)
+                      return AppLocalizations.of(context)
+                          .tr("date_error_future");
 
                     return null;
                   },
@@ -204,9 +206,9 @@ class _ShowIBMState extends State<ShowIBM> {
                         FadeTransition(
                       opacity: animation,
                       child: InkWell(
-                          onLongPress: (){
-                            _showDialog(snapshot.documentID);
-                          },
+                        onLongPress: () {
+                          _showDialog(snapshot.documentID);
+                        },
                         child: Card(
                             color: getColor(snapshot.data['BMI']),
                             child: Padding(
@@ -294,6 +296,15 @@ class _ShowIBMState extends State<ShowIBM> {
           .document(widget.user.email)
           .updateData({"weight": weight});
     }
+    sendNotification(widget.user.name);
+  }
+
+  void sendNotification(String name) async {
+    await Messaging.sendToTopic(
+        title: "New BMI record ",
+        body: AppLocalizations.of(context)
+            .tr("new_bmi_record_notification", args: [name]),
+    topic: 'admin');
   }
 
   Color getColor(double weight) {
@@ -316,22 +327,27 @@ class _ShowIBMState extends State<ShowIBM> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text(AppLocalizations.of(context).tr("delete_bmi")
-              ,style: TextStyle(color: Colors.redAccent)),
-          content: new Text(AppLocalizations.of(context).tr("delete_alert_bmi")),
+          title: new Text(AppLocalizations.of(context).tr("delete_bmi"),
+              style: TextStyle(color: Colors.redAccent)),
+          content:
+              new Text(AppLocalizations.of(context).tr("delete_alert_bmi")),
           actions: <Widget>[
             new FlatButton(
-              child: new Text(AppLocalizations.of(context).tr("yes"),style: TextStyle(color: Colors.redAccent),),
+              child: new Text(
+                AppLocalizations.of(context).tr("yes"),
+                style: TextStyle(color: Colors.redAccent),
+              ),
               onPressed: () {
                 reference.document(id).delete();
-                setState(() {
-
-                });
+                setState(() {});
                 Navigator.of(context).pop();
               },
             ),
             new FlatButton(
-              child: new Text(AppLocalizations.of(context).tr("no"),style: TextStyle(color: Colors.lightGreen),),
+              child: new Text(
+                AppLocalizations.of(context).tr("no"),
+                style: TextStyle(color: Colors.lightGreen),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

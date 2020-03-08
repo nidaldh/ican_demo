@@ -11,7 +11,6 @@ import 'package:demo_ican/ui_layer/add_user/add_user_form.dart';
 import 'package:demo_ican/ui_layer/admin/admin_screen.dart';
 import 'package:demo_ican/ui_layer/chat/chat_screen.dart';
 import 'package:demo_ican/ui_layer/chat/detail_screen.dart';
-import 'package:demo_ican/ui_layer/home/drawer.dart';
 import 'package:demo_ican/ui_layer/ibm/show_ibm.dart';
 import 'package:demo_ican/ui_layer/size_config.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -23,7 +22,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   final String email;
@@ -56,17 +54,22 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     initUser();
-    registerNotification();
   }
 
   void sendTokenToServer(String fcmToken) {
-//    print('token: $fcmToken');
+    print('token: $fcmToken');
   }
 
   void registerNotification() {
+    print("in request");
+    print(admin);
     firebaseMessaging.onTokenRefresh.listen(sendTokenToServer);
     firebaseMessaging.getToken();
     firebaseMessaging.subscribeToTopic('all');
+    if(admin){
+      firebaseMessaging.subscribeToTopic('admin');
+      print("add to adminnnnnnnnnnnnnnnnnnnnnn");
+    }
     firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         setState(() {
@@ -142,6 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
       user = new User(name2, age, phone, weight, height, location,
           email: widget.email,admin:admin);
     }
+    registerNotification();
 //  print(user.name);
   }
 
@@ -485,12 +489,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-//  Future getNotify() async {
-//    print("in Notify");
-//    QuerySnapshot qn = await firestore.collection("notify").getDocuments();
-//    return qn.documents;
-//  }
 
   Future getImage() async {
 //    print("in Image");

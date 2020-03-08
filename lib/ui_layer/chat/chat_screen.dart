@@ -294,7 +294,7 @@ class ChatScreenState extends State<ChatScreen> {
     setState(() {
       _isComposing = false;
     });
-    _sendMessage(text: text);
+     _sendMessage(text: text);
     sendNotification(widget.user.name, text);
   }
 

@@ -93,7 +93,9 @@
   "enter_video_details": "ادخل معلومات الفيديو",
   "video_title": "عنوان الفيديو",
   "video_id": "رابط الفيديو او ال ID",
-  "new_bmi_record_notification": "قامت {} بتسجيل BMI جديد"
+  "new_bmi_record_notification": "قامت {} بتسجيل BMI جديد",
+  "gallery": "الالبوم",
+  "camera": "الكميرا"
 
 
 }

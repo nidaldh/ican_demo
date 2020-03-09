@@ -22,10 +22,11 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'message2.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+
 class ChatScreen extends StatefulWidget {
   User user;
-  bool admin=false;
-  ChatScreen({this.user,this.admin});
+  bool admin = false;
+  ChatScreen({this.user, this.admin});
 
   @override
   State createState() => new ChatScreenState();
@@ -49,7 +50,6 @@ class ChatScreenState extends State<ChatScreen> {
     super.initState();
     registerNotification();
     initConnectivity();
-
   }
 
   @override
@@ -212,9 +212,15 @@ class ChatScreenState extends State<ChatScreen> {
                       );
                       return null;
                     }
-
-                    var image = await ImagePicker.pickImage(
-                        source: ImageSource.gallery);
+//                    Ima x =  await selectImageDialog();
+//                    print(x);
+//                    if(x==null)
+//                      return null;
+//                    var image = await ImagePicker.pickImage(
+//                        source: x);
+                    var image = await selectImageDialog();
+                    print(image);
+                    ///
                     if (image == null) {
                       Fluttertoast.showToast(
                           msg: AppLocalizations.of(context)
@@ -234,11 +240,14 @@ class ChatScreenState extends State<ChatScreen> {
                         storageBucket: 'gs://icanhel-demo.appspot.com/');
                     StorageUploadTask _uploadTask;
                     String filePath = 'images/${DateTime.now()}.png';
+
                     ///
                     final dir = await path_provider.getTemporaryDirectory();
                     final targetPath = dir.absolute.path + "/temp.jpg";
-                   var imageComp= await testCompressAndGetFile(image,targetPath);
-                    _uploadTask = _storage.ref().child(filePath).putFile(imageComp);
+                    var imageComp =
+                        await testCompressAndGetFile(image, targetPath);
+                    _uploadTask =
+                        _storage.ref().child(filePath).putFile(imageComp);
                     StorageTaskSnapshot storageTaskSnapshot =
                         await _uploadTask.onComplete;
                     pr.hide();
@@ -273,6 +282,39 @@ class ChatScreenState extends State<ChatScreen> {
         ));
   }
 
+  Future<File> selectImageDialog() async {
+    var image;
+    await showDialog(
+      context: context,
+      builder: (context) => Dialog(
+//        content: Text(AppLocalizations.of(context).tr("")),
+        child:
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+          FlatButton.icon(
+            icon: Icon(Icons.image,color: Colors.amber,),
+            label: Text(AppLocalizations.of(context).tr("gallery")),
+            onPressed: () async {
+              image = await ImagePicker.pickImage(source: ImageSource.gallery);
+              Navigator.of(context).pop();
+            },
+          ),
+          SizedBox(width: 20,),
+          FlatButton.icon(
+            icon: Icon(Icons.camera,color: Colors.amber,),
+            label: Text(AppLocalizations.of(context).tr("camera")),
+            onPressed: () async {
+              image = await ImagePicker.pickImage(source: ImageSource.camera);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],)
+      ),
+    );
+    return image;
+  }
+
   Future<Null> _handleSubmitted(String text) async {
     await initConnectivity();
     if (result == ConnectivityResult.none) {
@@ -294,7 +336,7 @@ class ChatScreenState extends State<ChatScreen> {
     setState(() {
       _isComposing = false;
     });
-     _sendMessage(text: text);
+    _sendMessage(text: text);
     sendNotification(widget.user.name, text);
   }
 
@@ -326,18 +368,6 @@ class ChatScreenState extends State<ChatScreen> {
     await Messaging.sendToAll(title: title, body: body);
   }
 
-//  Future<File> testCompressAndGetFile(File file) async {
-//    var result = await FlutterImageCompress.compressAndGetFile(
-//      file.absolute.path, "_"+file.absolute.path,
-//      quality: 88,
-//      rotate: 180,
-//    );
-//
-////    print(file.lengthSync());
-////    print(result.lengthSync());
-//
-//    return result;
-//  }
   Future<File> testCompressAndGetFile(File file, String targetPath) async {
     print("testCompressAndGetFile");
     final result = await FlutterImageCompress.compressAndGetFile(

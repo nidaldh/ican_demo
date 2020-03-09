@@ -92,7 +92,9 @@
   "enter_video_details": "Enter video details",
   "video_title": "Video title",
   "video_id": "Video URL or ID",
-  "new_bmi_record_notification": "قامت {} بتسجيل BMI جديد"
+  "new_bmi_record_notification": "قامت {} بتسجيل BMI جديد",
+  "gallery": "gallery",
+  "camera": "camera"
 
 
 }
